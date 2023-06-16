@@ -11,4 +11,9 @@ netsh interface portproxy add v4tov4 listenport=19000 connectport=19000 connecta
 netsh interface portproxy add v4tov4 listenport=19001 connectport=19001 connectaddress=172.27.187.187 
 netsh interface portproxy add v4tov4 listenport=19002 connectport=19002 connectaddress=172.27.187.187 
 
+netsh interface portproxy add v4tov6 listenport=19002 connectport=19002 connectaddress=::1 listenaddress=0.0.0.0
+netsh interface portproxy add v4tov6 listenport=19001 connectport=19001 connectaddress=::1 listenaddress=0.0.0.0
+netsh interface portproxy add v4tov6 listenport=19000 connectport=19000 connectaddress=::1 listenaddress=0.0.0.0
+
+
 on ubuntu WSL 'export REACT_NATIVE_PACKAGER_HOSTNAME=192.168.1.9' to your local address.
