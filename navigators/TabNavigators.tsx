@@ -129,20 +129,22 @@ const TabNavigators = () => {
                         width:60,
                         height:60,
                         aspectRatio:1,
-                        top: '20%',
-                        marginTop: -38,
+                        
+                        
+
                         borderBottomLeftRadius:30,
                         borderBottomRightRadius:30,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        backgroundColor: '#eeeeee',
+                        backgroundColor: '#000',
 
                         
                       }}>
                         <View style={{
                           position: 'absolute', 
                           width: 50,
-                          aspectRatio:1,    
+                          aspectRatio:1,
+                          marginTop:-32, 
                           borderRadius: 80,
                           backgroundColor: focused ? '#B2D3C2' : '#ACE1AF',
                           shadowColor: focused ? '#48A860' : 'transparent',
