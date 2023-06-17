@@ -3,6 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, DefaultTheme,Theme} from "@react-navigation/native"
 import RootNavigators from './navigators/RootNavigators';
 import { useMemo } from 'react';
+import {
+  BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
 
 export default function App() {
   const theme: Theme = useMemo(
@@ -18,7 +21,9 @@ export default function App() {
   return (
     <View style={styles.container}>
       <NavigationContainer theme={theme}>
-        <RootNavigators />
+        <BottomSheetModalProvider>
+          <RootNavigators />
+        </BottomSheetModalProvider>
         <StatusBar style='dark'/>
       </NavigationContainer>
       <StatusBar style="auto" />
