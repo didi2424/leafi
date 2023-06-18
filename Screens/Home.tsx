@@ -485,12 +485,7 @@ const Home = () => {
               { key: 'spacer-right' },
             ]);
           }
-        
-        
       };
-      
-  
-
     return (
     <ScrollView style={{marginBottom:78}}>
         <SafeAreaView style={{paddingVertical:24,gap:24}}>
