@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/users', (req, res) => {
-  const sql = 'SELECT * FROM users';
+  const sql = 'SELECT * FROM usersprofile';
   connection.query(sql, (err, results) => {
     if (err) throw err;
     res.json(results);
@@ -40,7 +40,7 @@ app.get('/users', (req, res) => {
 app.get('/users/:id', (req, res) => {
   const userId = req.params.id;
 
-  const sql = 'SELECT * FROM users WHERE id = ?';
+  const sql = 'SELECT * FROM usersprofile WHERE id = ?';
   connection.query(sql, [userId], (err, results) => {
     if (err) throw err;
     if (results.length === 0) {
@@ -55,7 +55,7 @@ app.get('/users/:id', (req, res) => {
 app.post('/users', (req, res) => {
   const { name, username, email, password } = req.body;
   const id = uuidv4(); // Generate a unique ID
-  const checkEmailQuery = 'SELECT COUNT(*) AS count FROM users WHERE email = ? OR username = ?';
+  const checkEmailQuery = 'SELECT COUNT(*) AS count FROM usersprofile WHERE email = ? OR username = ?';
   connection.query(checkEmailQuery, [email, username], (err, results) => {
     if (err) {
       console.error('Error checking email and username:', err);
@@ -76,7 +76,7 @@ app.post('/users', (req, res) => {
         return;
       }
 
-      const sql = 'INSERT INTO users (id, username, name, email, password) VALUES (?, ?, ?, ?, ?)';
+      const sql = 'INSERT INTO usersprofile (id, username, name, email, password) VALUES (?, ?, ?, ?, ?)';
       connection.query(sql, [id, username, name, email, hashedPassword], (err, result) => {
         if (err) {
           // Handle error
@@ -93,7 +93,7 @@ app.post('/users', (req, res) => {
 app.delete('/users/:id', (req, res) => {
   const userId = req.params.id;
 
-  const sql = 'DELETE FROM users WHERE id = ?';
+  const sql = 'DELETE FROM usersprofile WHERE id = ?';
   connection.query(sql, [userId], (err, result) => {
     if (err) {
       console.error('Error deleting user:', err);
@@ -114,7 +114,7 @@ app.delete('/users/:id', (req, res) => {
 app.post('/login', (req, res) => {
   const secretKey = 'mysecretkeybaba'; 
   const { email, password } = req.body;
-  const sql = 'SELECT * FROM users WHERE email = ?';
+  const sql = 'SELECT * FROM usersprofile WHERE email = ?';
   connection.query(sql, [email], (err, results) => {
     if (err) {
       // Handle database error

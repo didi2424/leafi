@@ -275,7 +275,7 @@ const CustomCard3 = ({newDiscover} ) => {
       },
     });
     const handlePress = (item: any) => {
-      console.log("TouchableOpacity pressed", item.text );
+      
       // Add additional logic or actions here
     };
   
@@ -357,7 +357,6 @@ const Home = () => {
     const openDetachuModal = useCallback((item: CareofTypeItem)=> {
       setSelectedCareItem(item)
       openDetachModalRef.current?.present();
-      console.log("Selected item:", item);
     },[]);
    
     const getCategoryIconName = (category: string) => {
