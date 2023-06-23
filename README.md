@@ -18,3 +18,11 @@ netsh interface portproxy add v4tov6 listenport=19000 connectport=19000 connecta
 netsh advfirewall firewall add rule name="Open Port 19000 for WSL2" dir=in action=allow protocol=TCP localport=19000
 
 on ubuntu WSL 'export REACT_NATIVE_PACKAGER_HOSTNAME=192.168.1.9' to your local address.
+
+
+enable WSL Port to Windows so it can be used for physical phone or another 
+
+New-NetFireWallRule -DisplayName 'Expo WSL2 Ports' -Direction Inbound -LocalPort 3000 -Action Allow -Protocol TCP;
+New-NetFireWallRule -DisplayName 'Expo WSL2 Ports' -Direction Outbound -LocalPort 3000 -Action Allow -Protocol TCP;
+netsh interface portproxy add v4tov4 listenport=3000 listenaddress=0.0.0.0 connectport=3000 connectaddress=$($(wsl hostname -I).Trim());
+Invoke-Expression "netsh interface portproxy show v4tov4"

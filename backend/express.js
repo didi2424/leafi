@@ -9,6 +9,8 @@ const jwt = require('jsonwebtoken');
 
 const app = express()
 const port = 3000
+const cors = require('cors');
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -179,7 +181,9 @@ app.get('/protected', (req, res) => {
     res.status(200).json({ message: `Protected route accessed by user ${name}` });
   });
 });
+const IP_ADDRESS = '172.24.108.87'; // Replace with your desired IP address
+const PORT = 3000; // Replace with your desired port number
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.listen(PORT, IP_ADDRESS, () => {
+  console.log(`Server is running on ${IP_ADDRESS}:${PORT}`);
+});

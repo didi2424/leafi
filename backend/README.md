@@ -18,3 +18,5 @@ Delete database :
 DROP DATABASE database_name;
 
 REVOKE ALL PRIVILEGES ON *.* FROM 'username'@'hostname';
+
+

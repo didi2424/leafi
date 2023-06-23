@@ -136,7 +136,7 @@ const TabNavigators = () => {
                         borderBottomRightRadius:30,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        backgroundColor: '#000',
+                        backgroundColor: '#48A860',
 
                         
                       }}>
