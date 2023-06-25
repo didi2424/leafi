@@ -115,9 +115,9 @@ app.delete('/users/:id', (req, res) => {
 
 app.post('/login', (req, res) => {
   const secretKey = 'mysecretkeybaba'; 
-  const { email, password } = req.body;
-  const sql = 'SELECT * FROM usersprofile WHERE email = ?';
-  connection.query(sql, [email], (err, results) => {
+  const { username, password } = req.body;
+  const sql = 'SELECT * FROM usersprofile WHERE username = ?';
+  connection.query(sql, [username], (err, results) => {
     if (err) {
       // Handle database error
       res.status(500).json({ message: 'Error retrieving user' });
@@ -181,7 +181,7 @@ app.get('/protected', (req, res) => {
     res.status(200).json({ message: `Protected route accessed by user ${name}` });
   });
 });
-const IP_ADDRESS = '172.24.108.87'; // Replace with your desired IP address
+const IP_ADDRESS = '0.0.0.0'; // Replace with your desired IP address
 const PORT = 3000; // Replace with your desired port number
 
 app.listen(PORT, IP_ADDRESS, () => {

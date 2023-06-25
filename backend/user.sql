@@ -1,6 +1,6 @@
 
 
-
+CREATE DATABASE users;
 USE users;
 
 CREATE TABLE usersprofile (

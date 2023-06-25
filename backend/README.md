@@ -11,8 +11,14 @@ SHOW GRANTS FOR 'admin'@'localhost';
 
 CREATE DATABASE users;
 
+show database
+SHOW DATABASES; 
+
+USE users;
 Describe Table :
 DESCRIBE users;
+
+
 
 Delete database :
 DROP DATABASE database_name;
