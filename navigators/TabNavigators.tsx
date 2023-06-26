@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 import Home from '../Screens/Home'
-import Profile from '../Screens/Profile'
+import Profile from '../Screens/Profile/Profile'
 import Camera from '../Screens/Camera'
 import Smartpot from '../Screens/Smartpot';
 
