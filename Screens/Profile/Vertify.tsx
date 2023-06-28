@@ -5,18 +5,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import api from '../../api';
 
-type Props = {
+type VertifyProps = {
+  formData: {
+    namefirst: string;
+    namelast: string;
+    email: string;
+    password: string;
+    username: string;
+  };
   onScreenChange: (screenNumber: number) => void;
-  namefirst: string;
-  namelast: string;
-  email: string;
-  password: string;
-  username: string;
 };
 
+const Vertify = ({ formData, onScreenChange }: VertifyProps) => {
+  // Access the form data properties as needed
+  const { namefirst, namelast, email, password, username } = formData;
 
-const Vertify = ({ onScreenChange, namefirst, namelast, email, password, username }: Props) => {
-  console.log('Received Props:', namefirst, namelast, email, password, username);
+  console.log(namefirst,namelast);
 
     const [selectedRegisterButton, setRegisterButton] = useState(1);
     const [phonenumber, onChangePhoneNumber] = useState('');
@@ -114,7 +118,7 @@ const Vertify = ({ onScreenChange, namefirst, namelast, email, password, usernam
         <View>
           <Text style={{fontSize:30, fontWeight:'600'}}>Enter OTP</Text>
           <Text>An 6 Digit Code has been send to</Text>
-          <Text>{phonenumber}</Text>
+          <Text>{email}</Text>
         <View style={{flexDirection:'row',gap:12}}>
         <View style={{flexDirection:'row',gap:8}}>
           <View style={{height:50,width:38,borderRadius: 10,backgroundColor:'gray',alignContent:'center',alignItems:'center',justifyContent:'space-between'}}>

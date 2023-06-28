@@ -9,7 +9,7 @@ type Props = {
   };
 
 const Register = ({ onScreenChange }: Props) => {
-    
+    const [formData, setFormData] = useState(null);
     const [namefirst, onChangeNameFirst] = useState('');
     const [namelast, onChangeNameLast] = useState('');
     const [email, onChangeEmail] = useState('');
@@ -20,8 +20,21 @@ const Register = ({ onScreenChange }: Props) => {
     }
 
     const handleRegisters = () => {
-        console.log('ajojing')
-        setIsVertivyVisible(0)
+        // Extract the form data
+        const formData = {
+          namefirst,
+          namelast,
+          email,
+          password,
+          username,
+        };
+      
+        // Set the visibility of the Vertify component to true
+        setIsVertivyVisible(0);
+        setFormData(formData);
+      
+        // Pass the form data to the Vertify component using props
+        return <Vertify formData={formData} onScreenChange={onScreenChange} />;
       };
 
     const [isMoved, setIsMoved] = useState(false);
@@ -228,7 +241,7 @@ const Register = ({ onScreenChange }: Props) => {
 
             
             ) : (
-                <Vertify namefirst='' namelast=''/>
+                <Vertify formData={formData} onScreenChange={onScreenChange} />
             )}
             </>
     )
