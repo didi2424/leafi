@@ -6,10 +6,11 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Vertify from './Vertify';
 type Props = {
     onScreenChange: (screenNumber: number) => void;
+    onRegisterData: (data: any) => void;
   };
 
-const Register = ({ onScreenChange }: Props) => {
-    const [formData, setFormData] = useState(null);
+const Register = ({ onScreenChange, onRegisterData  }: Props) => {
+    
     const [namefirst, onChangeNameFirst] = useState('');
     const [namelast, onChangeNameLast] = useState('');
     const [email, onChangeEmail] = useState('');
@@ -20,21 +21,15 @@ const Register = ({ onScreenChange }: Props) => {
     }
 
     const handleRegisters = () => {
-        // Extract the form data
-        const formData = {
-          namefirst,
-          namelast,
-          email,
-          password,
-          username,
-        };
-      
-        // Set the visibility of the Vertify component to true
-        setIsVertivyVisible(0);
-        setFormData(formData);
-      
-        // Pass the form data to the Vertify component using props
-        return <Vertify formData={formData} onScreenChange={onScreenChange} />;
+     onScreenChange(3);
+     const registerData = {
+        username,
+        email,
+        // Add other necessary data
+      };
+  
+      // Pass the data to the Profile component
+      onRegisterData(registerData);
       };
 
     const [isMoved, setIsMoved] = useState(false);
@@ -44,7 +39,7 @@ const Register = ({ onScreenChange }: Props) => {
     const [isTextInputVisible, setIsTextInputVisible] = useState(false);
     const [selectedRegisterButton, setRegisterButton] = useState(1);
     
-    const [isVertivyVisible, setIsVertivyVisible] = useState(1);
+    const [isVertivyVisible, setIsVertivyVisible] = useState(true);
 
     const startAnimation = () => {
         const targetValue = isMoved ? 0 : -380;
@@ -109,7 +104,7 @@ const Register = ({ onScreenChange }: Props) => {
 
   return (
     <>
-    {isVertivyVisible === 1 ? (
+    {isVertivyVisible && ( 
 
     <View style={{flex: 1,marginHorizontal:2,justifyContent:"center",alignItems:'center',alignContent:'center'}}>
         
@@ -237,11 +232,6 @@ const Register = ({ onScreenChange }: Props) => {
                 </Animated.View>
 
             </View>
-            
-
-            
-            ) : (
-                <Vertify formData={formData} onScreenChange={onScreenChange} />
             )}
             </>
     )

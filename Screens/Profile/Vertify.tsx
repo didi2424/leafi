@@ -6,22 +6,14 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import api from '../../api';
 
 type VertifyProps = {
-  formData: {
-    namefirst: string;
-    namelast: string;
-    email: string;
-    password: string;
-    username: string;
-  };
   onScreenChange: (screenNumber: number) => void;
+  registerData: any;
 };
 
-const Vertify = ({ formData, onScreenChange }: VertifyProps) => {
+const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
   // Access the form data properties as needed
-  const { namefirst, namelast, email, password, username } = formData;
 
-  console.log(namefirst,namelast);
-
+  console.log(registerData);
     const [selectedRegisterButton, setRegisterButton] = useState(1);
     const [phonenumber, onChangePhoneNumber] = useState('');
     const [inputOtp, onChangeinputOtp] = useState('');
@@ -36,7 +28,8 @@ const Vertify = ({ formData, onScreenChange }: VertifyProps) => {
     const [otpv, setOtpv] = useState({1: '', 2: '', 3: '', 4: '',5: '',6: ''});
     const componentRef = useRef<HTMLDivElement>(null);
     const BacktoRegister = () => {
-      onScreenChange(1)
+      onScreenChange(1);
+      console.log('back')
     }
 
     const generateOTP = () => {
@@ -118,7 +111,6 @@ const Vertify = ({ formData, onScreenChange }: VertifyProps) => {
         <View>
           <Text style={{fontSize:30, fontWeight:'600'}}>Enter OTP</Text>
           <Text>An 6 Digit Code has been send to</Text>
-          <Text>{email}</Text>
         <View style={{flexDirection:'row',gap:12}}>
         <View style={{flexDirection:'row',gap:8}}>
           <View style={{height:50,width:38,borderRadius: 10,backgroundColor:'gray',alignContent:'center',alignItems:'center',justifyContent:'space-between'}}>
