@@ -4,15 +4,59 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
+const accountSid = 'AC21b4bf2cf3d2947cf96167abe72069f1'
+const authToken = '076f82f76d7efca6be59f6d85f9f2236';
+const twilio = require('twilio')
+const client = new twilio(accountSid, authToken)
+
 
 
 
 const app = express()
 const port = 3000
 const cors = require('cors');
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+const nodemailer = require('nodemailer');
+app.post('/ver', async (req, res) => {
+  const { otp, email} = req.body;
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'shaylia469@gmail.com',
+      pass: 'insxnkfmwcdcbykc'
+    }
+  });
+  
+  const mailOptions = {
+    from: 'theday21company@gmail.com',
+    to: email,
+    subject: 'Subject',
+    text: otp
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+    console.log(error);
+    res.status(500).send('Error sending email');
+    } else {
+      console.log('Email sent: ' + info.response);
+      res.status(200).send('Email sent successfully');
+    }
+  });
+  
+})
+
+
+
+
+
+
+
+
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -30,6 +74,8 @@ const connection = mysql.createConnection({
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
+
+
 
 app.get('/users', (req, res) => {
   const sql = 'SELECT * FROM usersprofile';
@@ -112,6 +158,39 @@ app.delete('/users/:id', (req, res) => {
   });
 });
 
+app.post('/verify', async (req, res) => {
+
+  const { phonenumber, otp } = req.body;
+  client.messages
+  .create({
+      body: 'Your LeafOD OTP is ' + otp,
+      from: 'whatsapp:+14155238886',
+      to: 'whatsapp:'+phonenumber
+  })
+  .then(() => {
+    res.send('success: true');
+  })
+  .catch(err => {
+    console.log(err);
+    res.send('success: false');
+  });
+  
+})
+
+
+app.post('/wa', async (req, res) => {
+
+ 
+client.on('qr', qr => {
+    qrcode.generate(qr, {small: true});
+});
+
+client.on('ready', () => {
+    console.log('Client is ready!');
+});
+
+client.initialize();
+})
 
 app.post('/login', (req, res) => {
   const secretKey = 'mysecretkeybaba'; 
@@ -181,9 +260,7 @@ app.get('/protected', (req, res) => {
     res.status(200).json({ message: `Protected route accessed by user ${name}` });
   });
 });
-const IP_ADDRESS = '0.0.0.0'; // Replace with your desired IP address
-const PORT = 3000; // Replace with your desired port number
 
-app.listen(PORT, IP_ADDRESS, () => {
-  console.log(`Server is running on ${IP_ADDRESS}:${PORT}`);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });

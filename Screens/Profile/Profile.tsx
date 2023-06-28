@@ -4,6 +4,7 @@ import React, { useState,useRef,useEffect } from 'react';
 
 import Register from "./Register";
 import Login from "./Login";
+import Vertify from "./Vertify";
 const Profile = () => {
     const [selectedScreen, setSelectedScreen] = useState(1);
 
@@ -20,14 +21,12 @@ const Profile = () => {
         <TouchableWithoutFeedback onPress={handleViewPress}>
             
         {selectedScreen === 1 ? (
-            
-            <Register onScreenChange={handleScreenChange}/>
-
-            ) : (
-
-            <Login onScreenChange={handleScreenChange}/>
-                 
-    )}
+            <Register onScreenChange={handleScreenChange} />
+            ) : selectedScreen === 2 ? (
+            <Login onScreenChange={handleScreenChange} />
+            ) : selectedScreen === 3 ? (
+            <Vertify onScreenChange={handleScreenChange} />
+            ) : null}
           </TouchableWithoutFeedback>
           </SafeAreaView >
    

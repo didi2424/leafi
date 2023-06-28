@@ -19,7 +19,7 @@ netsh advfirewall firewall add rule name="Open Port 19000 for WSL2" dir=in actio
 
 on ubuntu WSL 'export REACT_NATIVE_PACKAGER_HOSTNAME=192.168.1.9' to your local address.
 
-
+netsh interface portproxy add v4tov6 listenport=3000 connectport=3000 connectaddress=::1 listenaddress=0.0.0.0
 enable WSL Port to Windows so it can be used for physical phone or another 
 
 New-NetFireWallRule -DisplayName 'Expo WSL2 Ports' -Direction Inbound -LocalPort 3000 -Action Allow -Protocol TCP;

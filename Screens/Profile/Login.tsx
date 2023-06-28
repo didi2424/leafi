@@ -2,8 +2,8 @@ import { Alert, Animated, Keyboard, TouchableWithoutFeedback, Text, TextInput, T
 import React, { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
-import axios from 'axios';
 
+import api from '../../api';
 type Props = {
     onScreenChange: (screenNumber: number) => void;
   };
@@ -11,14 +11,11 @@ type Props = {
 const Login = ({ onScreenChange }: Props) => {
     const [password, onChangePassword] = useState('');
     const [username, onChangeUsername] = useState('');
-    const fadeAnim2 = useRef(new Animated.Value(0)).current;
     const [isTextInputVisibleLogin, setIsTextInputVisibleLogin] = useState(false);
     const [selectedLoginButton, setLoginButton] = useState(1);
     const [isMovedLogin, setIsMovedLogin] = useState(false);
     const moveAnimLogin = useRef(new Animated.Value(0)).current;
    
-    
-    
     const handleViewPress = () => {
         Keyboard.dismiss();
     }
@@ -27,7 +24,7 @@ const Login = ({ onScreenChange }: Props) => {
     };
 
     const startAnimationLogin = () => {
-        const targetValue = isMovedLogin ? 0 : -330
+        const targetValue = isMovedLogin ? 0 : -340
         Animated.timing(moveAnimLogin, {
         toValue: targetValue,
         duration: 1000,
@@ -42,7 +39,7 @@ const Login = ({ onScreenChange }: Props) => {
             password,
         };
         console.log(username,password)
-        axios.post('http://192.168.1.2:3000/login', payload)
+        api.post('/login', payload)
             .then(response => {
             console.log(response.data);
             })
@@ -136,7 +133,7 @@ const Login = ({ onScreenChange }: Props) => {
                 gap:12,
                 backgroundColor:'#0000'}}>
 
-            <View style={{width:220,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
+            <View style={{width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
             <TextInput
                 style={{left:10,width:170,height:42}}
                 onChangeText={onChangeUsername}
@@ -145,37 +142,29 @@ const Login = ({ onScreenChange }: Props) => {
                 placeholderTextColor="#999999"
             />
             </View>
-            <View style={{width:220,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
+            <View style={{width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
             <TextInput
                 style={{left:10,width:170,height:42}}
                 onChangeText={onChangePassword}
-                placeholder="Password"
+                placeholder="Password" 
                 placeholderTextColor="#999999"
             />
             </View>
-            <View style={{bottom:-20,width:32,aspectRatio:1,backgroundColor:'#000',borderRadius:50,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
+            <TouchableOpacity style={{width:180,height:22,left:12,alignItems:'flex-start',alignContent:'flex-start',justifyContent:'center'}}>
+                <Text>Forgot Password?</Text>
+            </TouchableOpacity>
+            <View style={{bottom:-18,width:32,aspectRatio:1,backgroundColor:'#000',borderRadius:50,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
                 <TouchableOpacity onPress={handleHideForm}> 
                 <FontAwesomeIcon icon={icon({ name: 'xmark' })} style={{ color: '#7db149ff',width:32,height:32 }}  /> 
                 </TouchableOpacity>
                
                 </View>
             </Animated.View>
+            
             </>
             )}
             </Animated.View>
-
-            </Animated.View>
-            
-            <Animated.View
-            style={{
-                
-                opacity: fadeAnim2,
-            }}>
-            
-            </Animated.View>
-
-            
-            <Animated.View style={{ width:120,height:40,borderRadius:18,backgroundColor:'#fff',alignItems:'center',alignContent:'center',justifyContent:'center', opacity: fadeAnim}}>
+            <Animated.View style={{top:110, width:120,height:40,borderRadius:18,backgroundColor:'#fff',alignItems:'center',alignContent:'center',justifyContent:'center', opacity: fadeAnim}}>
                 {selectedLoginButton === 1 ? (
                     <>
                     <TouchableOpacity onPress={handleButtonRegisterButton} >
@@ -189,7 +178,12 @@ const Login = ({ onScreenChange }: Props) => {
                     </TouchableOpacity>
                     </>
                 )}
-        </Animated.View>
+            </Animated.View>
+            </Animated.View>
+            
+
+            
+           
     </Animated.View>
     
   )

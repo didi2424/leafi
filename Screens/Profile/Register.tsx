@@ -1,14 +1,15 @@
 import { Alert, Animated, StyleSheet, Text, TextInput, TouchableOpacity, Keyboard,View,TouchableWithoutFeedback } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
-
+import Vertify from './Vertify';
 type Props = {
     onScreenChange: (screenNumber: number) => void;
   };
 
 const Register = ({ onScreenChange }: Props) => {
+    
     const [namefirst, onChangeNameFirst] = useState('');
     const [namelast, onChangeNameLast] = useState('');
     const [email, onChangeEmail] = useState('');
@@ -18,41 +19,10 @@ const Register = ({ onScreenChange }: Props) => {
         Keyboard.dismiss();
     }
 
-
     const handleRegisters = () => {
-
-        const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-        
-        if (!emailPattern.test(email) || namefirst === '' || namelast === '' || username === '' || email === '' || password === '') {
-            if (!emailPattern.test(email)) {
-                Alert.alert('Invalid Email', 'Please enter a valid email address.');
-            }
-            else {
-                Alert.alert('Error', 'All fields are required.');
-            }
-            return;
-            }
-        const name = namefirst + ' ' + namelast
-        const payload = {
-            name,
-            username,
-            email,
-            password,
-        };
-        
-        axios.post('http://192.168.1.2:3000/users', payload)
-            .then(response => {
-            console.log(response.data);
-            })
-            .catch(error => {
-            if (error.response && error.response.status === 409) {
-                Alert.alert('Error', 'Username is already registered.');
-            } else {
-                console.error(error);
-                
-            }
-            });
-        };
+        console.log('ajojing')
+        setIsVertivyVisible(0)
+      };
 
     const [isMoved, setIsMoved] = useState(false);
     const moveAnim = useRef(new Animated.Value(0)).current;
@@ -61,13 +31,13 @@ const Register = ({ onScreenChange }: Props) => {
     const [isTextInputVisible, setIsTextInputVisible] = useState(false);
     const [selectedRegisterButton, setRegisterButton] = useState(1);
     
-    
+    const [isVertivyVisible, setIsVertivyVisible] = useState(1);
 
     const startAnimation = () => {
-        const targetValue = isMoved ? 0 : -220;
+        const targetValue = isMoved ? 0 : -380;
         Animated.timing(moveAnim, {
         toValue: targetValue,
-        duration: 2000,
+        duration: 800,
         useNativeDriver: true,
         }).start();
         setIsMoved(!isMoved); 
@@ -114,6 +84,7 @@ const Register = ({ onScreenChange }: Props) => {
         startAnimation();
         setIsTextInputVisible(false)
         setRegisterButton(1);
+        handleViewPress()
         
     }
 
@@ -124,7 +95,9 @@ const Register = ({ onScreenChange }: Props) => {
 
 
   return (
-    <TouchableWithoutFeedback onPress={handleViewPress}>
+    <>
+    {isVertivyVisible === 1 ? (
+
     <View style={{flex: 1,marginHorizontal:2,justifyContent:"center",alignItems:'center',alignContent:'center'}}>
         
             <Animated.View style={[{justifyContent:'center',alignItems:'center',opacity: fadeAnim}, animatedStyle]}>
@@ -145,24 +118,25 @@ const Register = ({ onScreenChange }: Props) => {
                         Already a member ?
                     </Text>
                     <TouchableOpacity  onPress={() => handlePressCombined()} >
-                        <Text style={{fontSize:20,color:'#2a6f29'}}> Log in</Text>
+                        <Text style={{fontSize:20,color:'#2a6f29'}}>Log in</Text>
                     </TouchableOpacity>
                 </View>
 
 
                 {isTextInputVisible && (
-                <View style={{gap:12}}>
+                <View style={{gap:18}}>
                 <Animated.View style={{
                     flexDirection:"row",
                     justifyContent:"space-between",
-                    marginTop:20,
-                    gap:12,
+                    marginTop:18,
+                    gap:18,
                     backgroundColor:'#0000'}}>
                 <View style={{width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
                 <TextInput
                     style={{left:10,width:170,height:42}}
                     onChangeText={onChangeNameFirst}
                     placeholder="First Name"
+                    autoFocus={true}
                     placeholderTextColor="#909090"
                     />
                 </View>
@@ -179,12 +153,14 @@ const Register = ({ onScreenChange }: Props) => {
 
                 <View style={{width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
                     <TextInput
-                    style={{left:10,width:170,height:42}}
+                    style={{left:10,width:170,height:22}}
                     onChangeText={onChangeUsername}
                     placeholder="Username"
                     placeholderTextColor="#999999"
                     />
+                
                     </View>
+                
                 <View style={{width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
                     <TextInput
                     style={{left:10,width:170,height:42}}
@@ -192,7 +168,9 @@ const Register = ({ onScreenChange }: Props) => {
                     placeholder="Email"
                     placeholderTextColor="#999999"
                     />
-                    </View>
+                </View>
+
+              
                     
                 <View style={{paddingHorizontal:12,flexDirection:'row',width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignContent:"center",justifyContent:'space-between',alignItems:'center',gap:12}}>
                      <TextInput
@@ -202,7 +180,7 @@ const Register = ({ onScreenChange }: Props) => {
                     placeholderTextColor="#999999"
                     secureTextEntry={secureTextEntry} 
                     />
-                    <TouchableOpacity style={{width:28,height:28,alignItems:'center',alignContent:"center",justifyContent:'center' }} onPress={togglePasswordVisibility}> 
+                    <TouchableOpacity style={{width:28,height:48,alignItems:'center',alignContent:"center",justifyContent:'center' }} onPress={togglePasswordVisibility}> 
                     {secureTextEntry === true ? (
                         <FontAwesomeIcon icon={icon({ name: 'eye' })} style={{ color: '#7db149ff',width:28,height:28 }}  /> 
                         ) : (
@@ -214,41 +192,48 @@ const Register = ({ onScreenChange }: Props) => {
 
                       
                      </View>
+                    
 
-                     <View style={{position:'absolute',bottom:-42,left:168,width:28,aspectRatio:1,backgroundColor:'#000',borderRadius:50,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
+                     <View style={{bottom:-18,left:168,width:32,aspectRatio:1,backgroundColor:'#000',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
                         <TouchableOpacity onPress={handleHideForm} > 
-                        <FontAwesomeIcon icon={icon({ name: 'xmark' })} style={{ color: '#7db149ff',width:28,height:28 }}  /> 
+                        <FontAwesomeIcon icon={icon({ name: 'xmark' })} style={{ color: '#7db149ff',width:32,height:32 }}  /> 
                         </TouchableOpacity>
                         </View>
                 
                 </View>
+                
                 )}
                
                 
                 </Animated.View>
-                
-                </Animated.View>
-          
-                <Animated.View style={{position:'absolute',bottom:80,width:120,height:40,borderRadius:18,backgroundColor:'#fff',alignItems:'center',alignContent:'center',justifyContent:'center', opacity: fadeAnim,}}>
+                <Animated.View style={{top:110,width:120,height:40,borderRadius:18,backgroundColor:'#fff',alignItems:'center',alignContent:'center',justifyContent:'center', opacity: fadeAnim,}}>
                 {selectedRegisterButton === 1 ? (
                     <>
                     <TouchableOpacity onPress={() => handleButtonRegisterButton()} >
-                            <Text style={{fontSize:22,color:'#2a6f29'}}> Coutinue</Text>
+                            <Text style={{fontSize:22,color:'#2a6f29'}}>Coutinue</Text>
                     </TouchableOpacity>
                     </>
                     ) : (
                     <>
                     <TouchableOpacity onPress={handleRegisters}  >
-                            <Text style={{fontSize:22,color:'#2a6f29'}}> Register</Text>
+                            <Text style={{fontSize:22,color:'#2a6f29'}}>Register</Text>
                     </TouchableOpacity>
                     </>
                 )}
                 </Animated.View>
-            
-                
+                </Animated.View>
+
             </View>
-            </TouchableWithoutFeedback>
-  )
+            
+
+            
+            ) : (
+                <Vertify namefirst='' namelast=''/>
+            )}
+            </>
+    )
+   
+  
 }
 
 export default Register
