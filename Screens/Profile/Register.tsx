@@ -16,6 +16,10 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
     const [email, onChangeEmail] = useState('');
     const [password, onChangePassword] = useState('');
     const [username, onChangeUsername] = useState('');
+
+    const [fillEmail, setFillEmail] = useState(false);
+    const [fillEmailEmpty, setFillEmailEmpty] = useState(false);
+
     const handleViewPress = () => {
         Keyboard.dismiss();
     }
@@ -23,12 +27,14 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
     const handleRegisters = () => {
         const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
-        if (!emailPattern.test(email) || namefirst === '' || namelast === '' || username === '' || email === '' || password === '') {
+        if (email === '') {
+            setFillEmailEmpty(true)
             if (!emailPattern.test(email)) {
-                Alert.alert('Invalid Email', 'Please enter a valid email address.');
+                // setFillEmailEmpty(false)
+                // setFillEmail(true)
             }
             else {
-                Alert.alert('Error', 'All fields are required.');
+                
             }
             return;
             }
@@ -43,7 +49,7 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
         api.post('/users', payload)
             .then(response => {
             console.log(response.data);
-            onScreenChange(3)
+            // onScreenChange(3)
             })
             .catch(error => {
             if (error.response && error.response.status === 409) {
@@ -160,62 +166,37 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
                         Already a member ?
                     </Text>
                     <TouchableOpacity  onPress={() => handlePressCombined()} >
-                        <Text style={{fontSize:20,color:'#2a6f29'}}>Log in</Text>
+                        <Text style={{fontSize:20,color:'#2a6f29'}}> Log in</Text>
                     </TouchableOpacity>
                 </View>
 
 
                 {isTextInputVisible && (
-                <View style={{gap:18}}>
-                <Animated.View style={{
-                    flexDirection:"row",
-                    justifyContent:"space-between",
-                    marginTop:18,
-                    gap:18,
-                    backgroundColor:'#0000'}}>
-                <View style={{width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
-                <TextInput
-                    style={{left:10,width:170,height:42}}
-                    onChangeText={onChangeNameFirst}
-                    placeholder="First Name"
+
+                <View style={{top:20,justifyContent:'center',alignItems:'center'}}>
+                
+                <View style={{height:68}}>
+                <View style={{width:220,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
+                    <TextInput
+                    style={{left:10,width:220,height:42}}
                     autoFocus={true}
-                    placeholderTextColor="#909090"
-                    />
-                </View>
-                <Text>you must fill this</Text>
-                <View style={{width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
-                    <TextInput
-                    style={{left:10,width:170,height:42}}
-                    onChangeText={onChangeNameLast}
-                    placeholder="Last Name"
-                    placeholderTextColor="#999999"
-                    />
-                </View>
-
-                </Animated.View >
-
-                <View style={{width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
-                    <TextInput
-                    style={{left:10,width:170,height:22}}
-                    onChangeText={onChangeUsername}
-                    placeholder="Username"
-                    placeholderTextColor="#999999"
-                    />
-                
-                    </View>
-                
-                <View style={{width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
-                    <TextInput
-                    style={{left:10,width:170,height:42}}
                     onChangeText={onChangeEmail}
                     placeholder="Email"
                     placeholderTextColor="#999999"
                     />
                 </View>
+                {fillEmailEmpty && (
+                    <Text style={{top:5}}>You must fill this</Text>
+                    )}
+                {fillEmail && (
+                    <Text style={{top:5}}>Email pattern failed</Text>
+                    )}
 
+                
+                </View>
               
                     
-                <View style={{paddingHorizontal:12,flexDirection:'row',width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignContent:"center",justifyContent:'space-between',alignItems:'center',gap:12}}>
+                <View style={{paddingHorizontal:12,flexDirection:'row',width:220,height:42,backgroundColor:'#fff',borderRadius:16,alignContent:"center",justifyContent:'space-between',alignItems:'center',gap:12}}>
                      <TextInput
                     style={{width:120,height:38}}
                     onChangeText={onChangePassword}
@@ -237,7 +218,7 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
                      </View>
                     
 
-                     <View style={{bottom:-18,left:168,width:32,aspectRatio:1,backgroundColor:'#000',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
+                     <View style={{top:8,width:32,aspectRatio:1,backgroundColor:'#000',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
                         <TouchableOpacity onPress={handleHideForm} > 
                         <FontAwesomeIcon icon={icon({ name: 'xmark' })} style={{ color: '#7db149ff',width:32,height:32 }}  /> 
                         </TouchableOpacity>
