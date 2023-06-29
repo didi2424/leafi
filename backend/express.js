@@ -101,8 +101,8 @@ app.get('/users/:id', (req, res) => {
 
 
 app.post('/users', (req, res) => {
-  const { name, username, email, password } = req.body;
-  const id = uuidv4(); // Generate a unique ID
+  const {username, email } = req.body;
+  
   const checkEmailQuery = 'SELECT COUNT(*) AS count FROM usersprofile WHERE email = ? OR username = ?';
   connection.query(checkEmailQuery, [email, username], (err, results) => {
     if (err) {
@@ -117,26 +117,32 @@ app.post('/users', (req, res) => {
       return;
     }
     // Hash the password
-    bcrypt.hash(password, 10, (err, hashedPassword) => {
-      if (err) {
-        // Handle error
-        res.status(500).json({ message: 'Error hashing password' });
-        return;
-      }
-
-      const sql = 'INSERT INTO usersprofile (id, username, name, email, password) VALUES (?, ?, ?, ?, ?)';
-      connection.query(sql, [id, username, name, email, hashedPassword], (err, result) => {
-        if (err) {
-          // Handle error
-          console.error('Error creating user:', err);
-          res.status(500).json({ message: 'Error creating user' });
-          return;
-        }
-        res.status(201).json({ message: 'User created' });
-      });
-    });
+   
   });
 });
+
+app.post('/user/register',(req,res) => {
+  const { name, username, email, password } = req.body;
+  const id = uuidv4(); // Generate a unique ID
+  bcrypt.hash(password, 10, (err, hashedPassword) => {
+    if (err) {
+      // Handle error
+      res.status(500).json({ message: 'Error hashing password' });
+      return;
+    }
+
+    const sql = 'INSERT INTO usersprofile (id, username, name, email, password) VALUES (?, ?, ?, ?, ?)';
+    connection.query(sql, [id, username, name, email, hashedPassword], (err, result) => {
+      if (err) {
+        // Handle error
+        console.error('Error creating user:', err);
+        res.status(500).json({ message: 'Error creating user' });
+        return;
+      }
+      res.status(201).json({ message: 'User created' });
+    });
+  });
+})
 
 app.delete('/users/:id', (req, res) => {
   const userId = req.params.id;
