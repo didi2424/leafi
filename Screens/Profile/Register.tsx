@@ -4,13 +4,13 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Vertify from './Vertify';
+import api from '../../api';
 type Props = {
     onScreenChange: (screenNumber: number) => void;
     onRegisterData: (data: any) => void;
   };
 
 const Register = ({ onScreenChange, onRegisterData  }: Props) => {
-    
     const [namefirst, onChangeNameFirst] = useState('');
     const [namelast, onChangeNameLast] = useState('');
     const [email, onChangeEmail] = useState('');
@@ -21,14 +21,48 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
     }
 
     const handleRegisters = () => {
-     onScreenChange(3);
+        const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
+        if (!emailPattern.test(email) || namefirst === '' || namelast === '' || username === '' || email === '' || password === '') {
+            if (!emailPattern.test(email)) {
+                Alert.alert('Invalid Email', 'Please enter a valid email address.');
+            }
+            else {
+                Alert.alert('Error', 'All fields are required.');
+            }
+            return;
+            }
+        const name = namefirst + ' ' + namelast
+        const payload = {
+            name,
+            username,
+            email,
+            password,
+        };
+
+        api.post('/users', payload)
+            .then(response => {
+            console.log(response.data);
+            onScreenChange(3)
+            })
+            .catch(error => {
+            if (error.response && error.response.status === 409) {
+                Alert.alert('Error', 'Username is already registered.');
+            } else {
+                console.error(error);
+
+            }
+            });
+     
      const registerData = {
         username,
         email,
-        // Add other necessary data
+        namelast,
+        namefirst,
+        password
       };
   
-      // Pass the data to the Profile component
+
       onRegisterData(registerData);
       };
 
@@ -148,6 +182,7 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
                     placeholderTextColor="#909090"
                     />
                 </View>
+                <Text>you must fill this</Text>
                 <View style={{width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
                     <TextInput
                     style={{left:10,width:170,height:42}}

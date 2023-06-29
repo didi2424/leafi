@@ -1,5 +1,5 @@
 import { Alert, StyleSheet, Text, Touchable, View } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -77,8 +77,40 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
         console.log('Invalid OTP');
       }
     };
-    
 
+    const [count, setCount] = useState(0);
+    const [disabled, setDisabled] = useState(false);
+    const [timer, setTimer] = useState(0);
+
+    useEffect(() => {
+      let interval: NodeJS.Timeout;
+      if (disabled) {
+        interval = setInterval(() => {
+          setTimer((prevTimer) => prevTimer - 1);
+        }, 1000);
+      }
+
+      return () => {
+        clearInterval(interval);
+      };
+      }, [disabled]);
+      
+      useEffect(() => {
+        if (timer <= 0) {
+          setDisabled(false);
+          setTimer(300);
+        }
+      }, [timer]);
+    
+      const handlePress = () => {
+        setCount((prevCount) => prevCount + 1);
+    
+        if (count >= 2) {
+          setDisabled(true);
+          setCount(0);
+          setTimer(300);
+        }
+      };
   return (
     <View style={{justifyContent:'flex-start',top:20}}>
       <TouchableOpacity onPress={() => BacktoRegister()} style={{left:20,width:52,aspectRatio:1,borderRadius:40,alignItems: 'center',alignContent:'center',justifyContent:'center',backgroundColor:'white'}} >
@@ -109,8 +141,9 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
       </View>
       ) : ( */}
         <View>
-          <Text style={{fontSize:30, fontWeight:'600'}}>Enter OTP</Text>
-          <Text>An 6 Digit Code has been send to</Text>
+          <Text style={{fontSize:42, fontWeight:'600'}}>Enter OTP</Text>
+          <Text style={{fontSize:18}}>An 6 Digit Code has been send to</Text>
+          <Text style={{fontSize:18}}>{registerData.email}</Text>
         <View style={{flexDirection:'row',gap:12}}>
         <View style={{flexDirection:'row',gap:8}}>
           <View style={{height:50,width:38,borderRadius: 10,backgroundColor:'gray',alignContent:'center',alignItems:'center',justifyContent:'space-between'}}>
@@ -250,11 +283,24 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
         </View>
       </View>
 
-          <TouchableOpacity onPress={handleVerify} style={{width:80}}>
-            <Text style={{fontSize:22}}>Vertify</Text>
-          </TouchableOpacity>
+          
       </View>
-      
+      <View style={{flexDirection:'column',alignContent:'center',alignItems:'center',justifyContent:'space-between',gap:32}}>
+      <TouchableOpacity onPress={handleVerify} style={{top:28,width:120,height:42,borderRadius:22,backgroundColor:'#ACE1AF',justifyContent:'center',alignItems:'center'}}>
+          <Text style={{fontSize:18,color:'white'}}>Vertify</Text>
+      </TouchableOpacity>
+      <View style={{top:12,flexDirection:'row',alignContent:'center',alignItems:'center',justifyContent:'space-between',gap:12}}>
+      <Text style={{fontSize:14,color:'gray'}}>Didn't receive the email ?</Text>
+        <TouchableOpacity onPress={handlePress} disabled={disabled} style={{justifyContent:'center',alignItems:'center'}}>
+            <Text style={{fontSize:18,color:'#B2D3C2'}}>Click to resend</Text>
+        </TouchableOpacity>
+      </View>
+      {disabled && (
+        <Text>
+          Please wait for {Math.floor(timer / 60)}:{timer % 60 < 10 ? `0${timer % 60}` : timer % 60} 
+        </Text>
+      )}
+      </View>
       {/* )
     } */}
   </View>
