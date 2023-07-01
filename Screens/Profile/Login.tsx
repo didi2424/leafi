@@ -10,7 +10,7 @@ type Props = {
 
 const Login = ({ onScreenChange }: Props) => {
     const [password, onChangePassword] = useState('');
-    const [username, onChangeUsername] = useState('');
+    const [email, onChangeEmail] = useState('');
     const [isTextInputVisibleLogin, setIsTextInputVisibleLogin] = useState(false);
     const [selectedLoginButton, setLoginButton] = useState(1);
     const [isMovedLogin, setIsMovedLogin] = useState(false);
@@ -19,6 +19,11 @@ const Login = ({ onScreenChange }: Props) => {
     const handleViewPress = () => {
         Keyboard.dismiss();
     }
+    
+    const [secureTextEntry, setSecureTextEntry] = useState(true);
+    const togglePasswordVisibility = () => {
+        setSecureTextEntry(!secureTextEntry);
+        };
     const animatedStyleLogin = {
         transform: [{ translateY: moveAnimLogin }],
     };
@@ -35,10 +40,10 @@ const Login = ({ onScreenChange }: Props) => {
    
     const handleLogin = () => {
         const payload = {
-            username,
+            email,
             password,
         };
-        console.log(username,password)
+        console.log(email,password)
         api.post('/login', payload)
             .then(response => {
             console.log(response.data);
@@ -133,24 +138,32 @@ const Login = ({ onScreenChange }: Props) => {
                 gap:12,
                 backgroundColor:'#0000'}}>
 
-            <View style={{width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
+            <View style={{width:220,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
             <TextInput
-                style={{left:10,width:170,height:42}}
-                onChangeText={onChangeUsername}
-                placeholder="Username"
+                style={{left:10,width:220,height:42}}
+                onChangeText={onChangeEmail}
+                placeholder="email"
                 autoFocus={true}
                 placeholderTextColor="#999999"
             />
             </View>
-            <View style={{width:180,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
-            <TextInput
-                style={{left:10,width:170,height:42}}
-                onChangeText={onChangePassword}
-                placeholder="Password" 
-                placeholderTextColor="#999999"
-            />
-            </View>
-            <TouchableOpacity style={{width:180,height:22,left:12,alignItems:'flex-start',alignContent:'flex-start',justifyContent:'center'}}>
+            <View style={{paddingHorizontal:12,flexDirection:'row',width:220,height:42,backgroundColor:'#fff',borderRadius:16,alignContent:"center",justifyContent:'space-between',alignItems:'center',gap:12}}>
+                     <TextInput
+                        style={{width:120,height:38}}
+                        onChangeText={onChangePassword}
+                        placeholder="Password"
+                        placeholderTextColor="#999999"
+                        secureTextEntry={secureTextEntry} 
+                        />
+                    <TouchableOpacity style={{width:28,height:48,alignItems:'center',alignContent:"center",justifyContent:'center' }} onPress={togglePasswordVisibility}> 
+                    {secureTextEntry === true ? (
+                        <FontAwesomeIcon icon={icon({ name: 'eye' })} style={{ color: '#7db149ff',width:28,height:28 }}  /> 
+                        ) : (
+                        <FontAwesomeIcon icon={icon({ name: 'eye-slash' })} style={{ color: '#7db149ff',width:28,height:28 }}  /> 
+                        )}
+                        </TouchableOpacity>
+                     </View>
+            <TouchableOpacity style={{width:180,height:22,left:0,alignItems:'flex-start',alignContent:'flex-start',justifyContent:'center'}}>
                 <Text>Forgot Password?</Text>
             </TouchableOpacity>
             <View style={{bottom:-18,width:32,aspectRatio:1,backgroundColor:'#000',borderRadius:50,alignItems:'center',alignContent:"center",justifyContent:'center'}}>

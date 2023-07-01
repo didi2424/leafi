@@ -1,3 +1,5 @@
+sudo mysql -u root -p
+
 make a user for SQL:
 
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'password';
@@ -16,12 +18,15 @@ SHOW DATABASES;
 
 USE users;
 Describe Table :
-DESCRIBE users;
+DESCRIBE usersprofile;
 
 
 
 Delete database :
 DROP DATABASE database_name;
+
+delete table
+DROP TABLE usersprofile;
 
 REVOKE ALL PRIVILEGES ON *.* FROM 'username'@'hostname';
 

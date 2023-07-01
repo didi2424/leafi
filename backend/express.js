@@ -9,8 +9,7 @@ const authToken = '076f82f76d7efca6be59f6d85f9f2236';
 const twilio = require('twilio')
 const client = new twilio(accountSid, authToken)
 
-
-
+const otpRouter = require('./otp');
 
 const app = express()
 const port = 3000
@@ -32,7 +31,7 @@ app.post('/ver', async (req, res) => {
   });
   
   const mailOptions = {
-    from: 'theday21company@gmail.com',
+    from: 'shaylia469@gmail.com',
     to: email,
     subject: 'Subject',
     text: otp
@@ -49,13 +48,6 @@ app.post('/ver', async (req, res) => {
   });
   
 })
-
-
-
-
-
-
-
 
 
 const connection = mysql.createConnection({
@@ -101,12 +93,12 @@ app.get('/users/:id', (req, res) => {
 
 
 app.post('/users', (req, res) => {
-  const {username, email } = req.body;
+  const {email} = req.body;
   
-  const checkEmailQuery = 'SELECT COUNT(*) AS count FROM usersprofile WHERE email = ? OR username = ?';
-  connection.query(checkEmailQuery, [email, username], (err, results) => {
+  const checkEmailQuery = 'SELECT COUNT(*) AS count FROM usersprofile WHERE email = ? ';
+  connection.query(checkEmailQuery, email, (err, results) => {
     if (err) {
-      console.error('Error checking email and username:', err);
+      console.error('Error checking email:', err);
       res.status(500).json({ message: 'Error checking email and username' });
       return;
     }
@@ -116,13 +108,18 @@ app.post('/users', (req, res) => {
       res.status(409).json({ message: 'Email or username already exists' });
       return;
     }
+    if (count === 0) {
+      // Either email or username already exists, return an error
+      res.status(408).json({ message: 'user not found' });
+      return;
+    }
     // Hash the password
    
   });
 });
 
-app.post('/user/register',(req,res) => {
-  const { name, username, email, password } = req.body;
+app.post('/users/register', (req, res) => {
+  const { email, password } = req.body;
   const id = uuidv4(); // Generate a unique ID
   bcrypt.hash(password, 10, (err, hashedPassword) => {
     if (err) {
@@ -130,19 +127,36 @@ app.post('/user/register',(req,res) => {
       res.status(500).json({ message: 'Error hashing password' });
       return;
     }
-
-    const sql = 'INSERT INTO usersprofile (id, username, name, email, password) VALUES (?, ?, ?, ?, ?)';
-    connection.query(sql, [id, username, name, email, hashedPassword], (err, result) => {
+    const checkEmailQuery = 'SELECT COUNT(*) AS count FROM usersprofile WHERE email = ? ';
+    connection.query(checkEmailQuery, email, (err, results) => {
       if (err) {
-        // Handle error
-        console.error('Error creating user:', err);
-        res.status(500).json({ message: 'Error creating user' });
+        console.error('Error checking email:', err);
+        res.status(500).json({ message: 'Error checking email and username' });
         return;
       }
-      res.status(201).json({ message: 'User created' });
+      const count = results[0].count;
+      if (count > 0) {
+        // Either email or username already exists, return an error
+        res.status(409).json({ message: 'Email or username already exists' });
+        return;
+      }
+      if (count === 0) {
+        // Either email or username already exists, return an error
+        const sql = 'INSERT INTO usersprofile (id, email, password) VALUES (?, ?, ?)';
+        connection.query(sql, [id, email, hashedPassword], (err, result) => {
+          if (err) {
+            // Handle error
+            console.error('Error creating user:', err);
+            res.status(500).json({ message: 'Error creating user' });
+            return;
+          }
+          res.status(201).json({ message: 'User created' });
+          return;
+        });
+      }
     });
   });
-})
+});
 
 app.delete('/users/:id', (req, res) => {
   const userId = req.params.id;
@@ -164,45 +178,14 @@ app.delete('/users/:id', (req, res) => {
   });
 });
 
-app.post('/verify', async (req, res) => {
-
-  const { phonenumber, otp } = req.body;
-  client.messages
-  .create({
-      body: 'Your LeafOD OTP is ' + otp,
-      from: 'whatsapp:+14155238886',
-      to: 'whatsapp:'+phonenumber
-  })
-  .then(() => {
-    res.send('success: true');
-  })
-  .catch(err => {
-    console.log(err);
-    res.send('success: false');
-  });
-  
-})
 
 
-app.post('/wa', async (req, res) => {
-
- 
-client.on('qr', qr => {
-    qrcode.generate(qr, {small: true});
-});
-
-client.on('ready', () => {
-    console.log('Client is ready!');
-});
-
-client.initialize();
-})
 
 app.post('/login', (req, res) => {
   const secretKey = 'mysecretkeybaba'; 
-  const { username, password } = req.body;
-  const sql = 'SELECT * FROM usersprofile WHERE username = ?';
-  connection.query(sql, [username], (err, results) => {
+  const { email, password } = req.body;
+  const sql = 'SELECT * FROM usersprofile WHERE email = ?';
+  connection.query(sql, [email], (err, results) => {
     if (err) {
       // Handle database error
       res.status(500).json({ message: 'Error retrieving user' });
@@ -264,6 +247,63 @@ app.get('/protected', (req, res) => {
     // Token is valid, do something with the decoded data
     const name = decoded.name;
     res.status(200).json({ message: `Protected route accessed by user ${name}` });
+  });
+});
+
+
+app.use('/otp', otpRouter(connection));
+
+// Endpoint to register a user
+app.post('/register', (req, res) => {
+  const { email, password } = req.body;
+  const registered = 'no'
+  const id = uuidv4();
+  // Check if email already exists in the database
+  const checkQuery = 'SELECT * FROM usersprofile WHERE email = ?';
+  connection.query(checkQuery, [email], (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send('Failed to query database');
+    } else if (results.length > 0) {
+      res.status(409).send('Email already registered');
+    } else {
+      // Insert the user into the database
+      bcrypt.hash(password, 10, (err, hashedPassword) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send('Failed to hash password');
+          return;
+        }
+        const insertQuery = 'INSERT INTO usersprofile (id, email, password, registered) VALUES (?, ?, ?, ?)';
+        connection.query(insertQuery, [id, email, hashedPassword, registered], (err, results) => {
+          if (err) {
+            console.log(err);
+            res.status(500).send('Failed to insert user');
+          } else {
+            console.log('User registered');
+            res.status(200).send('User registered successfully');
+          }
+        });
+      });
+    }
+  });
+});
+
+app.get('/email', (req, res) => {
+  const { email } = req.body;
+
+  // Query the database to get the OTP for the email
+  const selectQuery = 'SELECT otp, expiration_time FROM otp WHERE email = ?';
+  connection.query(selectQuery, [email], (err, results) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send('Failed to query database');
+    } else if (results.length === 0) {
+      res.status(404).send('OTP not found');
+    } else {
+      const { otp, expiration_time } = results[0];
+      res.status(200).json({ otp, expiration_time });
+    }
   });
 });
 

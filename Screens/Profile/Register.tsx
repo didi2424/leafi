@@ -1,75 +1,97 @@
 import { Alert, Animated, StyleSheet, Text, TextInput, TouchableOpacity, Keyboard,View,TouchableWithoutFeedback } from 'react-native'
 import React, { useContext, useRef, useState } from 'react'
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
-import Vertify from './Vertify';
 import api from '../../api';
+
 type Props = {
     onScreenChange: (screenNumber: number) => void;
     onRegisterData: (data: any) => void;
   };
 
 const Register = ({ onScreenChange, onRegisterData  }: Props) => {
-    const [namefirst, onChangeNameFirst] = useState('');
-    const [namelast, onChangeNameLast] = useState('');
     const [email, onChangeEmail] = useState('');
     const [password, onChangePassword] = useState('');
-    const [username, onChangeUsername] = useState('');
 
     const [fillEmail, setFillEmail] = useState(false);
     const [fillEmailEmpty, setFillEmailEmpty] = useState(false);
+    const [emailHasRegistered, setEmailHasRegisterd] = useState(false)
+
+    const [fillPassword, setFillPassword] = useState(false);
+    const [fillPasswordEmpty, setFillPasswordEmpty] = useState(false);
+
 
     const handleViewPress = () => {
         Keyboard.dismiss();
     }
-
+   
     const handleRegisters = () => {
         const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-
-        if (email === '') {
-            setFillEmailEmpty(true)
-            if (!emailPattern.test(email)) {
-                // setFillEmailEmpty(false)
-                // setFillEmail(true)
-            }
-            else {
-                
-            }
-            return;
-            }
-        const name = namefirst + ' ' + namelast
+        const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
         const payload = {
-            name,
-            username,
             email,
-            password,
+            password
         };
 
-        api.post('/users', payload)
-            .then(response => {
-            console.log(response.data);
-            // onScreenChange(3)
-            })
-            .catch(error => {
-            if (error.response && error.response.status === 409) {
-                Alert.alert('Error', 'Username is already registered.');
-            } else {
-                console.error(error);
+        if (email === '') {
+            setFillEmailEmpty(true);
+            setFillEmail(false);
+        } else if (!emailPattern.test(email)) {
+            setFillEmailEmpty(false);
+            setFillEmail(true);
+        } else if (emailPattern.test(email)) {
+            setFillEmailEmpty(false);
+            setFillEmail(false);
+            } 
+        if (password === '') {
+            setFillPasswordEmpty(true);
+            setFillPassword(false);
+        } else if (!passwordPattern.test(password)) {
+            setFillPasswordEmpty(false);
+            setFillPassword(true);
+        } else if (passwordPattern.test(password)) {
+            setFillPasswordEmpty(false);
+            setFillPassword(false);
+        } 
+        if (emailPattern.test(email) && passwordPattern.test(password)) {
+            setFillEmailEmpty(false);
+            setFillEmail(false);
+            api.post('/register', payload)
+                .then(response => {
+                console.log(response.data);
+                if (response.status === 200)
+                setEmailHasRegisterd(false)
 
-            }
-            });
-     
-     const registerData = {
-        username,
-        email,
-        namelast,
-        namefirst,
-        password
-      };
-  
+                const payload2 = {
+                    email
+                }
 
-      onRegisterData(registerData);
+                api.post('/otp/send', payload2)
+                    .then(response => {
+                        if (response.status === 200)
+                        console.log('otp send')
+                    })
+
+
+                const registerData = {
+                        email,
+                        password,
+                      };
+                    onRegisterData(registerData);
+
+                
+                })
+                
+                .catch(error => {
+                if (error.response && error.response.status === 409) {
+                    console.log('email registered')
+                    setEmailHasRegisterd(true)
+                } 
+               
+                });
+            return
+        }
+            
       };
 
     const [isMoved, setIsMoved] = useState(false);
@@ -132,7 +154,11 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
         startAnimation();
         setIsTextInputVisible(false)
         setRegisterButton(1);
-        handleViewPress()
+        handleViewPress();
+        setFillEmail(false);
+        setFillEmailEmpty(false);
+        setFillPassword(false)
+        setFillPasswordEmpty(false)
         
     }
 
@@ -183,42 +209,48 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
                     onChangeText={onChangeEmail}
                     placeholder="Email"
                     placeholderTextColor="#999999"
+                    autoCapitalize='none'
                     />
                 </View>
                 {fillEmailEmpty && (
-                    <Text style={{top:5}}>You must fill this</Text>
-                    )}
+                    <Text style={{ top: 5 }}>You must fill this</Text>
+                        )}
                 {fillEmail && (
-                    <Text style={{top:5}}>Email pattern failed</Text>
-                    )}
-
-                
+                    <Text style={{ top: 5 }}>Email pattern failed</Text>
+                )}
+                {emailHasRegistered && (
+                    <Text style={{ top: 5 }}>Email has register!</Text>
+                )}
                 </View>
               
-                    
+                <View style={{justifyContent:'flex-start',width:220}}>
                 <View style={{paddingHorizontal:12,flexDirection:'row',width:220,height:42,backgroundColor:'#fff',borderRadius:16,alignContent:"center",justifyContent:'space-between',alignItems:'center',gap:12}}>
                      <TextInput
-                    style={{width:120,height:38}}
-                    onChangeText={onChangePassword}
-                    placeholder="Password"
-                    placeholderTextColor="#999999"
-                    secureTextEntry={secureTextEntry} 
-                    />
+                        style={{width:120,height:38}}
+                        onChangeText={onChangePassword}
+                        placeholder="Password"
+                        placeholderTextColor="#999999"
+                        secureTextEntry={secureTextEntry} 
+                        />
                     <TouchableOpacity style={{width:28,height:48,alignItems:'center',alignContent:"center",justifyContent:'center' }} onPress={togglePasswordVisibility}> 
                     {secureTextEntry === true ? (
                         <FontAwesomeIcon icon={icon({ name: 'eye' })} style={{ color: '#7db149ff',width:28,height:28 }}  /> 
                         ) : (
-
-
                         <FontAwesomeIcon icon={icon({ name: 'eye-slash' })} style={{ color: '#7db149ff',width:28,height:28 }}  /> 
                         )}
                         </TouchableOpacity>
-
-                      
                      </View>
-                    
 
-                     <View style={{top:8,width:32,aspectRatio:1,backgroundColor:'#000',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
+                    <View style={{marginHorizontal:2}}>
+                     {fillPasswordEmpty && (
+                        <Text style={{ top: 5 }}>You must fill this</Text>
+                        )}
+                        {fillPassword && (
+                        <Text style={{ top: 5 }}>At least 6 characters, with 1 capital letter and 1 symbol</Text>
+                        )}
+                    </View>
+                    </View>
+                    <View style={{top:12,width:32,aspectRatio:1,backgroundColor:'#000',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
                         <TouchableOpacity onPress={handleHideForm} > 
                         <FontAwesomeIcon icon={icon({ name: 'xmark' })} style={{ color: '#7db149ff',width:32,height:32 }}  /> 
                         </TouchableOpacity>
