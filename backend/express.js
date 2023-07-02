@@ -4,10 +4,10 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
-const accountSid = 'AC21b4bf2cf3d2947cf96167abe72069f1'
-const authToken = '076f82f76d7efca6be59f6d85f9f2236';
-const twilio = require('twilio')
-const client = new twilio(accountSid, authToken)
+
+
+const loginRouter = require('./login')
+
 
 const otpRouter = require('./otp');
 
@@ -252,6 +252,7 @@ app.get('/protected', (req, res) => {
 
 
 app.use('/otp', otpRouter(connection));
+app.use('/hasregistered', loginRouter(connection));
 
 // Endpoint to register a user
 app.post('/register', (req, res) => {
@@ -293,7 +294,7 @@ app.get('/email', (req, res) => {
   const { email } = req.body;
 
   // Query the database to get the OTP for the email
-  const selectQuery = 'SELECT otp, expiration_time FROM otp WHERE email = ?';
+  const selectQuery = 'SELECT otp, request_count,expiration_time, reset_time FROM otp WHERE email = ?';
   connection.query(selectQuery, [email], (err, results) => {
     if (err) {
       console.log(err);
@@ -301,8 +302,8 @@ app.get('/email', (req, res) => {
     } else if (results.length === 0) {
       res.status(404).send('OTP not found');
     } else {
-      const { otp, expiration_time } = results[0];
-      res.status(200).json({ otp, expiration_time });
+      const { otp, expiration_time,request_count,reset_time } = results[0];
+      res.status(200).json({ otp, expiration_time,request_count,reset_time });
     }
   });
 });

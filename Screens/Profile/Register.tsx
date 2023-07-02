@@ -71,8 +71,6 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
                         if (response.status === 200)
                         console.log('otp send')
                     })
-
-
                 const registerData = {
                         email,
                         password,

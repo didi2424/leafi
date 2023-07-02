@@ -58,42 +58,57 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
           setTimer((prevTimer) => prevTimer - 1);
         }, 1000);
       }
-
+    
       return () => {
         clearInterval(interval);
       };
-      }, [disabled]);
-      
-      useEffect(() => {
-        if (timer <= 0) {
-          setDisabled(false);
-          setTimer(120); // Set timer to 2 minutes (120 seconds)
-        }
-      }, [timer]);
-      
-      const formatTime = (time: number) => {
-        const minutes = Math.floor(time / 60);
-        const seconds = time % 60;
-        return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
-      };
+    }, [disabled]);
+    
+    useEffect(() => {
+      if (timer <= 0) {
+        setDisabled(false);
+        setTimer(0);
+        
+      }
+    }, [timer]);
+    
+    const formatTime = (time: number) => {
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
+      return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+    };
+    
       
     const resendOTP = () => {
-      setCount((prevCount) => prevCount + 1);
       const email = registerData.email
       const payload2 = {
         email
       }
-      api.post('/otp/send', payload2)
-      .then(response => {
-          if (response.status === 200)
-          console.log('otp send')
-      })
 
-      if (count >= 1) {
-        setDisabled(true);
-        setCount(0);
-        setTimer(120); // Reset timer to 2 minutes (120 seconds)
-      }
+      api.post('/otp/send', payload2)
+          .then(response => {
+            if (response.status === 200) {
+              console.log('OTP sent');
+            }
+          })
+          .catch(error => {
+            if (error.response && error.response.status === 403) {
+              const resetTime = error.response.data.reset_time;
+              console.log('OTP request limit exceeded. Please wait for the reset time.');
+              console.log(`Reset Time: ${resetTime}`);
+              const currentTime = Math.floor(Date.now() / 1000);
+              const resetTimestamp = Math.floor(new Date(resetTime).getTime() / 1000);
+              const timeInSeconds = resetTimestamp - currentTime + 45;
+              setTimer(timeInSeconds);
+              setDisabled(true);
+              setInvailedOTP(false)
+            } else {
+              console.error('Error:', error);
+            }
+          });
+
+
+
       };
   return (
     <View style={{justifyContent:'space-between',top:12}}>
@@ -256,13 +271,13 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
           <TouchableOpacity disabled={disabled} onPress={handleVerify} style={{width:120,height:42,borderRadius:22,backgroundColor:'#ACE1AF',justifyContent:'center',alignItems:'center'}}>
               <Text style={{fontSize:18,color:'white'}}>Vertify</Text>
           </TouchableOpacity>
-      <View>
+      <View >
         {infailedOTP && (
-        <Text>Invalid OTP</Text>
+        <Text>Invalid or Experied OTP</Text>
         )}
         {disabled && (
-        <Text>
-          Please wait for {formatTime(timer)}
+        <Text numberOfLines={2}>
+          OTP request limit exceeded Please wait for {formatTime(timer)}
         </Text>
       )}
       </View>

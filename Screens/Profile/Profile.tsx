@@ -5,6 +5,7 @@ import React, { useState,useRef,useEffect } from 'react';
 import Register from "./Register";
 import Login from "./Login";
 import Vertify from "./Vertify";
+import UserProfile from "./UserProfile";
 
 type RegistrationData = {
     // Specify the properties and their types for registration data
@@ -15,7 +16,7 @@ type RegistrationData = {
 
   
 const Profile = () => {
-    const [selectedScreen, setSelectedScreen] = useState(1);
+    const [selectedScreen, setSelectedScreen] = useState(0);
     const [registerData, setRegisterData] = useState<RegistrationData | null>(null);
     const handleViewPress = () => {
         Keyboard.dismiss();
@@ -34,10 +35,12 @@ const Profile = () => {
         <SafeAreaView   style={{flex:1}}>
         <TouchableWithoutFeedback onPress={handleViewPress}>
             
-        {selectedScreen === 1 ? (
+        {selectedScreen === 0 ? (
+            <UserProfile /> 
+        ) : selectedScreen === 1 ? (
             <Register onScreenChange={handleScreenChange} onRegisterData={handleRegisterData} />
             ) : selectedScreen === 2 ? (
-            <Login onScreenChange={handleScreenChange} />
+            <Login onScreenChange={handleScreenChange} onRegisterData={handleRegisterData} />
             ) : selectedScreen === 3 ? (
             <Vertify registerData={registerData} onScreenChange={handleScreenChange} />
             ) : null}

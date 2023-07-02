@@ -22,9 +22,12 @@ const token = req.headers.authorization;
 ALTER TABLE users ADD created TIMESTAMP NOT NULL DEFAULT NOW();
 ALTER TABLE users ADD username VARCHAR(255) NOT NULL;
 
+ALTER TABLE otp ADD reset_time VARCHAR(255) NOT NULL;
+
 ALTER TABLE usersprofile ALTER COLUMN registered VARCHAR(20) NOT NULL;
 
 
+ALTER TABLE otp MODIFY reset_time TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL 5 MINUTE);
 
 unique uuid
 

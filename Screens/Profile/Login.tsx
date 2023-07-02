@@ -6,9 +6,10 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import api from '../../api';
 type Props = {
     onScreenChange: (screenNumber: number) => void;
+    onRegisterData: (data: any) => void;
   };
 
-const Login = ({ onScreenChange }: Props) => {
+const Login = ({ onScreenChange, onRegisterData }: Props) => {
     const [password, onChangePassword] = useState('');
     const [email, onChangeEmail] = useState('');
     const [isTextInputVisibleLogin, setIsTextInputVisibleLogin] = useState(false);
@@ -43,15 +44,22 @@ const Login = ({ onScreenChange }: Props) => {
             email,
             password,
         };
+        const registerData = {
+            email,
+          };
         console.log(email,password)
-        api.post('/login', payload)
+        api.post('/hasregistered/login', payload)
             .then(response => {
             console.log(response.data);
             })
             .catch(error => {
             if (error.response && error.response.status === 401) {
-                Alert.alert('Error', 'Username or Password cannot be found');
-            } else {
+                Alert.alert('Error', 'email or Password cannot be found');
+            } else if (error.response && error.response.status === 402) {
+                Alert.alert('Error', 'Account Found but not registered');
+                onRegisterData(registerData);
+            } 
+            else {
                 console.error(error);
             }
             });
@@ -79,7 +87,6 @@ const Login = ({ onScreenChange }: Props) => {
             setTimeout(() => {
                 onScreenChange(1)
                 }, 2000);
-
         };
 
         const handleButtonRegisterButton = () => {
