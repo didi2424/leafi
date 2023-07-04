@@ -1,21 +1,19 @@
-import { Text, View, ScrollView,Alert, Button,TouchableOpacity,Animated,Keyboard,TouchableWithoutFeedback } from "react-native";
-import { SafeAreaView,TextInput } from "react-native";
-import React, { useState,useRef,useEffect } from 'react';
+import { Keyboard,TouchableWithoutFeedback } from "react-native";
+import { SafeAreaView } from "react-native";
+import React, { useState} from 'react';
 
-import Register from "./Register";
-import Login from "./Login";
-import Vertify from "./Vertify";
-import UserProfile from "./UserProfile";
+import Register from "../Screens/Profile/Register";
+import Login from "../Screens/Profile/Login";
+import Vertify from "../Screens/Profile/Vertify";
+import UserProfile from "../Screens/Profile/UserProfile";
 
 type RegistrationData = {
-    // Specify the properties and their types for registration data
     name: string;
     email: string;
-    // Add other necessary properties
   };
 
   
-const Profile = () => {
+const ProfileNavigator = () => {
     const [selectedScreen, setSelectedScreen] = useState(0);
     const [registerData, setRegisterData] = useState<RegistrationData | null>(null);
     const handleViewPress = () => {
@@ -24,11 +22,9 @@ const Profile = () => {
         const handleScreenChange = (screenNumber: number) => {
             setSelectedScreen(screenNumber);
           };
-
-
           const handleRegisterData = (data: RegistrationData) => {
             setRegisterData(data);
-            setSelectedScreen(3); // Switch to the Verify screen after receiving the data
+            setSelectedScreen(3);
           };
 
     return (
@@ -51,4 +47,4 @@ const Profile = () => {
      
 } 
 
-export default Profile;
+export default ProfileNavigator;

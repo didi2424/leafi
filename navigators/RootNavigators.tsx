@@ -1,8 +1,8 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import {createNativeStackNavigator} from "@react-navigation/native-stack"
-import Home from '../Screens/Home'
-import Profile from '../Screens/Profile/Profile'
+
+import ProfileNavigator from './ProfileNavigator'
 
 import { NavigatorScreenParams } from '@react-navigation/native'
 import TabNavigators, { TabsStackParamList } from './TabNavigators'
@@ -22,7 +22,7 @@ const RootNavigators = () => {
         name="TabStack"
         component={TabNavigators}
         options={{headerShown: false}} />
-        <RootStack.Screen name="Profile" component={Profile} />
+        <RootStack.Screen name="Profile" component={ProfileNavigator} />
     </RootStack.Navigator>
   )
 }

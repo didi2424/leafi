@@ -5,11 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 import Home from '../Screens/Home'
-import Profile from '../Screens/Profile/Profile'
+import ProfileNavigator from './ProfileNavigator'
 import Camera from '../Screens/Camera'
 import Smartpot from '../Screens/Smartpot';
-
-
 
 export type TabsStackParamList = {
     Home: undefined
@@ -17,10 +15,7 @@ export type TabsStackParamList = {
     Image: undefined
     History: undefined
     Profile: undefined
-   
 }
-
-
 
 const TabStack = createBottomTabNavigator<TabsStackParamList>()
 
@@ -200,7 +195,7 @@ const TabNavigators = () => {
             />
             <TabStack.Screen
             name='Profile' 
-            component={Profile}
+            component={ProfileNavigator}
             options={{
                 headerShown: false,
                 tabBarIcon: ({focused}) => (
