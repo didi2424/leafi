@@ -78,8 +78,25 @@ const Smartpot = () => {
 
       </View>
 
-      <View style={{flex:2,backgroundColor:'pink',alignContent:'center',alignItems:'center',justifyContent:'center'}}>
+      <View style={{flex:2,alignContent:'center',alignItems:'center',justifyContent:'center'}}>
+        
       <Circlecustom /> 
+      <View style={{top:-260}}>
+        <Text style={{fontSize:40}}>
+          Monstera
+        </Text>
+      </View>
+      
+      <View style={{top:-250,left:-128,flexDirection:'column'}}>
+        <Text style={{fontSize:40}}>
+          50 Days
+        </Text>
+        <Text style={{fontSize:22,fontWeight:'200'}}>
+          Age
+        </Text>
+      </View>
+
+
       </View>
 
       <View style={{flex:2,backgroundColor:'yellow'}}>
