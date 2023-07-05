@@ -15,90 +15,63 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 const CircleCustom = (props: SvgProps) => {
-  const BACKGROUND_COLOR = '#444B6F';
-  const BACKGROUND_STROKE_COLOR = '#303858';
-  const STROKE_COLOR = '#A6E1FA';
-  const CIRCLE_LENGTH = 760; // 2PI*R
-  const R = CIRCLE_LENGTH /  - Math.PI/2;
- 
-  const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-  const progress = useSharedValue(0);
-  const { width, height } = Dimensions.get('window');
-  // Animated properties for the Circle component
-  const animatedProps = useAnimatedProps(() => ({
-    strokeDashoffset: CIRCLE_LENGTH * (1 - progress.value),
-  }));
 
-  // Function to start the animation
-  const startAnimation = () => {
-    progress.value = withTiming(1, { duration: 2000 });
-  };
   
 
-  const markerRendering1 = `<svg width="230" height="129" viewBox="0 0 230 129" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M216 115C216 88.2134 205.359 62.5237 186.418 43.5825C167.477 24.6413 141.787 14.0003 115 14.0003C88.2132 14.0003 62.5235 24.6413 43.5823 43.5825C24.6411 62.5237 14.0001 88.2134 14.0001 115" stroke="#DBDBDB" stroke-width="28" stroke-linecap="round"/>
-  <g filter="url(#filter0_i_12_259)">
-  <path d="M216 115C216 88.2134 205.359 62.5237 186.418 43.5825C167.477 24.6413 141.787 14.0003 115 14.0003C88.2132 14.0003 62.5235 24.6413 43.5823 43.5825C24.6411 62.5237 14.0001 88.2134 14.0001 115" stroke="#EBEBEB" stroke-width="22" stroke-linecap="round"/>
-  </g>
-  <path d="M14 115C14 98.4731 18.0557 82.1984 25.8114 67.604C33.5671 53.0096 44.7858 40.5415 58.4832 31.2933C72.1806 22.0452 87.9383 16.2997 104.374 14.5608C120.809 12.822 137.42 15.143 152.75 21.3201" stroke="url(#paint0_linear_12_259)" stroke-width="13" stroke-linecap="round"/>
-  <path d="M169.192 29.7698C184.319 39.3882 196.614 52.8596 204.814 68.8005" stroke="url(#paint1_linear_12_259)" stroke-width="13" stroke-linecap="round"/>
-  <path d="M211.143 84.0562C214.37 94.0813 216.008 104.549 216 115.081" stroke="url(#paint2_linear_12_259)" stroke-width="13" stroke-linecap="round"/>
-  <defs>
-  <filter id="filter0_i_12_259" x="3.00006" y="3.00028" width="224" height="127" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-  <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-  <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-  <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-  <feOffset dy="4"/>
-  <feGaussianBlur stdDeviation="2"/>
-  <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-  <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-  <feBlend mode="normal" in2="shape" result="effect1_innerShadow_12_259"/>
-  </filter>
-  <linearGradient id="paint0_linear_12_259" x1="37" y1="105.5" x2="145.5" y2="58.0003" gradientUnits="userSpaceOnUse">
-  <stop stop-color="#40DFE9"/>
-  <stop offset="1" stop-color="#FFD540"/>
-  </linearGradient>
-  <linearGradient id="paint1_linear_12_259" x1="163" y1="36.0003" x2="198.5" y2="73.5003" gradientUnits="userSpaceOnUse">
-  <stop stop-color="#FFD540"/>
-  <stop offset="1" stop-color="#FF5C28"/>
-  </linearGradient>
-  <linearGradient id="paint2_linear_12_259" x1="203" y1="84.0003" x2="213.572" y2="115.081" gradientUnits="userSpaceOnUse">
-  <stop stop-color="#FF5C28"/>
-  <stop offset="1" stop-color="#E61C00"/>
-  </linearGradient>
-  </defs>
-  </svg>
+  const markerRendering1 = `<svg width="255" height="142" viewBox="0 0 255 142" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M240.136 127.57C240.136 97.674 228.26 69.0022 207.12 47.8623C185.98 26.7225 157.308 14.8463 127.412 14.8463C97.5156 14.8463 68.8438 26.7225 47.704 47.8623C26.5642 69.0022 14.6879 97.6739 14.6879 127.57" stroke="#79B400" stroke-width="28" stroke-linecap="round"/>
+<path d="M240.136 127.57C240.136 97.674 228.26 69.0022 207.12 47.8623C185.98 26.7225 157.308 14.8463 127.412 14.8463C97.5156 14.8463 68.8438 26.7225 47.704 47.8623C26.5642 69.0022 14.6879 97.6739 14.6879 127.57" stroke="#A2F100" stroke-width="22" stroke-linecap="round"/>
+<path d="M14.6878 127.57C14.6878 109.125 19.2144 90.9608 27.8703 74.6723C36.5263 58.3838 49.0472 44.4683 64.3346 34.1466C79.622 23.825 97.2088 17.4126 115.552 15.4719C133.895 13.5312 152.434 16.1216 169.543 23.0158" stroke="url(#paint0_linear_12_259)" stroke-width="14" stroke-linecap="round"/>
+<path d="M187.894 32.4463C204.778 43.1812 218.5 58.2163 227.651 76.0076" stroke="url(#paint1_linear_12_259)" stroke-width="14" stroke-linecap="round"/>
+<path d="M234.715 93.0342C238.316 104.223 240.145 115.906 240.136 127.66" stroke="url(#paint2_linear_12_259)" stroke-width="14" stroke-linecap="round"/>
+<defs>
+<linearGradient id="paint0_linear_12_259" x1="40.3576" y1="116.967" x2="161.452" y2="63.9537" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F2FEDA"/>
+<stop offset="1" stop-color="#E0FDA4"/>
+</linearGradient>
+<linearGradient id="paint1_linear_12_259" x1="180.984" y1="39.4" x2="220.604" y2="81.2529" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E0FDA4"/>
+<stop offset="1" stop-color="#CDFC6D"/>
+</linearGradient>
+<linearGradient id="paint2_linear_12_259" x1="225.627" y1="92.9718" x2="237.425" y2="127.66" gradientUnits="userSpaceOnUse">
+<stop stop-color="#CDFC6D"/>
+<stop offset="1" stop-color="#C1FC49"/>
+</linearGradient>
+</defs>
+</svg>
+
   
   `;
   
-  
-
-
-  const markerRenderingTest = `<svg width="301" height="301" viewBox="0 0 301 301" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="49.0007" cy="152.035" r="10" transform="rotate(-0.02 49.0007 152.035)" fill="#B076D3"/>
-  </svg>
-  `;
-
-  const minimalTemp = `<svg width="301" height="301" viewBox="0 0 301 301" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="49.0024" cy="150.002" r="7" transform="rotate(-0.02 49.0024 150.002)" fill="#6DFF9F"/>
+  const current = `<svg width="335" height="336" viewBox="0 0 335 336" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="55.0031" cy="168.003" r="9" transform="rotate(-0.02 55.0031 168.003)" fill="#619100"/>
   </svg>
   
   `;
 
-  const HighTemp = `<svg width="301" height="301" viewBox="0 0 301 301" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="49.0024" cy="150.002" r="7" transform="rotate(-0.02 49.0024 150.002)" fill="#6DFF"/>
+  const MinimalTemp = `<svg width="335" height="336" viewBox="0 0 335 336" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="55.0024" cy="168.002" r="7" transform="rotate(-0.02 55.0024 168.002)" fill="#81C000"/>
   </svg>
+  
+  
+  `;
+
+  const HighTemp = `<svg width="335" height="336" viewBox="0 0 335 336" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="55.0024" cy="168.002" r="7" transform="rotate(-0.02 55.0024 168.002)" fill="#81C000"/>
+  </svg>
+  
   `;
   let textTemp = '';
-  const temperature = 19
-  const maxTemp = 30 
+  const temperature = 27
   const minTemp = 20 
+  const maxTemp = 30 
+  
 
     let rotationDegree;
-
+    let rotationDegreemin;
+    let rotationDegreemax;
 
     if (temperature <= minTemp ) {
       textTemp = 'Too Cold';
@@ -122,9 +95,6 @@ const CircleCustom = (props: SvgProps) => {
       rotationDegree = 0; // Default rotation degree
     }
 
-
-    let rotationDegreemin;
-
     if (minTemp >= 0 && minTemp <= 26) {
       // Map temperature range 0-26 to rotation degree range 0-112
       rotationDegreemin = (minTemp / 26) * 112;
@@ -141,8 +111,6 @@ const CircleCustom = (props: SvgProps) => {
 
      // The temperature value within the range of 0 to 45
 
-    let rotationDegreemax;
-
     if (maxTemp >= 0 && maxTemp <= 26) {
       // Map temperature range 0-26 to rotation degree range 0-112
       rotationDegreemax = (maxTemp / 26) * 112;
@@ -157,33 +125,34 @@ const CircleCustom = (props: SvgProps) => {
       rotationDegreemax = 0; // Default rotation degree
     }
   return (
-    <View style={{ alignItems: 'center', justifyContent: 'center',top:340}}>
-    
-    <View style={{top:100}} >
-      <SvgXml xml={markerRendering1} />
-    </View>
-      <View style={{ transform: [{ rotate: `${rotationDegree}deg` }], alignItems: 'center', justifyContent: 'center',top:-63}}>
-        <SvgXml xml={markerRenderingTest} />
-      </View>
 
-      <View style={{top:-260,flexDirection:'column',gap:2,alignContent:'center',justifyContent:'center',alignItems:'center'}}>
-      <Text  style={{fontSize:12,fontWeight:'400'}}>Current</Text>
+<View style={{ position: 'relative', width: 200, height: 200}}>
+  <View style={{ position: 'absolute', top: '50%', left: '50%', marginTop: -60, marginLeft: -60, width: 120, height: 120,alignContent:'center',justifyContent:'center',alignItems:'center' }}>
+    <SvgXml xml={markerRendering1} />
+  </View>
+  <View style={{ position: 'absolute', top: '50%', left: '50%', marginTop: 21, marginLeft: -35, width: 70, height: 70,alignContent:'center',justifyContent:'center',alignItems:'center' }}>
+    <SvgXml style={{ transform: [{ rotate: `${rotationDegree}deg` }]}}xml={current} />
+  </View>
+  <View style={{ position: 'absolute', top: '50%', left: '50%', marginTop: 21, marginLeft: -35, width: 70, height: 70,alignContent:'center',justifyContent:'center',alignItems:'center' }}>
+    <SvgXml style={{ transform: [{ rotate: `${rotationDegreemin}deg` }]}}xml={MinimalTemp} />
+  </View>
+  <View style={{ position: 'absolute', top: '50%', left: '50%', marginTop: 21, marginLeft: -35, width: 70, height: 70,alignContent:'center',justifyContent:'center',alignItems:'center' }}>
+    <SvgXml style={{ transform: [{ rotate: `${rotationDegreemax}deg` }]}}xml={HighTemp} />
+  </View>
+
+
+  <View style={{flexDirection:'column',gap:1,alignContent:'center',justifyContent:'center',alignItems:'center',marginTop:100}}>
+      
       <View style={{flexDirection:'row'}}>
-      <Text style={{fontSize:28,fontWeight:'600'}}>{temperature}</Text>
-      <Text  style={{fontSize:22,fontWeight:'400'}}>°C</Text>
+      <Text style={{fontSize:50,fontWeight:'600',color:'#86ba1c'}}>{temperature}</Text>
+      <Text  style={{fontSize:22,fontWeight:'500',color:'#9ac93a'}}>°C</Text>
       </View>
       
-      <Text  style={{fontSize:12,fontWeight:'400'}}>{textTemp}</Text>
+      <Text  style={{fontSize:18,fontWeight:'400',color:'#9ac93a'}}>{textTemp}</Text>
     </View>
+</View>
 
-      <View style={{ transform: [{ rotate: `${rotationDegreemin}deg` }], alignItems: 'center', justifyContent: 'center',top:-420}}>
-        <SvgXml xml={minimalTemp} />
-      </View>
-      <View style={{ transform: [{ rotate: `${rotationDegreemax}deg` }], alignItems: 'center', justifyContent: 'center',top:-722}}>
-        <SvgXml xml={HighTemp} />
-      </View>
- 
-  </View>
+
    
     
   );

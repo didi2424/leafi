@@ -27,13 +27,10 @@ const Smartpot = () => {
       <View style={{  alignItems: 'center', gap: 8,alignContent:'space-between',height:30}}>
         <Text style={{ fontSize:18, color: selectedOption === item ? '#86ba1c' : '#4c4c4c', fontWeight: selectedOption === item ? '600' : '200'}}>{item}</Text>
         {selectedOption === item && (
-          <View style={{ width: 32, height: 5, borderRadius: 3, backgroundColor: '#9ac93a',shadowColor: "#e0fda4",
-        shadowOffset: {
-          width: 0,
-          height: 3,
-        },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65 }} />
+          <View style={{ width: 32, height: 5, borderRadius: 3, backgroundColor: '#9ac93a',shadowColor: '#619100',
+          shadowOffset: { width: 1, height: 1 },
+          shadowOpacity:  0.4,
+          shadowRadius: 1 }} />
         )}
       </View>
     </TouchableOpacity>
@@ -61,6 +58,7 @@ const Smartpot = () => {
       renderItem={renderItem}
       keyExtractor={(item) => item}
       contentContainerStyle={{ flexDirection: 'row', alignItems: 'center',justifyContent:'space-between',gap:12}}
+      
       />
 
       {/* <View style={{ flexDirection: 'row', alignItems: 'center', gap: 20,justifyContent:'space-between' }}>
@@ -78,10 +76,10 @@ const Smartpot = () => {
 
       </View>
 
-      <View style={{flex:2,alignContent:'center',alignItems:'center',justifyContent:'center'}}>
+      <View style={{flex:1.4,alignContent:'center',alignItems:'center',justifyContent:'center',backgroundColor:'#C1FC49',borderBottomRightRadius:90}}>
         
       <Circlecustom /> 
-      <View style={{top:-260}}>
+      {/* <View style={{top:-260}}>
         <Text style={{fontSize:40}}>
           Monstera
         </Text>
@@ -94,12 +92,12 @@ const Smartpot = () => {
         <Text style={{fontSize:22,fontWeight:'200'}}>
           Age
         </Text>
-      </View>
+      </View> */}
 
 
       </View>
 
-      <View style={{flex:2,backgroundColor:'yellow'}}>
+      <View style={{flex:2.6}}>
 
       </View>
       
