@@ -76,7 +76,7 @@ const Smartpot = () => {
 
       </View>
 
-      <View style={{flex:1.4,alignContent:'center',alignItems:'center',justifyContent:'center',backgroundColor:'#C1FC49',borderBottomRightRadius:90}}>
+      <View style={{flex:2.2,alignContent:'center',alignItems:'center',justifyContent:'center',backgroundColor:'#C1FC49',borderBottomLeftRadius:90}}>
         
       <Circlecustom /> 
       {/* <View style={{top:-260}}>
@@ -97,8 +97,16 @@ const Smartpot = () => {
 
       </View>
 
-      <View style={{flex:2.6}}>
+      <View style={{flex:2.4,shadowColor: "#fff",
+        shadowOffset: {
+          width: 0,
+          height: 8,
+        },
+        shadowOpacity: 0.48,
+        shadowRadius: 14,}}>
 
+
+      <View></View>
       </View>
       
     </View>
