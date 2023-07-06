@@ -16,7 +16,10 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-const CircleCustom = (props: SvgProps) => {
+const CircleTemp = (props: SvgProps) => {
+
+  const BACKGROUD_MAIN = ''
+  
 
   
 
@@ -129,47 +132,33 @@ const CircleCustom = (props: SvgProps) => {
     }
 
     if (temperature >= 0 && temperature <= 26) {
-      // Map temperature range 0-26 to rotation degree range 0-112
       rotationDegree = (temperature / 26) * 118;
     } else if (temperature > 26 && temperature <= 36) {
-      // Map temperature range 27-36 to rotation degree range 124-152
       rotationDegree = ((temperature - 26) / 10) * (198 - 126) + 126;
     } else if (temperature > 36 && temperature <= 45) {
-      // Map temperature range 37-45 to rotation degree range 164-180
       rotationDegree = ((temperature - 36) / 9) * (270 - 198) + 198;
     } else {
-      // Handle temperatures outside the specified range
-      rotationDegree = 0; // Default rotation degree
+      rotationDegree = 0;
     }
 
     if (minTemp >= 0 && minTemp <= 26) {
-      // Map temperature range 0-26 to rotation degree range 0-112
       rotationDegreemin = (minTemp / 26) * 118;
     } else if (minTemp > 26 && minTemp <= 36) {
-      // Map temperature range 27-36 to rotation degree range 124-152
       rotationDegreemin = ((minTemp - 26) / 10) * (198 - 126) + 126;
     } else if (minTemp > 36 && minTemp <= 45) {
-      // Map temperature range 37-45 to rotation degree range 164-180
       rotationDegreemin = ((minTemp - 36) / 9) * (270 - 198) + 198;
-    } else {
-      // Handle temperatures outside the specified range
-      rotationDegreemin = 0; // Default rotation degree
+    } else { 
+      rotationDegreemin = 0;
     }
 
-     // The temperature value within the range of 0 to 45
-
     if (maxTemp >= 0 && maxTemp <= 26) {
-      // Map temperature range 0-26 to rotation degree range 0-112
       rotationDegreemax = (maxTemp / 26) * 118;
     } else if (maxTemp > 26 && maxTemp <= 36) {
-      // Map temperature range 27-36 to rotation degree range 124-152
       rotationDegreemax = ((maxTemp - 26) / 10) * (198 - 126) + 126;
     } else if (maxTemp > 36 && maxTemp <= 45) {
-      // Map temperature range 37-45 to rotation degree range 164-180
       rotationDegreemax = ((maxTemp - 36) / 9) * (270 - 198) + 198;
     } else {
-      // Handle temperatures outside the specified range
-      rotationDegreemax = 0; // Default rotation degree
+      rotationDegreemax = 0; 
     }
   return (
 
@@ -195,28 +184,40 @@ const CircleCustom = (props: SvgProps) => {
       <Text  style={{fontSize:22,fontWeight:'500',color:'#9ac93a'}}>°C</Text>
       </View>
       
-      <Text  style={{fontSize:18,fontWeight:'400',color:'#9ac93a'}}>{textTemp}</Text>
+      <Text  style={{fontSize:18,fontWeight:'600',color:'#9ac93a'}}>{textTemp}</Text>
     </View>
 
     <View style={{flexDirection:'column',gap:1,justifyContent:'center',alignItems:'flex-start',marginTop:-5,left:120}}>
-      
       <View style={{flexDirection:'row'}}>
       <Text style={{fontSize:50,fontWeight:'600',color:'#86ba1c'}}>Monstera</Text>
-      
       </View>
-      
       <Text  style={{fontSize:18,fontWeight:'400',color:'#9ac93a'}}>Araceae</Text>
     </View>
 
+    
+
     <View style={{flexDirection:'column',gap:1,justifyContent:'center',alignItems:'flex-start',marginTop:-270,left:-90}}>
-      
       <View style={{flexDirection:'row'}}>
-      <Text style={{fontSize:25,fontWeight:'600',color:'#86ba1c'}}>50 Days</Text>
-      
+      <Text style={{fontSize:25,fontWeight:'600',color:'#86ba1c'}}>50 days</Text>
       </View>
-      
       <Text  style={{fontSize:12,fontWeight:'400',color:'#9ac93a'}}>Age</Text>
     </View>
+
+    <View style={{flexDirection:'column',gap:6,justifyContent:'center',alignItems:'flex-start',top:-36,right:-210}}>
+      <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',gap:8}}>
+        <View style={{backgroundColor:'#619100',width:14,aspectRatio:1,borderRadius:20}}></View>
+        <Text style={{fontSize:14,fontWeight:'600',color:'#86ba1c'}}>Current</Text>
+      </View>
+      <View style={{left:2,flexDirection:'row',justifyContent:'center',alignItems:'center',gap:10}}>
+        <View style={{backgroundColor:'#91D600',width:10,aspectRatio:1,borderRadius:20}}></View>
+        <Text style={{fontSize:14,fontWeight:'600',color:'#86ba1c'}}>R Minimal</Text>
+      </View>
+      <View style={{left:2,flexDirection:'row',justifyContent:'center',alignItems:'center',gap:10}}>
+        <View style={{backgroundColor:'#2a6f29',width:10,aspectRatio:1,borderRadius:20}}></View>
+        <Text style={{fontSize:14,fontWeight:'600',color:'#86ba1c'}}>R Maximal</Text>
+      </View>
+    </View>
+   
 </View>
 
 
@@ -225,4 +226,4 @@ const CircleCustom = (props: SvgProps) => {
   );
 };
 
-export default CircleCustom;
+export default CircleTemp;

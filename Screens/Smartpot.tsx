@@ -4,7 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { ScrollView } from 'react-native-gesture-handler';
-import Circlecustom from './Circlecustom';
+import CircleTemp from './CircleTemp';
+import { red } from 'react-native-redash';
 
 const Smartpot = () => {
   const [selectedOption, setSelectedOption] = useState('');
@@ -13,11 +14,9 @@ const Smartpot = () => {
     'Leafi Wood Walnut',
     'Leafi Marble Liquid',
     'Leafi Marble White',
-    'Leafi Marble Mozaic',
-
+    'Leafi Marble Mozaic'
   ];
 
-  
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
     console.log(option)
@@ -60,54 +59,51 @@ const Smartpot = () => {
       contentContainerStyle={{ flexDirection: 'row', alignItems: 'center',justifyContent:'space-between',gap:12}}
       
       />
-
-      {/* <View style={{ flexDirection: 'row', alignItems: 'center', gap: 20,justifyContent:'space-between' }}>
-      {['Leafi Wood Walnut', 'Leafi Marble Liquid', 'Leafi Marble White'].map((option) => (
-        <TouchableOpacity key={option} onPress={() => handleOptionSelect(option)} style={{flexDirection:'row'}}>
-          <View style={{ flexDirection: 'column', alignItems: 'center', gap: 5 }}>
-            <Text style={{ color: selectedOption === option ? '#9ac93a' : 'black' }}>{option}</Text>
-            {selectedOption === option && (
-              <View style={{ width: 32, height: 5, borderRadius: 3, backgroundColor: '#9ac93a' }} />
-            )}
-          </View>
-        </TouchableOpacity>
-      ))}
-    </View> */}
-
+      </View>
+      <View style={{flex:2,alignContent:'center',alignItems:'center',justifyContent:'center',backgroundColor:'#C1FC49',borderBottomLeftRadius:90}}>  
+      <CircleTemp /> 
       </View>
 
-      <View style={{flex:2.2,alignContent:'center',alignItems:'center',justifyContent:'center',backgroundColor:'#C1FC49',borderBottomLeftRadius:90}}>
+      <View style={{flex:2.4}}>
+      <View style={{top:20,height:140,marginHorizontal:24,justifyContent:'center', alignItems:'center',flexDirection:'row',backgroundColor:'white',borderRadius:20,gap:18}}>
+        <View style={{width:100, height:120, backgroundColor:'#C1FC49',paddingLeft:4,paddingTop:4,borderRadius:8}}> 
+        <View style={{flexDirection:'row', gap:8}}>
+
         
-      <Circlecustom /> 
-      {/* <View style={{top:-260}}>
-        <Text style={{fontSize:40}}>
-          Monstera
-        </Text>
+          <View style={{width:38, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
+          <FontAwesomeIcon icon={icon({ name: 'sun' })} size={22} color='#C1FC49'  /> 
+          </View>
+            <Text style={{fontSize:16,fontWeight:'800',color:'#86ba1c'}}>Light</Text>
+          </View>
+          <View style={{alignContent:'center', alignItems:'center',top:4}}>
+            <Text style={{fontSize:30,fontWeight:'600',color:'#86ba1c'}}>80%</Text>
+          </View>
+
+          <View style={{alignContent:'center', alignItems:'center',top:1}}>
+            <Text style={{fontSize:12,color:'#86ba1c'}}>R 20-50%</Text>
+          </View>
+
+        </View>
+
+        <View style={{width:100, height:120, backgroundColor:'#C1FC49',paddingLeft:4,paddingTop:4,borderRadius:8}}> 
+        <View style={{width:42, aspectRatio:1,borderRadius:20, backgroundColor:'#2a6f29',justifyContent:'center',alignItems:'center'}}>
+        <FontAwesomeIcon icon={icon({ name: 'droplet' })} size={22} color='#C1FC49' /> 
+        </View>
+          <Text>Soil Moisture</Text>
+        </View>
+
+        <View style={{width:100, height:120, backgroundColor:'#C1FC49',paddingLeft:4,paddingTop:4,borderRadius:8}}> 
+        <View style={{width:42, aspectRatio:1, borderRadius:20,backgroundColor:'#2a6f29',justifyContent:'center',alignItems:'center'}}>
+        <FontAwesomeIcon icon={icon({ name: 'cloud' })} size={22} color='#C1FC49' /> 
+          </View>
+          
+            <Text>Humidity</Text>
+          </View>
+          
+        </View>
+
       </View>
-      
-      <View style={{top:-250,left:-128,flexDirection:'column'}}>
-        <Text style={{fontSize:40}}>
-          50 Days
-        </Text>
-        <Text style={{fontSize:22,fontWeight:'200'}}>
-          Age
-        </Text>
-      </View> */}
-
-
-      </View>
-
-      <View style={{flex:2.4,shadowColor: "#fff",
-        shadowOffset: {
-          width: 0,
-          height: 8,
-        },
-        shadowOpacity: 0.48,
-        shadowRadius: 14,}}>
-
-
-      <View></View>
-      </View>
+    
       
     </View>
   )
