@@ -6,7 +6,7 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { ScrollView } from 'react-native-gesture-handler';
 import CircleTemp from './CircleTemp';
 import { red } from 'react-native-redash';
-
+import { BlurView } from 'expo-blur';
 const Smartpot = () => {
   const [selectedOption, setSelectedOption] = useState('');
 
@@ -65,40 +65,64 @@ const Smartpot = () => {
       </View>
 
       <View style={{flex:2.4}}>
-      <View style={{top:20,height:140,marginHorizontal:24,justifyContent:'center', alignItems:'center',flexDirection:'row',backgroundColor:'white',borderRadius:20,gap:18}}>
-        <View style={{width:100, height:120, backgroundColor:'#C1FC49',paddingLeft:4,paddingTop:4,borderRadius:8}}> 
-        <View style={{flexDirection:'row', gap:8}}>
-
-        
-          <View style={{width:38, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
-          <FontAwesomeIcon icon={icon({ name: 'sun' })} size={22} color='#C1FC49'  /> 
-          </View>
-            <Text style={{fontSize:16,fontWeight:'800',color:'#86ba1c'}}>Light</Text>
-          </View>
-          <View style={{alignContent:'center', alignItems:'center',top:4}}>
-            <Text style={{fontSize:30,fontWeight:'600',color:'#86ba1c'}}>80%</Text>
-          </View>
-
-          <View style={{alignContent:'center', alignItems:'center',top:1}}>
-            <Text style={{fontSize:12,color:'#86ba1c'}}>R 20-50%</Text>
-          </View>
-
+      <View style={{top:20,height:140,marginHorizontal:24,justifyContent:'center', alignItems:'center',flexDirection:'row',borderRadius:20,gap:18}}>
+        <View style={{width:110, height:130, backgroundColor:'#C1FC49',paddingLeft:8,paddingTop:8,borderRadius:12}}> 
+          <View style={{flexDirection:'row', gap:8}}>
+          <View style={{width:30, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
+          <FontAwesomeIcon icon={icon({ name: 'sun' })} size={18} color='#C1FC49'  /> 
+            </View>
+              <Text style={{fontSize:16,fontWeight:'600',color:'#86ba1c'}}>Light</Text>
+            </View>
+              <View style={{alignContent:'center', alignItems:'center',top:4}}>
+                <Text style={{fontSize:38,fontWeight:'600',color:'#86ba1c'}}>50%</Text>
+              </View>
+              <View style={{alignContent:'center', alignItems:'center',top:1}}>
+                  <Text style={{fontSize:12,color:'#86ba1c'}}>R 20-70%</Text>
+              </View>
+              <View style={{alignContent:'center', alignItems:'center',top:8}}>
+               <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={18} color='#86ba1c'  /> 
+              </View>
+              
         </View>
 
-        <View style={{width:100, height:120, backgroundColor:'#C1FC49',paddingLeft:4,paddingTop:4,borderRadius:8}}> 
-        <View style={{width:42, aspectRatio:1,borderRadius:20, backgroundColor:'#2a6f29',justifyContent:'center',alignItems:'center'}}>
-        <FontAwesomeIcon icon={icon({ name: 'droplet' })} size={22} color='#C1FC49' /> 
-        </View>
-          <Text>Soil Moisture</Text>
+        <View style={{width:110, height:130, backgroundColor:'#C1FC49',paddingLeft:8,paddingTop:8,borderRadius:12}}> 
+          <View style={{flexDirection:'row', gap:4}}>
+          <View style={{width:30, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
+          <FontAwesomeIcon icon={icon({ name: 'droplet' })} size={18} color='#C1FC49'  /> 
+            </View>
+              <Text style={{width:56,fontSize:16,fontWeight:'600',color:'#86ba1c'}}>Soil Moisture</Text>
+            </View>
+              <View style={{alignContent:'center', alignItems:'center',top:4}}>
+                <Text style={{fontSize:38,fontWeight:'600',color:'#86ba1c'}}>66%</Text>
+              </View>
+              <View style={{alignContent:'center', alignItems:'center',top:1}}>
+                  <Text style={{fontSize:12,color:'#86ba1c'}}>R 20-70%</Text>
+              </View>
+              <View style={{alignContent:'center', alignItems:'center',top:8}}>
+               <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={18} color='#86ba1c'  /> 
+              </View>
+              
         </View>
 
-        <View style={{width:100, height:120, backgroundColor:'#C1FC49',paddingLeft:4,paddingTop:4,borderRadius:8}}> 
-        <View style={{width:42, aspectRatio:1, borderRadius:20,backgroundColor:'#2a6f29',justifyContent:'center',alignItems:'center'}}>
-        <FontAwesomeIcon icon={icon({ name: 'cloud' })} size={22} color='#C1FC49' /> 
-          </View>
-          
-            <Text>Humidity</Text>
-          </View>
+        <View style={{width:110, height:130, backgroundColor:'#C1FC49',paddingLeft:8,paddingTop:8,borderRadius:12}}> 
+          <View style={{flexDirection:'row', gap:4}}>
+          <View style={{width:30, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
+          <FontAwesomeIcon icon={icon({ name: 'cloud' })} size={18} color='#C1FC49'  /> 
+            </View>
+              <Text style={{ width:58,fontSize:16,fontWeight:'600',color:'#86ba1c'}}>Humidity
+              </Text>
+            </View>
+              <View style={{alignContent:'center', alignItems:'center',top:4}}>
+                <Text style={{fontSize:38,fontWeight:'600',color:'#86ba1c'}}>4 RH</Text>
+              </View>
+              <View style={{alignContent:'center', alignItems:'center',top:1}}>
+                  <Text style={{fontSize:12,color:'#86ba1c'}}>R 2-7 RH</Text>
+              </View>
+              <View style={{alignContent:'center', alignItems:'center',top:8}}>
+               <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={18} color='#86ba1c'  /> 
+              </View>
+              
+        </View>
           
         </View>
 

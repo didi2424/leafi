@@ -114,7 +114,7 @@ const CircleTemp = (props: SvgProps) => {
   </svg>
   `;
   let textTemp = '';
-  const temperature = 30
+  const temperature = 27.2
   const minTemp = 20
   const maxTemp = 31
   
