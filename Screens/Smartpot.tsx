@@ -76,7 +76,7 @@ const Smartpot = () => {
               <View style={{alignContent:'center', alignItems:'center',top:4}}>
                 <Text style={{fontSize:38,fontWeight:'600',color:'#86ba1c'}}>50%</Text>
               </View>
-              <View style={{alignContent:'center', alignItems:'center',top:1}}>
+              <View style={{alignContent:'center', alignItems:'center',height:20,width:80,justifyContent:'center',top:1, borderRadius: 20, backgroundColor:'white',}}>
                   <Text style={{fontSize:12,color:'#86ba1c'}}>R 20-70%</Text>
               </View>
               <View style={{alignContent:'center', alignItems:'center',top:8}}>
