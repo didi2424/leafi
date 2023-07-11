@@ -7,6 +7,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import CircleTemp from './CircleTemp';
 import { red } from 'react-native-redash';
 import { BlurView } from 'expo-blur';
+import CircleLight from './CircleLight';
+
 const Smartpot = () => {
   const [selectedOption, setSelectedOption] = useState('');
 
@@ -60,12 +62,15 @@ const Smartpot = () => {
       
       />
       </View>
-      <View style={{flex:2,alignContent:'center',alignItems:'center',justifyContent:'center',backgroundColor:'#C1FC49',borderBottomLeftRadius:90}}>  
-      <CircleTemp /> 
+      {/* <View style={{flex:2,alignContent:'center',alignItems:'center',justifyContent:'center',backgroundColor:'#C1FC49',borderBottomLeftRadius:90}}>  
+      <CircleLight /> 
+      </View> */}
+        <View style={{flex:2,alignContent:'center',alignItems:'center',justifyContent:'center',backgroundColor:'#C1FC49'}}>  
+      <CircleLight /> 
       </View>
 
       <View style={{flex:2.4}}>
-      <View style={{top:20,height:140,marginHorizontal:24,justifyContent:'center', alignItems:'center',flexDirection:'row',borderRadius:20,gap:18}}>
+      <View style={{top:20,height:150,marginHorizontal:24,justifyContent:'center', alignItems:'center',flexDirection:'row',borderRadius:20,gap:18}}>
         <View style={{width:110, height:130, backgroundColor:'#C1FC49',paddingLeft:8,paddingTop:8,borderRadius:12}}> 
           <View style={{flexDirection:'row', gap:8}}>
           <View style={{width:30, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
@@ -73,10 +78,10 @@ const Smartpot = () => {
             </View>
               <Text style={{fontSize:16,fontWeight:'600',color:'#86ba1c'}}>Light</Text>
             </View>
-              <View style={{alignContent:'center', alignItems:'center',top:4}}>
+              <View style={{alignContent:'center',top:4}}>
                 <Text style={{fontSize:38,fontWeight:'600',color:'#86ba1c'}}>50%</Text>
               </View>
-              <View style={{alignContent:'center', alignItems:'center',height:20,width:80,justifyContent:'center',top:1, borderRadius: 20, backgroundColor:'white',}}>
+              <View style={{alignContent:'center', alignItems:'center',height:20,width:60,justifyContent:'center',top:1, borderRadius: 20, backgroundColor:'white',}}>
                   <Text style={{fontSize:12,color:'#86ba1c'}}>R 20-70%</Text>
               </View>
               <View style={{alignContent:'center', alignItems:'center',top:8}}>
