@@ -11,8 +11,8 @@ const UserProfile = () => {
     { id: '2', name: 'Item 2',date: '2024-06-04T06:59:58.342Z',icon:'add-circle-sharp',action:'Add Smartpot',results:'Leafi Marble Liquid' },
     { id: '3', name: 'Item 3',date: '2024-06-04T05:20:58.342Z',icon:'add-circle-sharp',action:'Add Smartpot',results:'Leafi Wood Walnut' },
     { id: '4', name: 'Item 4',date: '2024-06-04T04:45:58.342Z',icon:'scan-circle',action:'Scan Plants',results:'Maranta : Fusarium Wilt',percen:'92%'},
-    { id: '5', name: 'Item 5',date: '2024-06-018T04:50:58.342Z',icon:'scan-circle',action:'Scan Plants',results:'Maranta : Powdery Mildew',percen:'82%'},
-    { id: '6', name: 'Item 6',date: '2024-07-022T16:50:58.342Z',icon:'scan-circle',action:'Scan Plants',results:'Monstera : Spider Mites',percen:'87%'},
+    { id: '5', name: 'Item 5',date: '2024-06-18T04:50:58.342Z',icon:'scan-circle',action:'Scan Plants',results:'Maranta : Powdery Mildew',percen:'82%'},
+    { id: '6', name: 'Item 6',date: '2024-07-22T16:50:58.342Z',icon:'scan-circle',action:'Scan Plants',results:'Monstera : Spider Mites',percen:'87%'},
     // Add more items as needed
   ];
   const reversedData = [...data].reverse();

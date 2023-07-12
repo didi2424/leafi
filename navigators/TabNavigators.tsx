@@ -8,6 +8,7 @@ import Home from '../Screens/Home'
 import ProfileNavigator from './ProfileNavigator'
 import Camera from '../Screens/Camera'
 import Smartpot from '../Screens/Smartpot';
+import SmartpotNavigator from './SmartpotNavigator';
 
 export type TabsStackParamList = {
     Home: undefined
@@ -76,7 +77,7 @@ const TabNavigators = () => {
             />
             <TabStack.Screen
             name='Smartpot'
-            component={Smartpot}
+            component={SmartpotNavigator}
             options={{
                 headerShown: false,
                 tabBarIcon: ({focused}) => (
@@ -85,7 +86,7 @@ const TabNavigators = () => {
                         height: 40,
                         width: 60,
                         top: '40%',
-                        borderRadius: 20,
+                        borderRadius:20,
                         justifyContent: 'center',
                         alignItems: 'center',
                         backgroundColor: focused ? '#B2D3C2' : 'transparent', 
