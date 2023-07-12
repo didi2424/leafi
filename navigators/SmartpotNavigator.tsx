@@ -76,8 +76,8 @@ const SmartpotNavigator = () => {
     return (
       <View style={{width:width/2.5,height:height/5,backgroundColor:CARD_BG,padding:10,borderRadius:20,margin:10}}>
           <View style={{justifyContent:'flex-end',alignItems:'flex-end'}}>
-            <TouchableOpacity style={{width:40,aspectRatio:1,borderRadius:20,backgroundColor:'red',justifyContent:'center',alignItems:'center'}}>
-              <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} size={30} color='blue'  /> 
+            <TouchableOpacity style={{width:40,aspectRatio:1,borderRadius:20,backgroundColor:'red',justifyContent:'center',alignItems:'center',transform:{rotate}}}>
+              <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} size={30} color='blue'   /> 
             </TouchableOpacity>
           </View>
           <View style={{justifyContent:'center',alignItems:'center',top:20}}>
