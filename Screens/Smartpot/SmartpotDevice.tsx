@@ -117,10 +117,10 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
       <View style={{flex:2.4}}>
         
       <View style={{top:20,height:150,marginHorizontal:24,justifyContent:'center', alignItems:'center',flexDirection:'row',borderRadius:20,gap:18}}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{paddingLeft: 16, paddingRight: 16}}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} >
 
-        <TouchableOpacity style={{width:110, height:130, backgroundColor:'#C1FC49',paddingLeft:8,paddingTop:8,borderRadius:12,marginLeft: 8, marginRight: 8,}} onPress={() => setSelectedScreen(0)}> 
-          <View style={{flexDirection:'row', gap:8}}>
+      <TouchableOpacity style={styles.cardContainer} onPress={() => setSelectedScreen(0)}> 
+          <View style={styles.cardHeadContainer}>
           <View style={{width:30, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
           <FontAwesomeIcon icon={icon({ name: 'temperature-half' })} size={18} color='#C1FC49'  /> 
             </View>
@@ -139,8 +139,8 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
         </TouchableOpacity>
         
         
-        <TouchableOpacity style={{width:110, height:130, backgroundColor:'#C1FC49',paddingLeft:8,paddingTop:8,borderRadius:12,marginLeft: 8, marginRight: 8}} onPress={() => setSelectedScreen(1)}> 
-          <View style={{flexDirection:'row', gap:8}}>
+        <TouchableOpacity style={styles.cardContainer} onPress={() => setSelectedScreen(1)}> 
+          <View style={styles.cardHeadContainer}>
           <View style={{width:30, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
           <FontAwesomeIcon icon={icon({ name: 'sun' })} size={18} color='#C1FC49'  /> 
             </View>
@@ -162,9 +162,9 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
           <View style={styles.cardHeadContainer}>
           <View style={{width:30, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
           <FontAwesomeIcon icon={icon({ name: 'droplet' })} size={18} color='#C1FC49'  /> 
-            </View>
-              <Text style={{width:56,fontSize:16,fontWeight:'600',color:'#86ba1c'}}>Soil Moisture</Text>
-            </View>
+              </View>
+                <Text style={{width:56,fontSize:16,fontWeight:'600',color:'#86ba1c'}}>Soil Moisture</Text>
+              </View>
               <View style={{alignContent:'center', alignItems:'center',top:4}}>
                 <Text style={{fontSize:38,fontWeight:'600',color:'#86ba1c'}}>{selectedData.soil} %</Text>
               </View>
@@ -211,15 +211,18 @@ export default SmartpotDevice
 
 
 const { width,height } = Dimensions.get("window");
+const BG_VIEW = "#C1FC49"
+const cardWidthPercentage = 26;
+const cardHeightPercentage = 16;
 const styles = StyleSheet.create({
   headStyle: {
     fontSize: 32,
     fontWeight: "600",
   },
   cardContainer: {
-    width: width/3.3,
-    height: 130,
-    backgroundColor: "#C1FC49",
+    width: width * (cardWidthPercentage / 100),
+    height: height * (cardHeightPercentage / 100),
+    backgroundColor: BG_VIEW,
     paddingLeft: 8,
     paddingTop: 8,
     borderRadius: 12,

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {View,Text} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {View,Text, Animated} from 'react-native';
 import { SvgXml } from "react-native-svg"
 
 interface CircleTempProps {
@@ -115,47 +115,80 @@ const CircleTemp: React.FC<CircleTempProps> = ({ temperature,kind,timeAdd }) => 
                     `;
 
 
-    let rotationDegree;
-    let rotationDegreemin;
-    let rotationDegreemax;
+    const rotationDegree = useRef(new Animated.Value(0)).current;
+    const rotationDegreemin = useRef(new Animated.Value(0)).current;
+    const rotationDegreemax = useRef(new Animated.Value(0)).current;
 
-    if (temperature <= minTemp ) {
-      textTemp = 'Too Cold';
-    } else if (temperature > minTemp && temperature <= maxTemp) {
-      textTemp = 'I like this ';
-    } else if (temperature > maxTemp) {
-      textTemp = 'to hot';
-    }
+    useEffect(() => {
+      // Calculate the rotation degrees based on minTemp and maxTemp
+      let degree = 0;
+      let degreeMin = 0;
+      let degreeMax = 0;
+      if (temperature >= 0 && temperature <= 26) {
+        degree = (temperature / 26) * 118;
+      } else if (temperature > 26 && temperature <= 36) {
+        degree = ((temperature - 26) / 10) * (198 - 126) + 126;
+      } else if (temperature > 36 && temperature <= 45) {
+        degree = ((temperature - 36) / 9) * (270 - 198) + 198;
+      }
+  
+  
+      if (minTemp >= 0 && minTemp <= 26) {
+        degreeMin = (minTemp / 26) * 118;
+      } else if (minTemp > 26 && minTemp <= 36) {
+        degreeMin = ((minTemp - 26) / 10) * (198 - 126) + 126;
+      } else if (minTemp > 36 && minTemp <= 45) {
+        degreeMin = ((minTemp - 36) / 9) * (270 - 198) + 198;
+      } else {
+        degreeMin = 0;
+      }
+  
+      if (maxTemp >= 0 && maxTemp <= 26) {
+        degreeMax = (maxTemp / 26) * 118;
+      } else if (maxTemp > 26 && maxTemp <= 36) {
+        degreeMax = ((maxTemp - 26) / 10) * (198 - 126) + 126;
+      } else if (maxTemp > 36 && maxTemp <= 45) {
+        degreeMax = ((maxTemp - 36) / 9) * (270 - 198) + 198;
+      } else {
+        degreeMax = 0;
+      }
+      if (temperature <= minTemp ) {
+        textTemp = 'Too Cold';
+      } else if (temperature > minTemp && temperature <= maxTemp) {
+        textTemp = 'I like this ';
+      } else if (temperature > maxTemp) {
+        textTemp = 'to hot';
+      }
+  
+      // Start the animations
+      Animated.parallel([
+        Animated.timing(rotationDegreemin, {
+          toValue: degreeMin,
+          duration: 2000, // Duration of the animation in milliseconds
+          useNativeDriver: true, // Add this for better performance
+        }),
+        Animated.timing(rotationDegreemax, {
+          toValue: degreeMax,
+          duration: 2000, // Duration of the animation in milliseconds
+          useNativeDriver: true, // Add this for better performance
+        }),
+        Animated.timing(rotationDegree, {
+          toValue: degree,
+          duration: 2000, // Duration of the animation in milliseconds
+          useNativeDriver: true, // Add this for better performance
+        }),
+      ]).start();
+    }, [minTemp, maxTemp,temperature]);
 
-    if (temperature >= 0 && temperature <= 26) {
-      rotationDegree = (temperature / 26) * 118;
-    } else if (temperature > 26 && temperature <= 36) {
-      rotationDegree = ((temperature - 26) / 10) * (198 - 126) + 126;
-    } else if (temperature > 36 && temperature <= 45) {
-      rotationDegree = ((temperature - 36) / 9) * (270 - 198) + 198;
-    } else {
-      rotationDegree = 0;
-    }
+    const count = useRef(new Animated.Value(0)).current;
+    useEffect(() => {
+      Animated.timing(count, {
+        toValue: 100, // Final count value
+        duration: 2000, // Duration of the animation in milliseconds
+        useNativeDriver: true, // Add this for better performance
+      }).start();
+    }, []);
 
-    if (minTemp >= 0 && minTemp <= 26) {
-      rotationDegreemin = (minTemp / 26) * 118;
-    } else if (minTemp > 26 && minTemp <= 36) {
-      rotationDegreemin = ((minTemp - 26) / 10) * (198 - 126) + 126;
-    } else if (minTemp > 36 && minTemp <= 45) {
-      rotationDegreemin = ((minTemp - 36) / 9) * (270 - 198) + 198;
-    } else { 
-      rotationDegreemin = 0;
-    }
-
-    if (maxTemp >= 0 && maxTemp <= 26) {
-      rotationDegreemax = (maxTemp / 26) * 118;
-    } else if (maxTemp > 26 && maxTemp <= 36) {
-      rotationDegreemax = ((maxTemp - 26) / 10) * (198 - 126) + 126;
-    } else if (maxTemp > 36 && maxTemp <= 45) {
-      rotationDegreemax = ((maxTemp - 36) / 9) * (270 - 198) + 198;
-    } else {
-      rotationDegreemax = 0; 
-    }
   return (
 
   <View style={{ position: 'relative', width: 200, height: 200}}>
@@ -163,13 +196,19 @@ const CircleTemp: React.FC<CircleTempProps> = ({ temperature,kind,timeAdd }) => 
       <SvgXml xml={markerRendering1} />
     </View>
     <View style={{ position: 'absolute', top: '50%', left: '50%', marginTop: -35, marginLeft: -35, width: 70, height: 70,alignContent:'center',justifyContent:'center',alignItems:'center' }}>
-      <SvgXml style={{ transform: [{ rotate: `${rotationDegree}deg` }]}}xml={current} />
+    <Animated.View style={{ transform: [{ rotate: rotationDegree.interpolate({ inputRange: [0, 360], outputRange: ['0deg', '360deg'] }) }] }}>
+        <SvgXml xml={current} />
+      </Animated.View>
     </View>
     <View style={{ position: 'absolute', top: '50%', left: '50%', marginTop: -35, marginLeft: -35, width: 70, height: 70,alignContent:'center',justifyContent:'center',alignItems:'center' }}>
-      <SvgXml style={{ transform: [{ rotate: `${rotationDegreemin}deg` }]}}xml={MinimalTemp} />
+    <Animated.View style={{ transform: [{ rotate: rotationDegreemin.interpolate({ inputRange: [0, 360], outputRange: ['0deg', '360deg'] }) }] }}>
+        <SvgXml xml={MinimalTemp} />
+      </Animated.View>
     </View>
     <View style={{ position: 'absolute', top: '50%', left: '50%', marginTop: -35, marginLeft: -35, width: 70, height: 70,alignContent:'center',justifyContent:'center',alignItems:'center' }}>
-      <SvgXml style={{ transform: [{ rotate: `${rotationDegreemax}deg` }]}}xml={HighTemp} />
+    <Animated.View style={{ transform: [{ rotate: rotationDegreemax.interpolate({ inputRange: [0, 360], outputRange: ['0deg', '360deg'] }) }] }}>
+        <SvgXml xml={HighTemp} />
+      </Animated.View>
     </View>
 
 
@@ -177,6 +216,14 @@ const CircleTemp: React.FC<CircleTempProps> = ({ temperature,kind,timeAdd }) => 
         
         <View style={{flexDirection:'row'}}>
         <Text style={{fontSize:50,fontWeight:'600',color:'#86ba1c'}}>{temperature}</Text>
+        <Animated.View>
+        <Animated.Text style={{ fontSize: 20 }}>
+          {count.interpolate({
+            inputRange: [0, 100],
+            outputRange: [0, 100],
+          })}
+        </Animated.Text>
+      </Animated.View>
         <Text  style={{fontSize:22,fontWeight:'500',color:'#9ac93a'}}>°C</Text>
         </View>
         
