@@ -1,7 +1,7 @@
 import { View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Svg, { Circle, Defs, G, Marker, Path,Line,Text } from 'react-native-svg'
-import { polarToCartesian } from "./Helpers/geometry";
+import { polarToCartesian } from "../Helpers/geometry";
 
 const CircleLight = () => {
   const HOURS_BG = '#86ba1c'
@@ -10,8 +10,8 @@ const CircleLight = () => {
   const CLOCK_BG = '#234d20'
   const lightPercentage = 10; 
 
-  const radius = 150-16
-  const center = 150
+  const radius = 130-16
+  const center = 130
   const minutes = 75
   const hours = 12
   
@@ -98,31 +98,27 @@ const CircleLight = () => {
     center,
     radius,
     currentTime.getSeconds() * 6
-  )
+  );
 
   const minuteCircle = polarToCartesian(
     center,
     center,
     radius,
     (currentTime.getMinutes() + currentTime.getSeconds() / 60) * 6
-  )
+  );
   const hoursCircle = polarToCartesian(
     center,
     center,
     radius,
     ((currentHour % 12) + currentTime.getMinutes() / 60) * 30
-  )
+  );
   const hoursLineStart = polarToCartesian(center, center, radius - 140, ((currentHour % 12) + currentTime.getMinutes() / 60) * 30);
   const hoursLineEnd = polarToCartesian(center, center, radius-60, ((currentHour % 12) + currentTime.getMinutes() / 60) * 30);
-
   const minutesLineStart = polarToCartesian(center, center, radius - 140,(currentTime.getMinutes() + currentTime.getSeconds() / 60) * 6);
   const minutesLineEnd = polarToCartesian(center, center, radius - 50, (currentTime.getMinutes() + currentTime.getSeconds() / 60) * 6);
-
   const secondLineStart = polarToCartesian(center, center, radius - 140,currentTime.getSeconds() * 6)
   const secondLineEnd = polarToCartesian(center, center, radius -42,currentTime.getSeconds() * 6)
-
- // Example light percentage value (can be dynamically assigned)
-  const maxLightPercentage = 100; // Maximum light percentage
+  const maxLightPercentage = 100; 
   const numberOfCircles = Math.floor((lightPercentage / maxLightPercentage) * 20) + 8;
 
   const circleArray = [];
@@ -146,8 +142,7 @@ const CircleLight = () => {
   }
 
     return (
-      
-        <Svg height={300} width={300}>
+        <Svg height={260} width={260} style={{top:-20}}>
           <G>
           <G>
             <Circle
@@ -159,8 +154,7 @@ const CircleLight = () => {
             {circleArray}
           </G>
           {minuteSticks}
-              {hourSticks}
-          
+          {hourSticks}
           <Circle
             fill={SECOND_BG}
             cx={secondCircle.x }
@@ -179,36 +173,35 @@ const CircleLight = () => {
             cy={hoursCircle.y}
             r={12}
           />
-      <Line
-          stroke={HOURS_BG}
-          strokeWidth={12}
-          x1={hoursLineStart.x}
-          y1={hoursLineStart.y}
-          x2={hoursLineEnd.x}
-          y2={hoursLineEnd.y}
-          strokeLinecap="round"
-        />
-        <Line
-          stroke={MINUTE_BG}
-          strokeWidth={8}
-          x1={minutesLineStart.x}
-          y1={minutesLineStart.y}
-          x2={minutesLineEnd.x}
-          y2={minutesLineEnd.y}
-          strokeLinecap="round"
-        />
-        <Line
-          stroke="#9ac93a"
-          strokeWidth={4}
-          x1={secondLineStart.x}
-          y1={secondLineStart.y}
-          x2={secondLineEnd.x}
-          y2={secondLineEnd.y}
-          strokeLinecap="round"
-          
-        />
-        </G>
-          
+          <Line
+              stroke={HOURS_BG}
+              strokeWidth={12}
+              x1={hoursLineStart.x}
+              y1={hoursLineStart.y}
+              x2={hoursLineEnd.x}
+              y2={hoursLineEnd.y}
+              strokeLinecap="round"
+            />
+            <Line
+              stroke={MINUTE_BG}
+              strokeWidth={8}
+              x1={minutesLineStart.x}
+              y1={minutesLineStart.y}
+              x2={minutesLineEnd.x}
+              y2={minutesLineEnd.y}
+              strokeLinecap="round"
+            />
+            <Line
+              stroke="#9ac93a"
+              strokeWidth={4}
+              x1={secondLineStart.x}
+              y1={secondLineStart.y}
+              x2={secondLineEnd.x}
+              y2={secondLineEnd.y}
+              strokeLinecap="round"
+              
+            />
+            </G>
           </Svg>
           
     );

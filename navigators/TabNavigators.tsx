@@ -7,7 +7,7 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Home from '../Screens/Home'
 import ProfileNavigator from './ProfileNavigator'
 import Camera from '../Screens/Camera'
-import Smartpot from '../Screens/Smartpot';
+import Smartpot from '../Screens/SmartpotDevice';
 import SmartpotNavigator from './SmartpotNavigator';
 
 export type TabsStackParamList = {
