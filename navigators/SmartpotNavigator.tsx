@@ -22,13 +22,13 @@ const SmartpotNavigator = () => {
   
   
   return (
-    <SafeAreaView style={{flex:1}}>
+    <View>
       {selectedScreen === 0 ? (
             <Smartpot onScreenChange={handleScreenChange} onDeviceData={handleDeviceData}/> 
         ) : selectedScreen === 1 ? (
             <SmartpotDevice onScreenChange={handleScreenChange} deviceData={deviceData}  />
         ): null}
-      </SafeAreaView >
+      </View>
 
   )
 }

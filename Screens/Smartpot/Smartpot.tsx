@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, FlatList,StyleSheet, TouchableOpacity, SafeAreaView, ScrollView  } from 'react-native'
+import { View, Text, Dimensions, FlatList,StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, Platform  } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -78,28 +78,24 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
   const renderItem =  ({ item }: { item: any }) => {
     const deviceCount = getDeviceCountByRoom(item.room);
     const handlePress = () => {
-     
       onScreenChange(1)
       onDeviceData(item)
-
     };
     return (
-      <View style={{width:width/2.5,height:height/5,backgroundColor:BG,padding:10,borderRadius:20,margin:10}}>
-
-          <View style={{justifyContent:'flex-end',alignItems:'flex-end'}}>
-            <TouchableOpacity style={{width:32,aspectRatio:1,borderRadius:20, backgroundColor:CIRCLE_BG,justifyContent:'center',alignItems:'center',transform: [{ rotate: '-45deg' }]}} onPress={handlePress}>
-              <FontAwesomeIcon icon={icon({ name: 'arrow-right' })} size={22} color={ICO_BG}/> 
+      
+      <View style={styles.cardContainer}>
+          <View style={{alignItems:'flex-end'}}>
+            <TouchableOpacity style={styles.buttonUpRight} onPress={handlePress}>
+              <FontAwesomeIcon icon={icon({ name: 'arrow-right' })} size={(Dimensions.get('window').width > 400 ? 22 : 16 )} color={ICO_BG}/> 
             </TouchableOpacity>
           </View>
-
-          <View style={{justifyContent:'center',alignItems:'center',top:20}}>
+          <View style={{justifyContent:'center',alignItems:'center'}}>
             <Text style={styles.textStyle600}>{item.room}</Text> 
-            <Text>{deviceCount} Device</Text>
+            <Text style={styles.textStyle400}>{deviceCount} Device</Text>
           </View>
-
-          <View style={{alignItems:'flex-start',top:50}}>
-            <TouchableOpacity style={{width:32,aspectRatio:1,borderRadius:20, backgroundColor:CIRCLE_BG,justifyContent:'center',alignItems:'center'}}>
-              <FontAwesomeIcon icon={icon({ name: 'plus' })} size={22} color={ICO_BG}/> 
+          <View style={{alignItems:'flex-start'}}>
+            <TouchableOpacity style={styles.buttonAddPlus}>
+              <FontAwesomeIcon icon={icon({ name: 'plus' })} size={(Dimensions.get('window').width > 400 ? 22 : 16 )} color={ICO_BG}/> 
             </TouchableOpacity>
           </View>
       </View>
@@ -107,20 +103,20 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
   };
   
   return (
-
-    <View style={{gap:24,top:-50}}>
+    
+    <View >
         <View style={{width:width,height:height}}>
         
-        <View style={{flex:0.8,alignContent:'center',backgroundColor:BG,gap:22}}>
-            <View style={{top:50,justifyContent:'center',alignItems:'center'}}>
+        <View style={styles.headContainerStyle}>
+            <View style={{justifyContent:'center',alignItems:'center'}}>
                 <Text style={styles.headTextStyle}>Smartpot</Text>
             </View>
-            <View style={{top:30,marginHorizontal:24}}>
+            <View style={{marginHorizontal:24}}>
                 <Text style={styles.textStyle600}>{greeting}</Text>
                 <Text style={styles.textStyle400}>username</Text>
             </View>
-            <View style={{justifyContent:'space-between',alignItems:'flex-end',marginHorizontal:24,top:20}}>
-                <Text>{currentTime}</Text>
+            <View style={{justifyContent:'space-between',alignItems:'flex-end',marginHorizontal:24}}>
+                <Text style={styles.textStyle300}>{currentTime}</Text>
             </View>
         </View>
 
@@ -138,6 +134,7 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
         </View>
     </View>
     </View>
+   
 
   )
 }
@@ -145,36 +142,78 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
 export default Smartpot
 const { width,height } = Dimensions.get("window");
 
+
 const styles = StyleSheet.create({
+  headContainerStyle: {
+    flex: 0.6,
+    alignContent: "center",
+    ...Platform.select({
+      ios: {
+        backgroundColor: BG,
+        paddingTop: 40,
+      },
+      android: {
+        backgroundColor: BG,
+        paddingTop: 20,
+      }
+    })
+  },
   headTextStyle: {
-    fontSize:32,
-    fontWeight:'600',
+    fontSize: width > 400 ? 32 : 22,
+    fontWeight: "600",
   },
   textStyle600: {
-    fontSize:28,
-    fontWeight:'500'
+    fontSize: width > 400 ? 24 : 16,
+    fontWeight: "600",
   },
   textStyle400: {
-    fontSize:20,
-    fontWeight:'200'
+    fontSize: width > 400 ? 16 : 12,
+    fontWeight: "200",
   },
   textStyle300: {
-    fontSize:18,
-    fontWeight:'400'
+    fontSize: width > 400 ? 16 : 12,
+    fontWeight: "200",
   },
   listContainer: {
-    height:height/1,
-    padding:20,
-    
+    height: height / 1,
+    padding: 20,
   },
   itemContainer: {
     padding: 10,
     backgroundColor: CARD_BG,
-    borderRadius:height/45,
-    flex:3,
+    borderRadius: height / 45,
+    flex: 3,
     margin: 10,
-    justifyContent:'center',
-    alignItems:'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
-
+  cardContainer: {
+    width: width > 400 ? width / 2.9 : width / 3.2,
+    fontWeight: "400",
+    height: width > 400 ? width / 2.6 : width / 2.8,
+    justifyContent: "center",
+    alignContent: "center",
+    backgroundColor: BG,
+    padding: 10,
+    borderRadius: 20,
+    gap: width > 400 ? 20 : 8,
+    margin: width > 400 ? 10 : 8,
+  },
+  buttonUpRight: {
+    width: width > 400 ? 32 : 22,
+    aspectRatio: 1,
+    borderRadius: 20,
+    backgroundColor: CIRCLE_BG,
+    justifyContent: "center",
+    alignItems: "center",
+    transform: [{ rotate: "-45deg" }],
+  },
+  buttonAddPlus: {
+    width: width > 400 ? 32 : 22,
+    aspectRatio: 1,
+    borderRadius: 20,
+    backgroundColor: CIRCLE_BG,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

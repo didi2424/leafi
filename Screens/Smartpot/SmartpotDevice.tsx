@@ -78,9 +78,10 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
     </TouchableOpacity>
   );
   
-
+  const { width,height } = Dimensions.get("window");
   return (
-    <View style={{flex:1, borderBottomRightRadius:22, borderBottomLeftRadius:22,top:-50}} >
+    <View style={{height:height,width:width}}>
+    <View style={{flex:1, borderBottomRightRadius:22, borderBottomLeftRadius:22}} >
       <View style={{flex:0.6,backgroundColor:'#C1FC49'}}>
         <View style={{top:50,flexDirection:'row',justifyContent:'space-between',marginHorizontal:24,alignItems:'center'}}>
           <TouchableOpacity onPress={handlePress}>
@@ -124,13 +125,13 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
           <View style={{width:30, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
           <FontAwesomeIcon icon={icon({ name: 'temperature-half' })} size={18} color='#C1FC49'  /> 
             </View>
-              <Text style={{fontSize:16,fontWeight:'600',color:'#86ba1c'}}>Temp</Text>
+              <Text style={styles.textStyle300}>Temp</Text>
             </View>
               <View style={{alignContent:'center',top:4}}>
-                <Text style={{fontSize:38,fontWeight:'600',color:'#86ba1c'}}>{selectedData.temp} C</Text>
+                <Text style={styles.textStyle600}>{selectedData.temp} C</Text>
               </View>
-              <View style={{alignContent:'center', alignItems:'center',height:20,width:60,justifyContent:'center',top:1, borderRadius: 20, backgroundColor:'white',}}>
-                  <Text style={{fontSize:12,color:'#86ba1c'}}>R 20-70%</Text>
+              <View style={styles.cardRangeContainer}>
+                  <Text style={styles.textStyle400}>R 20-70%</Text>
               </View>
               <View style={{alignContent:'center', alignItems:'center',top:8}}>
                <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={18} color='#86ba1c'  /> 
@@ -186,10 +187,10 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
               </Text>
             </View>
               <View style={{alignContent:'center', alignItems:'center',top:4}}>
-                <Text style={{fontSize:38,fontWeight:'600',color:'#86ba1c'}}>{selectedData.RH} RH</Text>
+                <Text style={styles.textStyle600}>{selectedData.RH} RH</Text>
               </View>
               <View style={{alignContent:'center', alignItems:'center',top:1}}>
-                  <Text style={{fontSize:12,color:'#86ba1c'}}>R 2-7 RH</Text>
+                  <Text style={styles.textStyle400}>R 2-7 RH</Text>
               </View>
               <View style={{alignContent:'center', alignItems:'center',top:8}}>
                <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={18} color='#86ba1c'  /> 
@@ -203,6 +204,7 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
       </View>
     
       
+    </View>
     </View>
   )
 }
@@ -220,17 +222,41 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   cardContainer: {
-    width: width * (cardWidthPercentage / 100),
-    height: height * (cardHeightPercentage / 100),
+    width: width > 400 ? 140 : 120,
+    height: width > 400 ? 160 : 140,
     backgroundColor: BG_VIEW,
     paddingLeft: 8,
     paddingTop: 8,
-    borderRadius: 12,
+    borderRadius: 18,
     marginLeft: 8,
     marginRight: 8,
   },
   cardHeadContainer: {
     flexDirection: "row",
     gap: 4,
+  },
+  cardRangeContainer: {
+    alignContent: "center",
+    alignItems: "center",
+    height: width > 400 ? 20 : 16,
+    width: width > 400 ? 60 : 52,
+    justifyContent: "center",
+    borderRadius: 20,
+    backgroundColor: "white",
+  },
+  textStyle600: {
+    fontSize: width > 400 ? 32 : 18,
+    fontWeight: "600",
+    color: "#86ba1c",
+  },
+  textStyle400: {
+    fontSize: width > 400 ? 12 : 10,
+    fontWeight: "400",
+    color: "#86ba1c",
+  },
+  textStyle300: {
+    fontSize: width > 400 ? 16 : 12,
+    fontWeight: "600",
+    color: "#86ba1c",
   },
 });
