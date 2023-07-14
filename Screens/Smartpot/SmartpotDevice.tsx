@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity,StyleSheet, FlatList, Dimensions} from 'react-native'
+import { View, Text, TouchableOpacity,StyleSheet, FlatList, Dimensions, Platform} from 'react-native'
 import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -41,7 +41,7 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
   }) => (
     <TouchableOpacity
       onPress={() => handleOptionSelect(item.id)}
-      style={{ height: 40, width: 140 }}
+      style={{ height: 40, width: 160 }}
     >
       <View
         style={{
@@ -83,9 +83,9 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
     <View style={{height:height,width:width}}>
     <View style={{flex:1, borderBottomRightRadius:22, borderBottomLeftRadius:22}} >
       <View style={{flex:0.6,backgroundColor:'#C1FC49'}}>
-        <View style={{top:50,flexDirection:'row',justifyContent:'space-between',marginHorizontal:24,alignItems:'center'}}>
+        <View style={styles.headContainerStyle}>
           <TouchableOpacity onPress={handlePress}>
-            <Ionicons name="chevron-back-circle-outline" size={42} color="#2a6f29" />
+            <Ionicons name="chevron-back-circle-outline" size={(Dimensions.get('window').width > 400 ? 38 : 28 )} color="#2a6f29" />
           </TouchableOpacity>
           <View style={{flexDirection:'column',alignItems:'center'}}>
             <Text style={{fontSize:22,fontWeight:'600'}}>{deviceData?.room}</Text>
@@ -133,7 +133,7 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
               <View style={styles.cardRangeContainer}>
                   <Text style={styles.textStyle400}>R 20-70%</Text>
               </View>
-              <View style={{alignContent:'center', alignItems:'center',top:8}}>
+              <View style={styles.circleCheckContainer}>
                <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={18} color='#86ba1c'  /> 
               </View>
               
@@ -217,13 +217,29 @@ const BG_VIEW = "#C1FC49"
 const cardWidthPercentage = 26;
 const cardHeightPercentage = 16;
 const styles = StyleSheet.create({
+  headContainerStyle: {
+    flex: 0.6,
+    alignContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 24,
+    alignItems: "center",
+    ...Platform.select({
+      ios: {
+        paddingTop: 40,
+      },
+      android: {
+        paddingTop: 30,
+      },
+    }),
+  },
   headStyle: {
     fontSize: 32,
     fontWeight: "600",
   },
   cardContainer: {
-    width: width > 400 ? 140 : 120,
-    height: width > 400 ? 160 : 140,
+    width: width > 400 ? 120 : 90,
+    height: width > 400 ? 140 : 110,
     backgroundColor: BG_VIEW,
     paddingLeft: 8,
     paddingTop: 8,
@@ -243,9 +259,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 20,
     backgroundColor: "white",
+    top: 4,
+  },
+  circleCheckContainer: {
+    alignContent: "center",
+    alignItems: "center",
+    top: 10,
   },
   textStyle600: {
-    fontSize: width > 400 ? 32 : 18,
+    fontSize: width > 400 ? 32 : 22,
     fontWeight: "600",
     color: "#86ba1c",
   },
