@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {View,Text, Animated} from 'react-native';
+import {View,Text, Animated, Dimensions,StyleSheet, Button} from 'react-native';
 import { SvgXml } from "react-native-svg"
+
 
 interface CircleTempProps {
   temperature: number;
@@ -9,7 +10,7 @@ interface CircleTempProps {
 }
 const CircleTemp: React.FC<CircleTempProps> = ({ temperature,kind,timeAdd }) => {
   
-  let textTemp = '';
+  let [textTemp, settextTemp ] = useState('');
   const minTemp = 20
   const maxTemp = 31
  
@@ -119,6 +120,7 @@ const CircleTemp: React.FC<CircleTempProps> = ({ temperature,kind,timeAdd }) => 
     const rotationDegreemin = useRef(new Animated.Value(0)).current;
     const rotationDegreemax = useRef(new Animated.Value(0)).current;
 
+
     useEffect(() => {
       // Calculate the rotation degrees based on minTemp and maxTemp
       let degree = 0;
@@ -153,13 +155,14 @@ const CircleTemp: React.FC<CircleTempProps> = ({ temperature,kind,timeAdd }) => 
         degreeMax = 0;
       }
       if (temperature <= minTemp ) {
-        textTemp = 'Too Cold';
+        settextTemp('Too Cold');
       } else if (temperature > minTemp && temperature <= maxTemp) {
-        textTemp = 'I like this ';
+        settextTemp('I like this');
       } else if (temperature > maxTemp) {
-        textTemp = 'to hot';
+        settextTemp('to hot')
       }
   
+      
       // Start the animations
       Animated.parallel([
         Animated.timing(rotationDegreemin, {
@@ -179,90 +182,119 @@ const CircleTemp: React.FC<CircleTempProps> = ({ temperature,kind,timeAdd }) => 
         }),
       ]).start();
     }, [minTemp, maxTemp,temperature]);
-
-    const count = useRef(new Animated.Value(0)).current;
-    useEffect(() => {
-      Animated.timing(count, {
-        toValue: 100, // Final count value
-        duration: 2000, // Duration of the animation in milliseconds
-        useNativeDriver: true, // Add this for better performance
-      }).start();
-    }, []);
-
+   
+ 
   return (
 
-  <View style={{ position: 'relative', width: 200, height: 200}}>
+  <View style={{ position: 'absolute', width: 200, height: 200}}>
     <View style={{ position: 'absolute', top: '50%', left: '50%', marginTop: -60, marginLeft: -60, width: 120, height: 120,alignContent:'center',justifyContent:'center',alignItems:'center' }}>
-      <SvgXml xml={markerRendering1} />
+      <SvgXml xml={markerRendering1} height={(Dimensions.get('window').width > 400 ? "228%" : "180%")} width={(Dimensions.get('window').width > 400 ? "228%" : "180%")} />
     </View>
     <View style={{ position: 'absolute', top: '50%', left: '50%', marginTop: -35, marginLeft: -35, width: 70, height: 70,alignContent:'center',justifyContent:'center',alignItems:'center' }}>
     <Animated.View style={{ transform: [{ rotate: rotationDegree.interpolate({ inputRange: [0, 360], outputRange: ['0deg', '360deg'] }) }] }}>
-        <SvgXml xml={current} />
+        <SvgXml xml={current} height={(Dimensions.get('window').width > 400 ? "166.2%" : "151.2%")} />
       </Animated.View>
     </View>
     <View style={{ position: 'absolute', top: '50%', left: '50%', marginTop: -35, marginLeft: -35, width: 70, height: 70,alignContent:'center',justifyContent:'center',alignItems:'center' }}>
     <Animated.View style={{ transform: [{ rotate: rotationDegreemin.interpolate({ inputRange: [0, 360], outputRange: ['0deg', '360deg'] }) }] }}>
-        <SvgXml xml={MinimalTemp} />
+        <SvgXml xml={MinimalTemp} height={Dimensions.get('window').width > 400 ? "166%" : "151.2%"}  />
       </Animated.View>
     </View>
     <View style={{ position: 'absolute', top: '50%', left: '50%', marginTop: -35, marginLeft: -35, width: 70, height: 70,alignContent:'center',justifyContent:'center',alignItems:'center' }}>
     <Animated.View style={{ transform: [{ rotate: rotationDegreemax.interpolate({ inputRange: [0, 360], outputRange: ['0deg', '360deg'] }) }] }}>
-        <SvgXml xml={HighTemp} />
+        <SvgXml xml={HighTemp} height={Dimensions.get('window').width > 400 ? "166%" : "151.2%"} />
       </Animated.View>
     </View>
 
+    
+    <View style={styles.overlayout}>
 
-    <View style={{flexDirection:'column',gap:1,alignContent:'center',justifyContent:'center',alignItems:'center',marginTop:70}}>
-        
+    <View style={{flexDirection:'row', justifyContent:'space-between',top: Dimensions.get('window').width > 400 ? -50 : -20 }}>
+    <View style={{flexDirection:'column',gap:1,justifyContent:'center',alignItems:'flex-start'}}>
         <View style={{flexDirection:'row'}}>
-        <Text style={{fontSize:50,fontWeight:'600',color:'#86ba1c'}}>{temperature}</Text>
-        <Animated.View>
-        <Animated.Text style={{ fontSize: 20 }}>
-          {count.interpolate({
-            inputRange: [0, 100],
-            outputRange: [0, 100],
-          })}
-        </Animated.Text>
-      </Animated.View>
-        <Text  style={{fontSize:22,fontWeight:'500',color:'#9ac93a'}}>°C</Text>
-        </View>
-        
-        <Text  style={{fontSize:18,fontWeight:'600',color:'#9ac93a'}}>{textTemp}</Text>
-      </View>
-
-      <View style={{flexDirection:'column',gap:1,justifyContent:'center',alignItems:'flex-start',marginTop:-5,left:120}}>
-        <View style={{flexDirection:'row'}}>
-        <Text style={{fontSize:50,fontWeight:'600',color:'#86ba1c'}}>{kind}</Text>
-        </View>
-        <Text  style={{fontSize:18,fontWeight:'400',color:'#9ac93a'}}>Plants</Text>
-      </View>
-
-      
-
-      <View style={{flexDirection:'column',gap:1,justifyContent:'center',alignItems:'flex-start',marginTop:-270,left:-90}}>
-        <View style={{flexDirection:'row'}}>
-        <Text style={{fontSize:25,fontWeight:'600',color:'#86ba1c'}}>{daysDiff} days</Text>
+        <Text style={styles.textStyle3}>{daysDiff} days</Text>
         </View>
         <Text  style={{fontSize:12,fontWeight:'400',color:'#9ac93a'}}>Age</Text>
       </View>
 
-      <View style={{flexDirection:'column',gap:6,justifyContent:'center',alignItems:'flex-start',top:-36,right:-210}}>
+      <View style={{flexDirection:'column',gap:6,justifyContent:'center',alignItems:'flex-start'}}>
         <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',gap:8}}>
           <View style={{backgroundColor:'#619100',width:14,aspectRatio:1,borderRadius:20}}></View>
-          <Text style={{fontSize:14,fontWeight:'600',color:'#86ba1c'}}>Current</Text>
+          <Text style={styles.textStyle2}>Current</Text>
         </View>
         <View style={{left:2,flexDirection:'row',justifyContent:'center',alignItems:'center',gap:10}}>
           <View style={{backgroundColor:'#91D600',width:10,aspectRatio:1,borderRadius:20}}></View>
-          <Text style={{fontSize:14,fontWeight:'600',color:'#86ba1c'}}>R Minimal</Text>
+          <Text style={styles.textStyle2}>R Minimal</Text>
         </View>
         <View style={{left:2,flexDirection:'row',justifyContent:'center',alignItems:'center',gap:10}}>
           <View style={{backgroundColor:'#2a6f29',width:10,aspectRatio:1,borderRadius:20}}></View>
-          <Text style={{fontSize:14,fontWeight:'600',color:'#86ba1c'}}>R Maximal</Text>
+          <Text style={styles.textStyle2}>R Maximal</Text>
         </View>
       </View>
-    
+      </View>
+
+    <View style={{flexDirection:'column',gap:2,alignContent:'center',justifyContent:'center',alignItems:'center'}}>
+        <View style={{flexDirection:'row'}}>
+          <Text style={styles.textStyleTemp600}>{temperature}</Text>
+          <Text  style={{fontSize:22,fontWeight:'500',color:'#9ac93a'}}>°C</Text>
+        </View>
+        <View style={{flexDirection:'row'}}>
+          <Text style={styles.textStyle3}>{textTemp}</Text>
+          
+        </View>
+    </View>
+
+      
+      
+      <View style={{flexDirection:'column',gap:1,justifyContent:'center',alignItems:'flex-start',left: Dimensions.get('window').width > 400 ? 240 : 180}}>
+        <View style={{flexDirection:'row'}}>
+        <Text style={styles.textHeadStyle600}>{kind}</Text>
+        </View>
+        <Text  style={styles.textStyle40032}>Plants</Text>
+      </View>
+    </View>
   </View> 
   );
 };
 
 export default CircleTemp;
+
+const { width,height } = Dimensions.get("window");
+const BG_VIEW = "#C1FC49"
+const styles = StyleSheet.create({
+  textHeadStyle600: {
+    fontSize: width > 400 ? 32 : 22,
+    fontWeight: "600",
+    color: "#86ba1c",
+  },
+  textStyleTemp600: {
+    fontSize: width > 400 ? 42 : 36,
+    fontWeight: "600",
+    color: "#86ba1c",
+  },
+  textStyle40032: {
+    fontSize: width > 400 ? 18 : 12,
+    fontWeight: "400",
+    color: "#9ac93a",
+  },
+  textStyle400: {
+    fontSize: width > 400 ? 12 : 10,
+    fontWeight: "400",
+    color: "#86ba1c",
+  },
+  textStyle2: {
+    fontSize: width > 400 ? 14 : 10,
+    fontWeight: "600",
+    color: "#86ba1c",
+  },
+  textStyle3: {
+    fontSize: width > 400 ? 18 : 14,
+    fontWeight: "600",
+    color: "#9ac93a",
+  },
+  overlayout: {
+    
+    width: width > 400 ? 400 : 310,
+    left: width > 400 ? -100 : -50,
+  },
+});

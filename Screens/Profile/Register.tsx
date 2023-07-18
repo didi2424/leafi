@@ -1,4 +1,4 @@
-import { Alert, Animated, StyleSheet, Text, TextInput, TouchableOpacity, Keyboard,View,TouchableWithoutFeedback } from 'react-native'
+import { Alert, Animated, StyleSheet, Text, TextInput, TouchableOpacity, Keyboard,View,TouchableWithoutFeedback, Dimensions, Platform } from 'react-native'
 import React, { useContext, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
@@ -76,8 +76,6 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
                         password,
                       };
                     onRegisterData(registerData);
-
-                
                 })
                 
                 .catch(error => {
@@ -94,15 +92,12 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
 
     const [isMoved, setIsMoved] = useState(false);
     const moveAnim = useRef(new Animated.Value(0)).current;
-    
-    
     const [isTextInputVisible, setIsTextInputVisible] = useState(false);
     const [selectedRegisterButton, setRegisterButton] = useState(1);
-    
     const [isVertivyVisible, setIsVertivyVisible] = useState(true);
 
     const startAnimation = () => {
-        const targetValue = isMoved ? 0 : -380;
+        const targetValue = isMoved ? 0 : width> 400 ? -320:-200;
         Animated.timing(moveAnim, {
         toValue: targetValue,
         duration: 800,
@@ -169,11 +164,9 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
   return (
     <>
     {isVertivyVisible && ( 
-
     <View style={{flex: 1,marginHorizontal:2,justifyContent:"center",alignItems:'center',alignContent:'center'}}>
-        
             <Animated.View style={[{justifyContent:'center',alignItems:'center',opacity: fadeAnim}, animatedStyle]}>
-            <View style={{top:-40,height:250,width:160,backgroundColor:'#fff',alignItems:'center',justifyContent:'center',alignContent:'center',borderRadius:20}}>
+            <View style={styles.cardContainer}>
                     <Text>Register</Text>
             </View>
          
@@ -182,49 +175,46 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
                 opacity: fadeAnim,
                 top:68
             }}>
-                <Text style={{fontSize:18,fontWeight:'400'}}>Unlock the Power of AI: Explore 100+ Plants for Free!</Text>
-                <Text style={{top:12,fontSize:50,fontWeight:'600'}}>Create</Text>
-                <Text style={{top:2,fontSize:50,fontWeight:'600'}}>Your Account</Text>
+                <Text style={styles.textStyle1}>Unlock the Power of AI: Explore 100+ Plants for Free!</Text>
+                <Text style={styles.textStyle2}>Create</Text>
+                <Text style={styles.textStyle3}>Your Account</Text>
                 <View style={{top:2,flexDirection:'row',alignItems:'center',alignContent:'center'}}>
-                    <Text style={{fontSize:20,fontWeight:'400'}}>
+                    <Text style={styles.textStyle4}>
                         Already a member ?
                     </Text>
                     <TouchableOpacity  onPress={() => handlePressCombined()} >
-                        <Text style={{fontSize:20,color:'#2a6f29'}}> Log in</Text>
+                        <Text style={styles.textStyle5}> Log in</Text>
                     </TouchableOpacity>
                 </View>
-
-
                 {isTextInputVisible && (
-
                 <View style={{top:20,justifyContent:'center',alignItems:'center'}}>
                 
-                <View style={{height:68}}>
-                <View style={{width:220,height:42,backgroundColor:'#fff',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
+                <View style={{height: width> 400 ? 72: 56}}>
+                <View style={styles.textInputEmailContainer}>
                     <TextInput
-                    style={{left:10,width:220,height:42}}
-                    autoFocus={true}
-                    onChangeText={onChangeEmail}
-                    placeholder="Email"
-                    placeholderTextColor="#999999"
-                    autoCapitalize='none'
+                        style={styles.textStyle6}
+                        autoFocus={true}
+                        onChangeText={onChangeEmail}
+                        placeholder="Email"
+                        placeholderTextColor="#999999"
+                        autoCapitalize='none'
                     />
                 </View>
                 {fillEmailEmpty && (
-                    <Text style={{ top: 5 }}>You must fill this</Text>
+                    <Text style={styles.textStyle7}>You must fill this</Text>
                         )}
                 {fillEmail && (
-                    <Text style={{ top: 5 }}>Email pattern failed</Text>
+                    <Text style={styles.textStyle7}>Email pattern failed</Text>
                 )}
                 {emailHasRegistered && (
-                    <Text style={{ top: 5 }}>Email has register!</Text>
+                    <Text style={styles.textStyle7}>Email has register!</Text>
                 )}
                 </View>
               
-                <View style={{justifyContent:'flex-start',width:220}}>
-                <View style={{paddingHorizontal:12,flexDirection:'row',width:220,height:42,backgroundColor:'#fff',borderRadius:16,alignContent:"center",justifyContent:'space-between',alignItems:'center',gap:12}}>
+                
+                <View style={styles.textInputPasswordContainer}>
                      <TextInput
-                        style={{width:120,height:38}}
+                        style={styles.textStyle6}
                         onChangeText={onChangePassword}
                         placeholder="Password"
                         placeholderTextColor="#999999"
@@ -241,36 +231,35 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
 
                     <View style={{marginHorizontal:2}}>
                      {fillPasswordEmpty && (
-                        <Text style={{ top: 5 }}>You must fill this</Text>
+                        <Text style={styles.textStyle7}>You must fill this</Text>
                         )}
                         {fillPassword && (
-                        <Text style={{ top: 5 }}>At least 6 characters, with 1 capital letter and 1 symbol</Text>
+                        <Text style={styles.textStyle7}>At least 6 characters, with 1 capital letter and 1 symbol</Text>
                         )}
                     </View>
-                    </View>
-                    <View style={{top:12,width:32,aspectRatio:1,backgroundColor:'#000',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
+                   
+                    <View style={{top:12,width: width> 400 ? 32:22,aspectRatio:1,backgroundColor:'#000',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
                         <TouchableOpacity onPress={handleHideForm} > 
-                        <FontAwesomeIcon icon={icon({ name: 'xmark' })} style={{ color: '#7db149ff',width:32,height:32 }}  /> 
+                        <FontAwesomeIcon icon={icon({ name: 'xmark' })} size={width> 400 ? 24: 14}  style={{ color: '#7db149ff'}}  /> 
                         </TouchableOpacity>
                         </View>
-                
                 </View>
                 
                 )}
                
                 
                 </Animated.View>
-                <Animated.View style={{top:110,width:120,height:40,borderRadius:18,backgroundColor:'#fff',alignItems:'center',alignContent:'center',justifyContent:'center', opacity: fadeAnim,}}>
+                <Animated.View style={[styles.buttonHandle, { opacity: fadeAnim }]}>
                 {selectedRegisterButton === 1 ? (
                     <>
                     <TouchableOpacity onPress={() => handleButtonRegisterButton()} >
-                            <Text style={{fontSize:22,color:'#2a6f29'}}>Coutinue</Text>
+                            <Text style={styles.textStyle4}>Coutinue</Text>
                     </TouchableOpacity>
                     </>
                     ) : (
                     <>
                     <TouchableOpacity onPress={handleRegisters}  >
-                            <Text style={{fontSize:22,color:'#2a6f29'}}>Register</Text>
+                            <Text style={styles.textStyle4}>Register</Text>
                     </TouchableOpacity>
                     </>
                 )}
@@ -280,10 +269,87 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
             </View>
             )}
             </>
-    )
-   
-  
+    ) 
 }
 
 export default Register
 
+const { width } = Dimensions.get("window");
+const styles = StyleSheet.create({
+
+  cardContainer: {
+    top: -40,
+    height: width > 400 ? 250 : 180,
+    width: width > 400 ? 160 : 120,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    borderRadius: 20,
+  },
+ 
+  buttonHandle: {
+    top: width > 400 ? 110 : 110,
+    width: width > 400 ? 120 : 90,
+    height: width > 400 ? 40 : 28,
+    borderRadius: 18,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  textInputEmailContainer: {
+    width: width > 400 ? 220 : 180,
+    height: width > 400 ? 42 : 34,
+    backgroundColor: "#fff",
+    borderRadius: width > 400 ? 16 : 12,
+    alignItems: "flex-start",
+    paddingLeft: width > 400 ? 16 : 12,
+    justifyContent: "center",
+  },
+  textInputPasswordContainer: {
+    paddingHorizontal: 12,
+    paddingLeft: width > 400 ? 16 : 12,
+    flexDirection: "row",
+    width: width > 400 ? 220 : 180,
+    height: width > 400 ? 42 : 34,
+    backgroundColor: "#fff",
+    borderRadius: width > 400 ? 16 : 12,
+    alignContent: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 12,
+  },
+
+  textStyle1: {
+    fontSize: width > 400 ? 18 : 14,
+    fontWeight: "400",
+  },
+  textStyle2: {
+    top: 12,
+    fontSize: width > 400 ? 50 : 32,
+    fontWeight: "600",
+  },
+  textStyle3: {
+    top: 2,
+    fontSize: width > 400 ? 50 : 32,
+    fontWeight: "600",
+  },
+  textStyle4: {
+    fontSize: width > 400 ? 20 : 16,
+    fontWeight: "400",
+  },
+  textStyle5: {
+    fontSize: width > 400 ? 20 : 16,
+    color: "#2a6f29",
+  },
+  textStyle6: {
+    fontSize: width > 400 ? 14 : 10,
+    fontWeight: "400",
+  },
+  textStyle7: {
+    top: width > 400 ? 5 : 3,
+    fontSize: width > 400 ? 14 : 10,
+    fontWeight: "400",
+  },
+});

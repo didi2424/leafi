@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity,StyleSheet, FlatList, Dimensions, Platform} from 'react-native'
+import { View, Text, TouchableOpacity,StyleSheet, FlatList, Dimensions, Platform, TextInput} from 'react-native'
 import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -12,6 +12,8 @@ type DeviceData = {
   name: string
   
 };
+
+
 
 type Props = {
   onScreenChange: (screenNumber: number) => void;
@@ -41,7 +43,7 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
   }) => (
     <TouchableOpacity
       onPress={() => handleOptionSelect(item.id)}
-      style={{ height: 40, width: 160 }}
+      style={{ height: 20 , width: (Dimensions.get('window').width > 400 ? 170 : 140 ),justifyContent:'center'}}
     >
       <View
         style={{
@@ -53,7 +55,7 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
       >
         <Text
           style={{
-            fontSize: 18,
+            fontSize: (Dimensions.get('window').width > 400 ? 18 : 12 ),
             color: selectedOption === item.id ? "#86ba1c" : "#4c4c4c",
             fontWeight: selectedOption === item.id ? "600" : "200",
           }}
@@ -63,8 +65,8 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
         {selectedOption === item.id && (
           <View
             style={{
-              width: 32,
-              height: 5,
+              width: (Dimensions.get('window').width > 400 ? 32 : 22 ),
+              height: (Dimensions.get('window').width > 400 ? 5 : 3 ),
               borderRadius: 3,
               backgroundColor: "#9ac93a",
               shadowColor: "#619100",
@@ -78,33 +80,33 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
     </TouchableOpacity>
   );
   
+  
   const { width,height } = Dimensions.get("window");
   return (
     <View style={{height:height,width:width}}>
-    <View style={{flex:1, borderBottomRightRadius:22, borderBottomLeftRadius:22}} >
-      <View style={{flex:0.6,backgroundColor:'#C1FC49'}}>
+    <View style={{flex:1}} >
+      <View style={{flex:0.6,backgroundColor:BG_VIEW}}>
         <View style={styles.headContainerStyle}>
           <TouchableOpacity onPress={handlePress}>
             <Ionicons name="chevron-back-circle-outline" size={(Dimensions.get('window').width > 400 ? 38 : 28 )} color="#2a6f29" />
           </TouchableOpacity>
           <View style={{flexDirection:'column',alignItems:'center'}}>
-            <Text style={{fontSize:22,fontWeight:'600'}}>{deviceData?.room}</Text>
-            <Text style={{fontSize:18,fontWeight:'300',color:'#4c4c4c'}}>Total {deviceCount} Device paired</Text>
+            <Text style={styles.textHeadStyle600}>{deviceData?.room}</Text>
+            <Text style={styles.textHeadStyle200}>Total {deviceCount} Device paired</Text>
           </View>
-          <FontAwesomeIcon icon={icon({ name: 'ellipsis' })} style={{ opacity: 0.9, color: '#2a6f29',width:50,height:50 }}  /> 
+          <FontAwesomeIcon icon={icon({ name: 'ellipsis' })} style={{ opacity: 0.9, color: '#2a6f29' }}  /> 
         </View>
       </View>
 
-      <View style={{flex:0.5, flexDirection:'row',justifyContent:'space-between',paddingHorizontal:20,backgroundColor:'#C1FC49'}}>
-
-      <FlatList
-        horizontal
-        data={devices as { id: string; name: string;light: string }[]}
-        showsHorizontalScrollIndicator={false}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}
-      />
+      <View style={{flex:0.4, flexDirection:'row',justifyContent:'space-between',paddingHorizontal:18,backgroundColor:BG_VIEW}}>
+        <FlatList
+          horizontal
+          data={devices as { id: string; name: string; light: string }[]}
+          showsHorizontalScrollIndicator={false}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ flexDirection: 'row', alignItems: 'center',alignContent:'center' }}
+        />
       </View>
 
       <View style={{flex:2,alignContent:'center',alignItems:'center',justifyContent:'center',backgroundColor:'#C1FC49',borderBottomLeftRadius:90}}>  
@@ -115,88 +117,88 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
         ): null}
       </View>
 
+     
+
       <View style={{flex:2.4}}>
         
-      <View style={{top:20,height:150,marginHorizontal:24,justifyContent:'center', alignItems:'center',flexDirection:'row',borderRadius:20,gap:18}}>
+      <View style={{top:20,marginHorizontal:24,justifyContent:'center', alignItems:'center',flexDirection:'row',borderRadius:20,gap:18}}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} >
 
       <TouchableOpacity style={styles.cardContainer} onPress={() => setSelectedScreen(0)}> 
           <View style={styles.cardHeadContainer}>
-          <View style={{width:30, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
-          <FontAwesomeIcon icon={icon({ name: 'temperature-half' })} size={18} color='#C1FC49'  /> 
+            <View style={styles.circleIconContainer}>
+              <FontAwesomeIcon icon={icon({ name: 'temperature-half' })} size={(Dimensions.get('window').width > 400 ? 18 : 16)} color='#C1FC49'  /> 
             </View>
-              <Text style={styles.textStyle300}>Temp</Text>
+            <Text style={styles.textStyle300}>Temp</Text>
             </View>
               <View style={{alignContent:'center',top:4}}>
                 <Text style={styles.textStyle600}>{selectedData.temp} C</Text>
               </View>
               <View style={styles.cardRangeContainer}>
-                  <Text style={styles.textStyle400}>R 20-70%</Text>
+                <Text style={styles.textStyle400}>R {selectedData.Rtemp}</Text>
               </View>
               <View style={styles.circleCheckContainer}>
-               <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={18} color='#86ba1c'  /> 
+                <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={(Dimensions.get('window').width > 400 ? 18 : 12 )} color='#86ba1c'  /> 
               </View>
-              
         </TouchableOpacity>
         
         
         <TouchableOpacity style={styles.cardContainer} onPress={() => setSelectedScreen(1)}> 
           <View style={styles.cardHeadContainer}>
-          <View style={{width:30, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
-          <FontAwesomeIcon icon={icon({ name: 'sun' })} size={18} color='#C1FC49'  /> 
+            <View style={styles.circleIconContainer}>
+              <FontAwesomeIcon icon={icon({ name: 'sun' })} size={(Dimensions.get('window').width > 400 ? 18 : 16)} color='#C1FC49'  /> 
             </View>
-              <Text style={{fontSize:16,fontWeight:'600',color:'#86ba1c'}}>Light</Text>
+           
+            <Text style={styles.textStyle300}>Light</Text>
             </View>
               <View style={{alignContent:'center',top:4}}>
-                <Text style={{fontSize:38,fontWeight:'600',color:'#86ba1c'}}>{selectedData.light} %</Text>
+                <Text style={styles.textStyle600}>{selectedData.light} %</Text>
               </View>
-              <View style={{alignContent:'center', alignItems:'center',height:20,width:60,justifyContent:'center',top:1, borderRadius: 20, backgroundColor:'white',}}>
-                  <Text style={{fontSize:12,color:'#86ba1c'}}>R 20-70%</Text>
+              <View style={styles.cardRangeContainer}>
+                <Text style={styles.textStyle400}>R 20-70%</Text>
               </View>
-              <View style={{alignContent:'center', alignItems:'center',top:8}}>
-               <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={18} color='#86ba1c'  /> 
+              <View style={styles.circleCheckContainer}>
+                <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={(Dimensions.get('window').width > 400 ? 18 : 12 )} color='#86ba1c'  /> 
               </View>
-              
         </TouchableOpacity>
         
-        <View style={styles.cardContainer}> 
+        <TouchableOpacity style={styles.cardContainer} onPress={() => setSelectedScreen(1)}> 
           <View style={styles.cardHeadContainer}>
-          <View style={{width:30, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
-          <FontAwesomeIcon icon={icon({ name: 'droplet' })} size={18} color='#C1FC49'  /> 
-              </View>
-                <Text style={{width:56,fontSize:16,fontWeight:'600',color:'#86ba1c'}}>Soil Moisture</Text>
-              </View>
-              <View style={{alignContent:'center', alignItems:'center',top:4}}>
-                <Text style={{fontSize:38,fontWeight:'600',color:'#86ba1c'}}>{selectedData.soil} %</Text>
-              </View>
-              <View style={{alignContent:'center', alignItems:'center',top:1}}>
-                  <Text style={{fontSize:12,color:'#86ba1c'}}>R 20-70%</Text>
-              </View>
-              <View style={{alignContent:'center', alignItems:'center',top:8}}>
-               <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={18} color='#86ba1c'  /> 
-              </View>
-              
-        </View>
+            <View style={styles.circleIconContainer}>
+              <FontAwesomeIcon icon={icon({ name: 'droplet' })} size={(Dimensions.get('window').width > 400 ? 18 : 16)} color='#C1FC49'  /> 
+            </View>
+            
+            <Text numberOfLines={2} style={styles.textStyle300}>Soil</Text>
 
-        <View style={styles.cardContainer}> 
+            </View>
+              <View style={{alignContent:'center',top:4}}>
+                <Text style={styles.textStyle600}>{selectedData.soil} %</Text>
+              </View>
+              <View style={styles.cardRangeContainer}>
+                <Text style={styles.textStyle400}>R 20-70%</Text>
+              </View>
+              <View style={styles.circleCheckContainer}>
+                <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={(Dimensions.get('window').width > 400 ? 18 : 12 )} color='#86ba1c'  /> 
+              </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.cardContainer} onPress={() => setSelectedScreen(1)}> 
           <View style={styles.cardHeadContainer}>
-          <View style={{width:30, aspectRatio:1, borderRadius:20, backgroundColor:'#619100',justifyContent:'center',alignItems:'center'}}>
-          <FontAwesomeIcon icon={icon({ name: 'cloud' })} size={18} color='#C1FC49'  /> 
+            <View style={styles.circleIconContainer}>
+              <FontAwesomeIcon icon={icon({ name: 'cloud' })} size={(Dimensions.get('window').width > 400 ? 18 : 16)} color='#C1FC49'  /> 
             </View>
-              <Text style={{ width:58,fontSize:16,fontWeight:'600',color:'#86ba1c'}}>Humidity
-              </Text>
+            <Text numberOfLines={2} style={styles.textStyle300}>Humidity</Text>
             </View>
-              <View style={{alignContent:'center', alignItems:'center',top:4}}>
+              <View style={{alignContent:'center',top:4}}>
                 <Text style={styles.textStyle600}>{selectedData.RH} RH</Text>
               </View>
-              <View style={{alignContent:'center', alignItems:'center',top:1}}>
-                  <Text style={styles.textStyle400}>R 2-7 RH</Text>
+              <View style={styles.cardRangeContainer}>
+                <Text style={styles.textStyle400}>R 20-70%</Text>
               </View>
-              <View style={{alignContent:'center', alignItems:'center',top:8}}>
-               <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={18} color='#86ba1c'  /> 
+              <View style={styles.circleCheckContainer}>
+                <FontAwesomeIcon icon={icon({ name: 'circle-check' })} size={(Dimensions.get('window').width > 400 ? 18 : 12 )} color='#86ba1c'  /> 
               </View>
-              
-        </View>
+        </TouchableOpacity>
         </ScrollView>
 
         </View>
@@ -214,8 +216,7 @@ export default SmartpotDevice
 
 const { width,height } = Dimensions.get("window");
 const BG_VIEW = "#C1FC49"
-const cardWidthPercentage = 26;
-const cardHeightPercentage = 16;
+
 const styles = StyleSheet.create({
   headContainerStyle: {
     flex: 0.6,
@@ -224,6 +225,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 24,
     alignItems: "center",
+    backgroundColor:BG_VIEW,
     ...Platform.select({
       ios: {
         paddingTop: 40,
@@ -265,6 +267,22 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
     top: 10,
+  },
+  circleIconContainer: {
+    width: width > 400 ? 30 : 26,
+    aspectRatio: 1,
+    borderRadius: 20,
+    backgroundColor: "#619100",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  textHeadStyle600: {
+    fontSize: width > 400 ? 28 : 16,
+    fontWeight: "600",
+  },
+  textHeadStyle200: {
+    fontSize: width > 400 ? 22 : 12,
+    fontWeight: "200",
   },
   textStyle600: {
     fontSize: width > 400 ? 32 : 22,

@@ -7,7 +7,6 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Home from '../Screens/Home'
 import ProfileNavigator from './ProfileNavigator'
 import Camera from '../Screens/Camera'
-import Smartpot from '../Screens/SmartpotDevice';
 import SmartpotNavigator from './SmartpotNavigator';
 
 export type TabsStackParamList = {
@@ -25,6 +24,7 @@ const TabNavigators = () => {
     <TabStack.Navigator
         screenOptions={{
             tabBarShowLabel: false,
+            tabBarHideOnKeyboard: true,
             tabBarStyle: {
                 position: 'absolute',
                 backgroundColor: '#ACE1AF',
@@ -32,8 +32,7 @@ const TabNavigators = () => {
                 borderTopLeftRadius:22,
                 height: 78,
                 
-              },
-            
+              },     
         }
         
         }>

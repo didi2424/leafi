@@ -44,6 +44,7 @@ function otpRouter(connection) {
       router.post('/send', (req, res) => {
         const { email } = req.body;
         const OTP = generateOTP(6);
+        console.log(OTP)
         const expirationTime = new Date(Date.now() + (2 * 60 * 1000)); // Set expiration time to 2 minutes from now
         const resetTime = new Date(Date.now() + (5 * 60 * 1000)); // Set reset time to 5 minutes from now
       

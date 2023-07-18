@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { Dimensions, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Svg, { Circle, Defs, G, Marker, Path,Line,Text } from 'react-native-svg'
 import { polarToCartesian } from "../Helpers/geometry";
@@ -10,7 +10,7 @@ const CircleLight = () => {
   const CLOCK_BG = '#234d20'
   const lightPercentage = 10; 
 
-  const radius = 130-16
+  const radius = Dimensions.get('window').width > 400 ? 130-16 : 100-16
   const center = 130
   const minutes = 75
   const hours = 12
@@ -63,7 +63,7 @@ const CircleLight = () => {
       <G key={index}>
         <Circle
           fill="#9ac93a"
-          strokeWidth={10}
+          strokeWidth={Dimensions.get('window').width > 400 ? 10 : 6}
           x={time.x}
           y={time.y}
           r={10}   
@@ -80,7 +80,7 @@ const CircleLight = () => {
         
         <Text
           textAnchor='middle'
-          fontSize='12'
+          fontSize={Dimensions.get('window').width > 400 ? 12 : 8}
           fontWeight='bold'
           fill='#619100'
           alignmentBaseline='central'
@@ -112,12 +112,12 @@ const CircleLight = () => {
     radius,
     ((currentHour % 12) + currentTime.getMinutes() / 60) * 30
   );
-  const hoursLineStart = polarToCartesian(center, center, radius - 140, ((currentHour % 12) + currentTime.getMinutes() / 60) * 30);
-  const hoursLineEnd = polarToCartesian(center, center, radius-60, ((currentHour % 12) + currentTime.getMinutes() / 60) * 30);
-  const minutesLineStart = polarToCartesian(center, center, radius - 140,(currentTime.getMinutes() + currentTime.getSeconds() / 60) * 6);
-  const minutesLineEnd = polarToCartesian(center, center, radius - 50, (currentTime.getMinutes() + currentTime.getSeconds() / 60) * 6);
-  const secondLineStart = polarToCartesian(center, center, radius - 140,currentTime.getSeconds() * 6)
-  const secondLineEnd = polarToCartesian(center, center, radius -42,currentTime.getSeconds() * 6)
+  const hoursLineStart = polarToCartesian(center, center, radius - (Dimensions.get('window').width > 400 ? 140 : 90), ((currentHour % 12) + currentTime.getMinutes() / 60) * 30);
+  const hoursLineEnd = polarToCartesian(center, center, radius-(Dimensions.get('window').width > 400 ? 60 : 40), ((currentHour % 12) + currentTime.getMinutes() / 60) * 30);
+  const minutesLineStart = polarToCartesian(center, center, radius - (Dimensions.get('window').width > 400 ? 140 : 90),(currentTime.getMinutes() + currentTime.getSeconds() / 60) * 6);
+  const minutesLineEnd = polarToCartesian(center, center, radius - (Dimensions.get('window').width > 400 ? 50 : 50), (currentTime.getMinutes() + currentTime.getSeconds() / 60) * 6);
+  const secondLineStart = polarToCartesian(center, center, radius - (Dimensions.get('window').width > 400 ? 140 : 90),currentTime.getSeconds() * 6)
+  const secondLineEnd = polarToCartesian(center, center, radius -(Dimensions.get('window').width > 400 ? 42 : 30),currentTime.getSeconds() * 6)
   const maxLightPercentage = 100; 
   const numberOfCircles = Math.floor((lightPercentage / maxLightPercentage) * 20) + 8;
 
@@ -126,7 +126,7 @@ const CircleLight = () => {
   for (let i = 0; i < numberOfCircles; i++) {
     const cx = Math.random() * 90 + center - 40; // Random x-coordinate between center-10 and center+10
     const cy = Math.random() * 90 + center - 40; // 
-    const radius = Math.random() * 10 + 2; // Random radius between 5 and 25
+    const radius = Math.random() * (Dimensions.get('window').width > 400 ? 8 : 3) + 2; // Random radius between 5 and 25
     const randomColorIndex = Math.floor(Math.random() * colors.length);
     const fill = colors[randomColorIndex];
 
@@ -149,7 +149,13 @@ const CircleLight = () => {
               fill={CLOCK_BG}
               cx={center}
               cy={center}
-              r={radius+13}
+              r={Dimensions.get('window').width > 400 ? radius+14 : radius+12}
+            />
+             <Circle
+              fill={'#385e36'}
+              cx={center}
+              cy={center}
+              r={70}
             />
             {circleArray}
           </G>
@@ -159,23 +165,23 @@ const CircleLight = () => {
             fill={SECOND_BG}
             cx={secondCircle.x }
             cy={secondCircle.y }
-            r={4}
+            r={Dimensions.get('window').width > 400 ? 4 : 3}
           />
           <Circle
             fill={MINUTE_BG}
             cx={minuteCircle.x}
             cy={minuteCircle.y}
-            r={8}
+            r={Dimensions.get('window').width > 400 ? 8 : 3}
           />
           <Circle
             fill={HOURS_BG}
             cx={hoursCircle.x}
             cy={hoursCircle.y}
-            r={12}
+            r={Dimensions.get('window').width > 400 ? 12 : 8}
           />
           <Line
               stroke={HOURS_BG}
-              strokeWidth={12}
+              strokeWidth={Dimensions.get('window').width > 400 ? 12 : 6}
               x1={hoursLineStart.x}
               y1={hoursLineStart.y}
               x2={hoursLineEnd.x}
@@ -184,7 +190,7 @@ const CircleLight = () => {
             />
             <Line
               stroke={MINUTE_BG}
-              strokeWidth={8}
+              strokeWidth={Dimensions.get('window').width > 400 ? 8 : 4}
               x1={minutesLineStart.x}
               y1={minutesLineStart.y}
               x2={minutesLineEnd.x}
@@ -193,7 +199,7 @@ const CircleLight = () => {
             />
             <Line
               stroke="#9ac93a"
-              strokeWidth={4}
+              strokeWidth={Dimensions.get('window').width > 400 ? 4 : 2}
               x1={secondLineStart.x}
               y1={secondLineStart.y}
               x2={secondLineEnd.x}

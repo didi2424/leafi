@@ -4,6 +4,7 @@ make a user for SQL:
 
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON usersprofile TO 'admin'@'localhost';
+GRANT ALL PRIVILEGES ON otp TO 'admin'@'localhost';
 ALTER USER 'admin'@'localhost' IDENTIFIED BY 'password';
 ALTER USER 'admin'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
 

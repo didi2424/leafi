@@ -1,10 +1,9 @@
-import { Alert, StyleSheet, Text, Touchable, View } from 'react-native'
+import { Alert, Dimensions, Platform, StyleSheet, Text, Touchable, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import api from '../../api';
-import { response } from 'express';
 
 type VertifyProps = {
   onScreenChange: (screenNumber: number) => void;
@@ -111,29 +110,33 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
 
       };
   return (
-    <View style={{justifyContent:'space-between',top:12}}>
-      <TouchableOpacity onPress={() => BacktoRegister()} style={{left:20,width:42,aspectRatio:1,borderRadius:40,alignItems: 'center',alignContent:'center',justifyContent:'center',backgroundColor:'white'}} >
-         <FontAwesomeIcon size={22} icon={icon({ name: 'chevron-left' })} style={{ color: '#7db149ff' }}  /> 
-        </TouchableOpacity>
+    <View style={{top:40}}>
 
+      <View style={styles.headContainer}>
+        <TouchableOpacity onPress={() => BacktoRegister()} style={styles.buttonBack}>
+            <FontAwesomeIcon size={Dimensions.get("window").width > 400 ? 22 : 16} icon={icon({ name: 'chevron-left' })} style={{ color: '#7db149ff' }}  /> 
+          </TouchableOpacity>
+        </View>
+          
+        
       <View style={{alignContent:'center',alignItems:'center',justifyContent:'space-between'}}>
-          <View style={{top:12,height:220,width:180,borderRadius:20,alignContent:'center', alignItems:'center', justifyContent:'center',backgroundColor:'white'}}>
-            <Text>Vertify</Text>
-          </View>
+      <View style={styles.cardContainer}>
+              <Text>Vertify</Text>
+            </View>
         <View style={{top:22}}>
-          <Text style={{fontSize:42, fontWeight:'600'}}>Enter OTP</Text>
-          <Text style={{fontSize:18}}>An 6 Digit Code has been send to</Text>
-          <Text style={{fontSize:18}}>{registerData.email}</Text>
+          <Text style={styles.textStyle1}>Enter OTP</Text>
+          <Text style={styles.textStyle2}>An 6 Digit Code has been send to</Text>
+          <Text style={styles.textStyle2}>{registerData.email}</Text>
 
         <View style={{top:12,flexDirection:'row',gap:12}}>
         <View style={{flexDirection:'row',gap:8}}>
-          <View style={{height:50,width:38,borderRadius: 10,backgroundColor:'gray',alignContent:'center',alignItems:'center',justifyContent:'space-between'}}>
+          <View style={styles.otpContainer}>
             <TextInput
             
               maxLength={1}
               keyboardType="numeric"
               placeholderTextColor="#909090"
-              style={{height:50,color:"white",width:38,fontSize:22,textAlign:'center'}}
+              style={styles.numberTextContainer}
               ref={firstInput}
               onChangeText={text => {
                 setOtpv({...otpv, 1: text});
@@ -142,9 +145,9 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
             />
           </View>
 
-          <View style={{height:50,width:38,borderRadius: 10,backgroundColor:'gray',alignContent:'center',alignItems:'center',justifyContent:'center'}}>
+          <View style={styles.otpContainer}>
             <TextInput
-              style={{height:50,color:"white",width:38,fontSize:22,textAlign:'center'}}
+              style={styles.numberTextContainer}
               ref={secondInput}
               onChangeText={text => {
                 setOtpv({ ...otpv, 2: text });
@@ -165,9 +168,9 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
             />
           </View>
 
-          <View style={{height:50,width:38,borderRadius: 10,backgroundColor:'gray',alignContent:'center',alignItems:'center',justifyContent:'center'}}>
+          <View style={styles.otpContainer}>
             <TextInput
-              style={{height:50,color:"white",width:38,fontSize:22,textAlign:'center'}}
+              style={styles.numberTextContainer}
               maxLength={1}
               ref={thirdInput}
               onChangeText={text => {
@@ -189,9 +192,9 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
           </View>
         </View>
         <View style={{flexDirection:'row',gap:8}}>
-          <View style={{height:50,width:38,borderRadius: 10,backgroundColor:'gray',alignContent:'center',alignItems:'center',justifyContent:'center'}}>
+          <View style={styles.otpContainer}>
             <TextInput
-              style={{height:50,color:"white",width:38,fontSize:22,textAlign:'center'}}
+              style={styles.numberTextContainer}
               ref={fourthInput}
               onChangeText={text => {
                 setOtpv({ ...otpv, 4: text });
@@ -212,10 +215,10 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
             />
           </View>
 
-          <View style={{height:50,width:38,borderRadius: 10,backgroundColor:'gray',alignContent:'center',alignItems:'center',justifyContent:'center'}}>
+          <View style={styles.otpContainer}>
             <TextInput
             
-              style={{height:50,color:"white",width:38,fontSize:22,textAlign:'center'}}
+              style={styles.numberTextContainer}
               maxLength={1}
               keyboardType="numeric"
               placeholderTextColor="#909090"
@@ -238,9 +241,9 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
             />
           </View>
 
-          <View style={{height:50,width:38,borderRadius: 10,backgroundColor:'gray',alignContent:'center',alignItems:'center',justifyContent:'center'}}>
+          <View style={styles.otpContainer}>
             <TextInput
-              style={{height:50,color:"white",width:38,fontSize:22,textAlign:'center'}}
+              style={styles.numberTextContainer}
               maxLength={1}
               keyboardType="numeric"
               placeholderTextColor='#909090'
@@ -263,39 +266,119 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
           </View>
         </View>
       </View>
-
-          
       </View>
       
       <View style={{top:52,gap:8,flexDirection:'column',alignContent:'center',alignItems:'center',justifyContent:'space-between'}}>
-          <TouchableOpacity disabled={disabled} onPress={handleVerify} style={{width:120,height:42,borderRadius:22,backgroundColor:'#ACE1AF',justifyContent:'center',alignItems:'center'}}>
-              <Text style={{fontSize:18,color:'white'}}>Vertify</Text>
+          <TouchableOpacity disabled={disabled} onPress={handleVerify} style={styles.buttonHandle}>
+              <Text style={styles.textStyle2}>Vertify</Text>
           </TouchableOpacity>
       <View >
         {infailedOTP && (
-        <Text>Invalid or Experied OTP</Text>
+        <Text style={styles.textStyle4}>Invalid or Experied OTP</Text>
         )}
         {disabled && (
-        <Text numberOfLines={2}>
-          OTP request limit exceeded Please wait for {formatTime(timer)}
+        <Text style={styles.textStyle4} numberOfLines={2}>
+          OTP request limit exceeded, Please wait for {formatTime(timer)}
         </Text>
       )}
       </View>
       <View style={{flexDirection:'row',alignContent:'center',alignItems:'center',justifyContent:'space-between',gap:8}}>
-      <Text style={{fontSize:14,color:'gray'}}>Didn't receive the email ?</Text>
+      <Text style={styles.textStyle5}>Didn't receive the email ?</Text>
         <TouchableOpacity onPress={resendOTP} disabled={disabled} style={{justifyContent:'center',alignItems:'center'}}>
-            <Text style={{fontSize:14,color:'#7db149ff'}}>Click to resend</Text>
+            <Text style={styles.textStyle6}>Click to resend</Text>
         </TouchableOpacity>
        
       </View>
       
       </View>
-      {/* )
-    } */}
+    
   </View>
     </View>
   )
 }
 
 export default Vertify
+
+const { width } = Dimensions.get("window");
+
+const styles = StyleSheet.create({
+  headContainer: {
+  
+    
+  marginHorizontal: 24,
+   alignContent:'center',
+   alignItems:'flex-start'
+   
+  },
+  cardContainer: {
+    top:20,
+    height: width > 400 ? 250 : 180,
+    width: width > 400 ? 160 : 120,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    borderRadius: 20,
+  },
+  buttonBack: {
+    width: width > 400 ? 42 : 28,
+    aspectRatio: 1,
+    borderRadius: width > 400 ? 20 : 20,
+    alignItems: "center",
+    alignContent: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+  },
+  otpContainer: {
+    height: width > 400 ? 50 : 42,
+    width: width > 400 ? 38 : 34,
+    borderRadius: 10,
+    backgroundColor: "gray",
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  numberTextContainer: {
+    height: 50,
+    color: "white",
+    width: 38,
+    fontSize: width > 400 ? 22 : 18,
+    textAlign: "center",
+  },
+  buttonHandle: {
+    width: width > 400 ? 120 : 110,
+    height: width > 400 ? 42 : 32,
+    borderRadius: width > 400 ? 22 : 18,
+    backgroundColor: "#ACE1AF",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+
+  textStyle1: {
+    fontSize: width > 400 ? 42 : 28,
+    fontWeight: "600",
+  },
+  textStyle2: {
+    fontSize: width > 400 ? 18 : 12,
+    fontWeight: "400",
+  },
+  textStyle3: {
+    fontSize: width > 400 ? 20 : 12,
+    fontWeight: "400",
+  },
+  textStyle4: {
+    fontSize: width > 400 ? 16 : 12,
+    fontWeight: "400",
+  },
+  textStyle5: {
+    fontSize: width > 400 ? 14 : 10,
+    fontWeight: "400",
+  },
+  textStyle6: {
+    fontSize: width > 400 ? 14 : 10,
+    fontWeight: "400",
+    color: "#7db149ff",
+  },
+});
 
