@@ -45,10 +45,11 @@
     "react-native-screens": "~3.20.0",
     "react-native-shadow": "^1.2.2",
     "react-native-skeleton-placeholder": "^5.2.4",
-    "react-native-svg": "^13.4.0",
+    "react-native-svg": "13.4.0",
     "react-native-svg-path-gradient": "^0.4.0",
     "react-native-svg-transformer": "^1.0.0",
-    "react-native-web": "~0.18.10"
+    "react-native-web": "~0.18.10",
+    "update": "^0.7.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
