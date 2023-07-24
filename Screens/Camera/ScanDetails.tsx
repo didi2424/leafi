@@ -28,7 +28,10 @@ const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
                     </View>
                     <View style={styles.headContainerKind}>
                         <Text style={styles.textStyle}>
-                             Diseases Information
+                            Monstera
+                        </Text>
+                        <Text style={styles.textStyle}>
+                            Powdery Mildew
                         </Text>
                        
                     </View>
@@ -49,12 +52,12 @@ const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
                 </View>
 
                 <Text style={styles.textStyle2}>
-                    Monstera Disease
+                    Powdery Mildew
                 </Text>
                
                 
                 <Text style={styles.textStyle1} >
-                    Monstera can be vulnerable common houseplant disease. The most common disease that might affect your Monstera are leaf spot and root rot. Leaf Spot is Cousesd By a fungus and apperars as a yellowwish-brown spot that grows progressively larger until the entire leaf turn brown and fall off.
+                    Powdery mildew known as Fungal Disease appears as a white, powdery substance on the leaves. To treat it, remove the affected leaves and improve airflow arround the plants
                 </Text>
                 
              
@@ -73,6 +76,10 @@ const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
 
                 <Text style={styles.textStyle1} >
                     Monstera, also known as the Swiss cheese plant, is a popular tropical houseplant know for its beautiful and unique foilage. To keep your Monstra healthy and prevent disease consider the following prevention tips:
+                </Text>
+
+                <Text style={styles.textStyle2}>
+                    Similar Diseases
                 </Text>
             </View>
             
