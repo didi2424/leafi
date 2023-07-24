@@ -41,7 +41,7 @@ router.post('/', (req, res, next) => {
 
       const file = req.file;
       if (!file) {
-        return res.status(400).send({success: false, message: "Please Upload A File!"});;
+        return res.status(500).send({success: false, message: "Please Upload A File!"});;
       }
       req['filename'] = filename;
       controller.makePredictions(req, res, next);

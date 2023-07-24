@@ -8,6 +8,10 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var predictionRouter = require('./routes/predict');
 var app = express();
+const port = 3000
+const cors = require('cors');
+app.use(cors());
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -39,8 +43,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-const PORT = process.env.PORT || 9000;
-app.listen(PORT);
-console.log(`Running server at http://localhost:${PORT}`);
-
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
 module.exports = app;

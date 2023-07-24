@@ -1,7 +1,5 @@
-import { View, Text, Dimensions, FlatList,StyleSheet, TouchableOpacity, SafeAreaView, ScrollView  } from 'react-native'
+import { View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Smartpot from '../Screens/Smartpot/Smartpot';
 import SmartpotDevice from '../Screens/Smartpot/SmartpotDevice';
 
@@ -19,7 +17,6 @@ const SmartpotNavigator = () => {
   const handleDeviceData = (data: DeviceData) => {
     setDeviceData(data);
   };
-  
   
   return (
     <View>

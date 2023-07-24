@@ -10,18 +10,15 @@ type DeviceData = {
   room: string;
   devices: string
   name: string
-  
 };
-
-
 
 type Props = {
   onScreenChange: (screenNumber: number) => void;
   deviceData: DeviceData | null;
 };
+
 const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
-  const [selectedOption, setSelectedOption] = useState('1');
-  
+  const [selectedOption, setSelectedOption] = useState('1');  
   const devices = deviceData?.devices || [];
   const deviceCount = devices.length;
   const selectedDevice = devices.find(

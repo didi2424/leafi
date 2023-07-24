@@ -5,7 +5,6 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 const BG = '#C1FC49'
 const CARD_BG = '#91D600'
-const VIEW_BG = 'white'
 const CIRCLE_BG= '#86ba1c'
 const ICO_BG = '#C1FC49'
 type Props = {
@@ -141,8 +140,6 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
 
 export default Smartpot
 const { width,height } = Dimensions.get("window");
-
-
 const styles = StyleSheet.create({
   headContainerStyle: {
     flex: 0.6,
