@@ -10,8 +10,6 @@ type Props = {
     onDeviceData: (data: any) => void;
   };
 
-
-
 const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
     const handlePress = () => {
         onScreenChange(0)
@@ -50,14 +48,14 @@ const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
 
                     </View>
                 </View>
-
+                <ScrollView>
                 <Text style={styles.textStyle2}>
                     Powdery Mildew
                 </Text>
-               
                 
                 <Text style={styles.textStyle1} >
-                    Powdery mildew known as Fungal Disease appears as a white, powdery substance on the leaves. To treat it, remove the affected leaves and improve airflow arround the plants
+                    Powdery mildew known as Fungal Disease appears as a white, powdery substance on the leaves.
+                    Powdwey mildew tends to thrive in conditions with high humidity and moderate temoeratures, tipiccaly between 60 F to 80 F. The disease is more prevalent in crowded plantinsg and areas with poor air cicculation. it can spread through airbone spores, which facilitate its rapid transmission.
                 </Text>
                 
              
@@ -70,18 +68,38 @@ const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
                     Monstera can be vulnerable common houseplant disease. The most common disease that might affect your Monstera are leaf spot and root rot. Leaf Spot is Cousesd By a fungus and apperars as a yellowwish-brown spot that grows progressively larger until the entire leaf turn brown and fall off.
                 </Text>
 
-                <Text style={styles.textStyle2}>
-                    Prevention Tips
-                </Text>
-
-                <Text style={styles.textStyle1} >
-                    Monstera, also known as the Swiss cheese plant, is a popular tropical houseplant know for its beautiful and unique foilage. To keep your Monstra healthy and prevent disease consider the following prevention tips:
-                </Text>
+            
 
                 <Text style={styles.textStyle2}>
-                    Similar Diseases
+                    Diseases of Monstera
                 </Text>
+
+                <View style={{flexDirection:'row', gap:10}}>
+                    <View style={{width:120, height:34,backgroundColor:'yellow', borderRadius:18}}>
+
+                    </View>
+
+                    <View style={{width:120, height:34,backgroundColor:'yellow', borderRadius:18}}>
+
+                    </View>
+                </View>
+
+                <Text style={styles.textStyle2}>
+                    Smartpots
+                </Text>
+
+                <Text>
+                    Whats is Smartpot, Smart Pots, the innovative fabric pots, are the game-changer in the world of plant care. Designed to cater to the needs of modern gardeners, these revolutionary containers bring a plethora of benefits to your plants, making them thrive like never before.
+                </Text>
+
+                <View style={{height:40, backgroundColor:'yellow'}}>
+                    <View >
+
+                    </View>
+                </View>
+            </ScrollView>
             </View>
+            
             
         </View>
     </View>
@@ -105,7 +123,9 @@ const styles = StyleSheet.create({
     headContainerStyle2: {
         flex:1.7,
         top:10,
-        marginHorizontal:24
+        marginHorizontal:24,
+        marginBottom:90,
+        
     },
     cardImageContainer: {
         width: width > 400 ? 380 : 260,
@@ -121,7 +141,7 @@ const styles = StyleSheet.create({
         marginHorizontal:24,
         ...Platform.select({
             ios: {
-              paddingTop: 40,
+              paddingTop: 44,
             },
             android: {
               paddingTop: 28,
