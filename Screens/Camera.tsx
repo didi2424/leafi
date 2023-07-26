@@ -44,7 +44,7 @@ const Camera = ({onScreenChange,onDeviceData}: Props) => {
   
   const uploadImage = async () => {
     try {
-     
+
       const formData = new FormData();
       formData.append('file', {
         uri: imageUri,
@@ -63,70 +63,74 @@ const Camera = ({onScreenChange,onDeviceData}: Props) => {
       console.error('Error uploading image:', error);
     }
   };
- 
+
+  const pressHistory = () => {
+    console.log('Pressed History')
+  }
+  const pressCamera = () => {
+    console.log('Pressed Camera')
+  }
   return (
     <View style={{height:height,width:width}}>
      <View style={{flex:1,alignContent:'center',gap:10}}>
       <View style={styles.headContainerStyle}>
-        <Text style={styles.HeadtextStyle1}>Scan Plants</Text>
-        <Text style={styles.textStyle2}>Enjoy our scan plants</Text>
+        <View style={styles.headRow}>
+          <Text style={styles.HeadtextStyle1}>Scan Plants</Text>
+          <Text style={styles.textStyle2}>Enjoy our scan plants</Text>
+        </View>
+        <TouchableOpacity onPress={pressHistory}>
+          <FontAwesomeIcon size={24} color={CIRCLE_BG} icon={icon({ name: 'history'})} />
+        </TouchableOpacity>
       </View>
      
        {imageUri ? (
-          <View style={{alignContent:'center',justifyContent:'space-between',alignItems:'center'}}>
-        <View style={styles.container}>
-          <Image resizeMode='cover' source={{ uri: imageUri }} style={styles.containerImage}/>
-            <TouchableOpacity  style={styles.addImagesButton} onPress={selectImage}>
-              <FontAwesomeIcon size={20} color={BG} icon={icon({ name: 'image'})} /> 
-            </TouchableOpacity>
-        </View>
-        </View>
-      ) : (
         <View style={{alignContent:'center',justifyContent:'space-between',alignItems:'center'}}>
-        <TouchableOpacity style={styles.containerNoImage} onPress={selectImage}>
-          <Text>No Image Selected</Text>
-        </TouchableOpacity>
+          <View style={styles.container}>
+            <Image resizeMode='cover' source={{ uri: imageUri }} style={styles.containerImage}/>
+              <TouchableOpacity  style={styles.addImagesButton} onPress={selectImage}>
+                <FontAwesomeIcon size={20} color={BG} icon={icon({ name: 'image'})} /> 
+              </TouchableOpacity>
+          </View>
+          <View style={styles.scanContainer}>
+              
+              <TouchableOpacity style={styles.scanButton} onPress={uploadImage}>
+                <FontAwesomeIcon color={BG} icon={icon({ name: 'expand' })} /> 
+              </TouchableOpacity>
+      
+              {uploadResponse && (
+              <View>
+                <Text style={styles.textStyle1} >Class: {uploadResponse.class}</Text>
+                <Text style={styles.textStyle2} >Probability: {uploadResponse.probability} %</Text>
+              </View>
+              )}
+                <TouchableOpacity style={styles.bookMarkButton} onPress={handlePress} >
+                  <FontAwesomeIcon color={CIRCLE_BG} icon={icon({ name: 'bookmark' })} /> 
+                </TouchableOpacity>
+            </View>
+        </View>
+      ) : (
+        <View style={{alignContent:'center', justifyContent:'space-between',alignItems:'center'}}>
+          <TouchableOpacity style={styles.containerNoImage} onPress={selectImage}>
+            <Text>No Image Selected</Text>
+
+          </TouchableOpacity>
+
+          <Text style={styles.HeadtextStyle1}>Select Mode</Text>
+          
+          <View style={styles.ContainerSelect}>
+            <TouchableOpacity style={styles.selectModeButton} onPress={pressCamera}>
+              <FontAwesomeIcon size={18} color={BG} icon={icon({ name: 'camera'})} /> 
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.selectModeButton} onPress={selectImage}>
+              <FontAwesomeIcon size={18} color={BG} icon={icon({ name: 'image'})} /> 
+            </TouchableOpacity>  
+          </View>
         </View>
       )}
-    
-    <View>
-        
-        <Text style={styles.HeadtextStyle1}>Select Mode</Text>
-  
-          <View style={styles.ContainerSelect}>
-            <View style={styles.selectModeButton}>
-              <FontAwesomeIcon size={18} color={BG} icon={icon({ name: 'camera'})} /> 
-            </View>
-            <View style={styles.selectModeButton}>
-              <FontAwesomeIcon size={18} color={BG} icon={icon({ name: 'image'})} /> 
-            </View>  
           </View>
-  
-          </View>
-            {imageUri ? (
-                <View style={styles.scanContainer}>
-              
-                <TouchableOpacity style={styles.scanButton} onPress={uploadImage}>
-                  <FontAwesomeIcon color={BG} icon={icon({ name: 'expand' })} /> 
-                </TouchableOpacity>
-        
-                {uploadResponse && (
-                <View>
-                  <Text style={styles.textStyle1}>Class: {uploadResponse.class}</Text>
-                  <Text style={styles.textStyle2} >Probability: {uploadResponse.probability} %</Text>
-                </View>
-                )}
-           <TouchableOpacity style={styles.bookMarkButton} onPress={handlePress} >
-             <FontAwesomeIcon color={CIRCLE_BG} icon={icon({ name: 'bookmark' })} /> 
-           </TouchableOpacity>
-   
-       </View>
-   
-      ) : (
-          <Text>Please press for select an images</Text>        
-      )}
-
-      </View>
+          
+        <View>
+        </View>
       </View>
   )
 }
@@ -139,21 +143,26 @@ const BG = '#C1FC49'
 const CIRCLE_BG= '#86ba1c'
 const styles = StyleSheet.create({
   headContainerStyle: {
-    flex: 0.4,
+    flex: 0.2,
     width: width,
-    alignContent: "center",
+    alignContent: 'center',
     backgroundColor: BG,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    justifyContent:'space-between',
+    alignItems:'center',
+    flexDirection:'row',
+    borderBottomRightRadius: 24,
     paddingHorizontal: 24,
     ...Platform.select({
       ios: {
         paddingTop: 40,
       },
       android: {
-        paddingTop: 30,
+        paddingTop: 20,
       }
     })
+  },
+  headRow: {
+   flexDirection:'column'
   },
   headTextStyle: {
     fontSize: width > 400 ? 32 : 22,

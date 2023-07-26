@@ -119,18 +119,35 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
             </View>
         </View>
 
-        <View style={{flex:3,justifyContent:'center',alignItems:'center',top:20}}>
-            <FlatList
-            horizontal={false}
-            numColumns={2}
-            data={data3}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.room}
-            contentContainerStyle={{
-                alignSelf: 'flex-start',
-            }}
-            />
+       
+
+        <View style={{flex:3,marginHorizontal:24,gap:10,top:20}}>
+          <View style={{justifyContent:'center'}}>
+                    <Text style={styles.headTextStyle}>Devices</Text>
+          </View>
+
+          <View style={{justifyContent:'center',alignItems:'center',top:8}}>
+              <FlatList
+              horizontal={false}
+              numColumns={2}
+              data={data3}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.room}
+              contentContainerStyle={{
+                  alignSelf: 'flex-start',
+              }}
+              />
+
+          </View>
+
+          <View style={{justifyContent:'center'}}>
+          <Text style={styles.headTextStyle}>Alert</Text>
+          </View>
         </View>
+
+        
+        
+        
     </View>
     </View>
    

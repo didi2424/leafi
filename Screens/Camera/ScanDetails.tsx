@@ -3,14 +3,41 @@ import React, { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Ionicons } from '@expo/vector-icons';
-
 type Props = {
     onScreenChange: (screenNumber: number) => void;
     onDeviceData: (data: any) => void;
   };
 
 const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
+
+    const data3 = [
+        {
+          Diseases: 'Monstera',
+          devices: [
+            { id: '1', name: 'Powdery Mildew', description:'Monstera',light: '70',temp: '27',soil: '56',RH: '3',Rlight:'20-70',Rtemp:'20-30',timeAdd:'2023-04-03T15:50:58.342Z'},
+            { id: '2', name: 'Leafi Wood Walnut',kind:'Spider',light: '72',temp: '26',soil: '76',RH: '2',Rlight:'20-70',Rtemp:'20-35',timeAdd:'2023-04-15T15:50:58.342Z' },
+            { id: '3', name: 'Leafi Marble Liquid',kind:'Ric Rac',light: '80',temp: '28',soil: '67',RH: '4',Rlight:'20-70',Rtemp:'32-46',timeAdd:'2023-05-03T15:50:58.342Z' },
+            { id: '4', name: 'Leafi Marble Mozaic',kind:'Monstera',light: '90',temp: '28',soil: '78',RH: '8',Rlight:'20-70',Rtemp:'20-32',timeAdd:'2023-05-04T15:50:58.342Z' },
+          ],
+        },
+        {
+        Diseases: 'Ric Rac',
+          devices: [
+            { id: '1', name: 'Leafi Marble Liquid',kind:'Ric Rac',light: '80',temp: '28',soil: '67',RH: '4',Rlight:'20-70' },
+            { id: '2', name: 'Leafi Marble Mozaic',kind:'Monstera',light: '90',temp: '28',soil: '78',RH: '8',Rlight:'20-70' },
+          ],
+        },
+        {
+          room: 'Living Room',
+          devices: [
+            { id: '1', name: 'Leafi Wood Walnut',kind:'Monstera',light: '70',temp: '27',soil: '56',RH: '3',Rlight:'20-70' },
+            { id: '2', name: 'Leafi Wood Mozaic',kind:'Monstera',light: '72',temp: '26',soil: '76',RH: '2.6',Rlight:'20-70' },
+            { id: '3', name: 'Leafi Marble Liquid',kind:'Ric Rac',light: '80',temp: '28',soil: '67',RH: '4',Rlight:'20-70' },
+    
+          ],
+        }
+      ];
+
     const handlePress = () => {
         onScreenChange(0)
       };
@@ -26,9 +53,9 @@ const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
                     </View>
                     <View style={styles.headContainerKind}>
                         <Text style={styles.textStyle}>
-                            Monstera
+                            Scan Details
                         </Text>
-                        <Text style={styles.textStyle}>
+                        <Text style={styles.textStyle3}>
                             Powdery Mildew
                         </Text>
                        
@@ -43,12 +70,13 @@ const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
             </View>
            
             <View style={styles.headContainerStyle2}>
+            <ScrollView style={{top:10,}} showsVerticalScrollIndicator={false}>
                 <View style={{justifyContent:'center',alignItems:'center'}}>
                     <View style={styles.cardImageContainer}>
 
                     </View>
                 </View>
-                <ScrollView>
+                
                 <Text style={styles.textStyle2}>
                     Powdery Mildew
                 </Text>
@@ -57,23 +85,34 @@ const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
                     Powdery mildew known as Fungal Disease appears as a white, powdery substance on the leaves.
                     Powdwey mildew tends to thrive in conditions with high humidity and moderate temoeratures, tipiccaly between 60 F to 80 F. The disease is more prevalent in crowded plantinsg and areas with poor air cicculation. it can spread through airbone spores, which facilitate its rapid transmission.
                 </Text>
-                
-             
 
                 <Text style={styles.textStyle2}>
                     Treatment and Management
                 </Text>
 
+                <View style={{gap:10}}>
                 <Text style={styles.textStyle1} >
                     Monstera can be vulnerable common houseplant disease. The most common disease that might affect your Monstera are leaf spot and root rot. Leaf Spot is Cousesd By a fungus and apperars as a yellowwish-brown spot that grows progressively larger until the entire leaf turn brown and fall off.
                 </Text>
 
-            
+                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
 
+                    <View style={{width:120, height:40, alignContent:'center', backgroundColor:'yellow', borderRadius:20}}> 
+                    </View>
+
+                    <View style={{width:120, height:40, alignContent:'center', backgroundColor:'yellow', borderRadius:20}}> 
+                    </View>
+                    <View style={{width:120, height:40, alignContent:'center', backgroundColor:'yellow', borderRadius:20}}> 
+                    </View>
+
+                </ScrollView>
+                </View>
+
+                <View style={{gap:8}}>
                 <Text style={styles.textStyle2}>
                     Diseases of Monstera
                 </Text>
-
+                <Text style={styles.textStyle1} >Feeling Free? Discover another Disease of Monstera Plants</Text>
                 <View style={{flexDirection:'row', gap:10}}>
                     <View style={{width:120, height:34,backgroundColor:'yellow', borderRadius:18}}>
 
@@ -83,19 +122,22 @@ const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
 
                     </View>
                 </View>
+                </View>
 
+                <View style={{gap:8}}> 
                 <Text style={styles.textStyle2}>
                     Smartpots
                 </Text>
 
-                <Text>
+                <Text style={styles.textStyle1}>
                     Whats is Smartpot, Smart Pots, the innovative fabric pots, are the game-changer in the world of plant care. Designed to cater to the needs of modern gardeners, these revolutionary containers bring a plethora of benefits to your plants, making them thrive like never before.
                 </Text>
 
-                <View style={{height:40, backgroundColor:'yellow'}}>
+                <View style={{height:80, borderRadius:20, backgroundColor:'yellow'}}>
                     <View >
 
                     </View>
+                </View>
                 </View>
             </ScrollView>
             </View>
@@ -118,13 +160,12 @@ const styles = StyleSheet.create({
     },
     headContainerStyle: {
         flex:0.2,
-
     },
     headContainerStyle2: {
         flex:1.7,
         top:10,
         marginHorizontal:24,
-        marginBottom:90,
+        marginBottom:110,
         
     },
     cardImageContainer: {
@@ -169,6 +210,10 @@ const styles = StyleSheet.create({
     textStyle1: {
         fontSize: width > 400 ? 16 :12,
         fontWeight:'300'
+    },
+    textStyle3: {
+        fontSize: width > 400 ? 18 :16,
+        fontWeight:'400'
     },
     textStyle2: {
         fontSize: width > 400 ? 32 : 24,

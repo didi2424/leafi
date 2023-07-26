@@ -26,3 +26,7 @@ New-NetFireWallRule -DisplayName 'Expo WSL2 Ports' -Direction Inbound -LocalPort
 New-NetFireWallRule -DisplayName 'Expo WSL2 Ports' -Direction Outbound -LocalPort 3000 -Action Allow -Protocol TCP;
 netsh interface portproxy add v4tov4 listenport=3000 listenaddress=0.0.0.0 connectport=3000 connectaddress=$($(wsl hostname -I).Trim());
 Invoke-Expression "netsh interface portproxy show v4tov4"
+
+
+In case using Android Emulator but cannot connect to emulator
+
