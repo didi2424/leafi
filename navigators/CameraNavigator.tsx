@@ -2,7 +2,7 @@ import { View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import ScanDetails from '../Screens/Camera/ScanDetails';
 import SmartpotDevice from '../Screens/Smartpot/SmartpotDevice';
-import Camera from '../Screens/Camera';
+import Cameras from '../Screens/Cameras';
 
 
 type DeviceData = {
@@ -23,7 +23,7 @@ const CameraNavigator = () => {
   return (
     <View>
       {selectedScreen === 0 ? (
-            <Camera onScreenChange={handleScreenChange} onDeviceData={handleDeviceData}/> 
+            <Cameras onScreenChange={handleScreenChange} onDeviceData={handleDeviceData}/> 
         ) : selectedScreen === 1 ? (
             <ScanDetails onScreenChange={handleScreenChange} onDeviceData={deviceData}  />
         ): null}

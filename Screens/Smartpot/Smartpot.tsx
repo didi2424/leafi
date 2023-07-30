@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
         paddingTop: 40,
       },
       android: {
-        paddingTop: 20,
+        paddingTop: 38,
       }
     })
   },

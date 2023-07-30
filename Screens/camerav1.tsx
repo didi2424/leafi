@@ -109,24 +109,25 @@ const Camera = ({onScreenChange,onDeviceData}: Props) => {
             </View>
         </View>
       ) : (
-        <View style={{alignContent:'center', justifyContent:'space-between',alignItems:'center'}}>
-          <TouchableOpacity style={styles.containerNoImage} onPress={selectImage}>
-            <Text>No Image Selected</Text>
+            <View style={{alignContent:'center', justifyContent:'space-between',alignItems:'center',gap:20}}>
+              <TouchableOpacity style={styles.containerNoImage} onPress={selectImage}>
+                <Text>No Image Selected</Text>
 
-          </TouchableOpacity>
-
-          <Text style={styles.HeadtextStyle1}>Select Mode</Text>
-          
-          <View style={styles.ContainerSelect}>
-            <TouchableOpacity style={styles.selectModeButton} onPress={pressCamera}>
-              <FontAwesomeIcon size={18} color={BG} icon={icon({ name: 'camera'})} /> 
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.selectModeButton} onPress={selectImage}>
-              <FontAwesomeIcon size={18} color={BG} icon={icon({ name: 'image'})} /> 
-            </TouchableOpacity>  
-          </View>
-        </View>
-      )}
+              </TouchableOpacity>
+              
+              <View style={styles.ContainerSelect}>
+                <TouchableOpacity style={styles.selectModeButton} onPress={pressCamera}>
+                  <FontAwesomeIcon size={18} color={BG} icon={icon({ name: 'camera'})} /> 
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.selectModeButton} onPress={selectImage}>
+                  <FontAwesomeIcon size={18} color={BG} icon={icon({ name: 'image'})} /> 
+                </TouchableOpacity>  
+                <TouchableOpacity style={styles.bookMarkButton} onPress={handlePress} >
+                  <FontAwesomeIcon color={CIRCLE_BG} icon={icon({ name: 'bookmark' })} /> 
+                </TouchableOpacity>
+              </View>
+            </View>
+            )}
           </View>
           
         <View>
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
  
   containerNoImage: {
     height: width > 400 ? 360 : 260,
-    width: width > 400 ? 360 : 260,
+    width: width,
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',

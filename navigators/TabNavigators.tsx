@@ -6,7 +6,7 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 import Home from '../Screens/Home'
 import ProfileNavigator from './ProfileNavigator'
-import Camera from '../Screens/Camera'
+import Cameras from '../Screens/Cameras'
 import SmartpotNavigator from './SmartpotNavigator';
 import CameraNavigator from './CameraNavigator';
 import { faLeftLong } from '@fortawesome/free-solid-svg-icons';
@@ -40,7 +40,7 @@ const TabNavigators = () => {
                 alignContent:'center',
                 ...Platform.select({
                   ios: {
-                    height: width > 400 ? 78 : 60,
+                    height: width > 400 ? 80 : 80,
                   },
                   android: {
                     height: width > 400 ? 70 : 60,
@@ -146,8 +146,9 @@ const { width } = Dimensions.get("window");
 const BG_VIEW = "#C1FC49"
 const styles = StyleSheet.create({
   icoContainer1: {
+    top:20,
     position: 'absolute',
-    height: width > 400 ? 42 : 28,
+    height: width > 400 ? 38 : 28,
     width: width > 400 ? 60 : 42,
     borderRadius: 20,
     justifyContent: 'center',
@@ -158,6 +159,7 @@ const styles = StyleSheet.create({
   },
   
   icoContainer: {
+   
     position: 'absolute',
     height: '100%',
     width: '100%',

@@ -14,7 +14,7 @@ const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
         {
           Diseases: 'Monstera',
           devices: [
-            { id: '1', name: 'Powdery Mildew', description:'Monstera',light: '70',temp: '27',soil: '56',RH: '3',Rlight:'20-70',Rtemp:'20-30',timeAdd:'2023-04-03T15:50:58.342Z'},
+            { id: '1', name: 'Powdery Mildew', kind:'Monstera'},
             { id: '2', name: 'Leafi Wood Walnut',kind:'Spider',light: '72',temp: '26',soil: '76',RH: '2',Rlight:'20-70',Rtemp:'20-35',timeAdd:'2023-04-15T15:50:58.342Z' },
             { id: '3', name: 'Leafi Marble Liquid',kind:'Ric Rac',light: '80',temp: '28',soil: '67',RH: '4',Rlight:'20-70',Rtemp:'32-46',timeAdd:'2023-05-03T15:50:58.342Z' },
             { id: '4', name: 'Leafi Marble Mozaic',kind:'Monstera',light: '90',temp: '28',soil: '78',RH: '8',Rlight:'20-70',Rtemp:'20-32',timeAdd:'2023-05-04T15:50:58.342Z' },
@@ -141,8 +141,6 @@ const ScanDetails = ({onScreenChange,onDeviceData}: Props) => {
                 </View>
             </ScrollView>
             </View>
-            
-            
         </View>
     </View>
     )
@@ -220,6 +218,4 @@ const styles = StyleSheet.create({
         fontWeight:'700',
         color: TEXT_COLOR
     }
-
-   
 })
