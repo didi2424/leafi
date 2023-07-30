@@ -1,12 +1,17 @@
-import { View, Text,Image, StyleSheet,Dimensions, Platform, ImageBackground  } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { View, Text,Image, StyleSheet,Dimensions, Platform, ImageBackground, ScrollView  } from 'react-native'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, CameraType } from 'expo-camera';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
-import api from '../api';
+import {
+  BottomSheetModal,
+} from '@gorhom/bottom-sheet';
 
+import CustomBackdrop from "../components/Filter/CustomBackdrop";
+import CustomHandle from "../components/Filter/CustomHandle";
+import api from '../api';
 type Props = {
   onScreenChange: (screenNumber: number) => void;
   onDeviceData: (data: any) => void;
@@ -19,7 +24,12 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [flashMode, setFlashMode] = useState<string>('off');
-
+  const openDetachModalRef = useRef<BottomSheetModal>(null);
+  const openDetachuModal = useCallback(()=> {
+    console.log('prees details')
+    openDetachModalRef.current?.present();
+  },[])
+  const snapPoints = useMemo(() => ['25%', '85%'], []);
 
   if (!permission) {
     // Camera permissions are still loading
@@ -46,6 +56,7 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
       setFlashMode('on');
       console.log('on');
     } else if (flashMode === 'on') {
+      console.log('auto');
       setFlashMode('auto');
     } else {
       setFlashMode('off');
@@ -118,12 +129,25 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
   const resetImage = () => {
     setImageUri(null);
   };
+
  
   
   return (
     <View style={{height:height,width:width}}>
      <View style={{flex:1,alignContent:'center'}}>
-      
+     <BottomSheetModal
+        snapPoints={snapPoints} 
+        index={0} 
+        ref={openDetachModalRef}
+        backdropComponent={props => <CustomBackdrop {...props} />}
+        handleComponent={props => <CustomHandle {...props}/>}
+      >
+      <View>
+        <ScrollView>
+          <Text>bala</Text>
+        </ScrollView>
+      </View>
+      </BottomSheetModal>
      
        {imageUri ? (
         <View style={{alignContent:'center',alignItems:'center',flex: 1}}>
@@ -138,11 +162,20 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
                         <FontAwesomeIcon size={24} color={CIRCLE_BG} icon={icon({ name: 'history'})} />
                       </TouchableOpacity>
               </View>
+              <View style={styles.ContainerSelect}>
 
-             
-                  <TouchableOpacity style={styles.retakeButtton} onPress={resetImage}>
+              <TouchableOpacity style={styles.retakeButtton} onPress={resetImage}>
                     <Text>Retake</Text>
                   </TouchableOpacity>
+
+              
+
+              <TouchableOpacity style={styles.showDetailsButtton}  onPress={() => openDetachuModal()}>
+                    <Text>Details</Text>
+              </TouchableOpacity>
+              </View>
+             
+                 
             
               </ImageBackground>
 
@@ -160,11 +193,15 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
                         <FontAwesomeIcon size={24} color={CIRCLE_BG} icon={icon({ name: 'history'})} />
                       </TouchableOpacity>
                   </View>
+
+                  <Image  source={require('../assets/cameraBox.png')}></Image>
+
                   <View style={styles.ContainerSelect}>
 
                       <TouchableOpacity style={styles.FlashButton} onPress={toggleFlash}>
-                        <FontAwesomeIcon size={18} color={BG} icon={icon({ name: 'bolt'})} />
-                        <FontAwesomeIcon size={22} color={BG} icon={icon({ name: 'bolt'})}  /> 
+
+                      <FontAwesomeIcon  size={22} color={flashMode === 'auto' ? BG  : flashMode === 'on' ? 'yellow' : 'green'} icon={icon({ name: 'bolt'})} />
+ 
                       </TouchableOpacity> 
 
                       <TouchableOpacity style={styles.takePhotosButton} onPress={takePicture}>
@@ -209,7 +246,7 @@ const styles = StyleSheet.create({
   },
 
   headContainerStyle: {
-    flex: 0.1,
+    height:120,
     width: width,
     alignContent: 'center',
     backgroundColor: BG,
@@ -286,9 +323,17 @@ const styles = StyleSheet.create({
     alignContent:'center',
   },
   retakeButtton: {
-    backgroundColor:CIRCLE_BG,
-    width:60,
-    aspectRatio:1,
+    backgroundColor:BG,
+    width:90,
+    height:32,
+    borderRadius:30,
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  showDetailsButtton: {
+    backgroundColor:BG,
+    width:90,
+    height:32,
     borderRadius:30,
     alignItems:'center',
     justifyContent:'center'
