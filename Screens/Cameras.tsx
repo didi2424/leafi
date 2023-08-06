@@ -9,13 +9,13 @@ import {
   BottomSheetModal,
 } from '@gorhom/bottom-sheet';
 
-import CustomBackdrop from "../components/Filter/CustomBackdrop";
-import CustomHandle from "../components/Filter/CustomHandle";
 import api from '../api';
 type Props = {
   onScreenChange: (screenNumber: number) => void;
   onDeviceData: (data: any) => void;
 };
+
+import BottomSheetDetails from './Camera/BottomSheetDetails';
 
 const Cameras = ({onScreenChange,onDeviceData}: Props) => {
   const [imageUri, setImageUri] = useState<null | string>(null);
@@ -29,7 +29,7 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
     console.log('prees details')
     openDetachModalRef.current?.present();
   },[])
-  const snapPoints = useMemo(() => ['25%', '85%'], []);
+  const snapPoints = useMemo(() => [ height*0.50, height*0.75], []);
 
   if (!permission) {
     // Camera permissions are still loading
@@ -130,24 +130,14 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
     setImageUri(null);
   };
 
- 
+
   
   return (
     <View style={{height:height,width:width}}>
      <View style={{flex:1,alignContent:'center'}}>
-     <BottomSheetModal
-        snapPoints={snapPoints} 
-        index={0} 
-        ref={openDetachModalRef}
-        backdropComponent={props => <CustomBackdrop {...props} />}
-        handleComponent={props => <CustomHandle {...props}/>}
-      >
-      <View>
-        <ScrollView>
-          <Text>bala</Text>
-        </ScrollView>
-      </View>
-      </BottomSheetModal>
+    
+
+      <BottomSheetDetails snapPoints={snapPoints} ref={openDetachModalRef} />
      
        {imageUri ? (
         <View style={{alignContent:'center',alignItems:'center',flex: 1}}>
@@ -162,17 +152,17 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
                         <FontAwesomeIcon size={24} color={CIRCLE_BG} icon={icon({ name: 'history'})} />
                       </TouchableOpacity>
               </View>
-              <View style={styles.ContainerSelect}>
 
+              <View style={styles.ContainerSelect}>
               <TouchableOpacity style={styles.retakeButtton} onPress={resetImage}>
                     <Text>Retake</Text>
                   </TouchableOpacity>
 
-              
 
               <TouchableOpacity style={styles.showDetailsButtton}  onPress={() => openDetachuModal()}>
                     <Text>Details</Text>
               </TouchableOpacity>
+         
               </View>
              
                  
@@ -289,6 +279,7 @@ const styles = StyleSheet.create({
   },
   ContainerSelect: {
     paddingHorizontal:80,
+    bottom: width > 400 ? 48 : 12,
     width: width, 
     flexDirection: 'row',
     alignItems: 'center',
@@ -324,16 +315,16 @@ const styles = StyleSheet.create({
   },
   retakeButtton: {
     backgroundColor:BG,
-    width:90,
-    height:32,
+    width:width > 400 ? 108 : 90,
+    height:width > 400 ? 42 : 32,
     borderRadius:30,
     alignItems:'center',
     justifyContent:'center'
   },
   showDetailsButtton: {
     backgroundColor:BG,
-    width:90,
-    height:32,
+    width:width > 400 ? 108 : 90,
+    height:width > 400 ? 42 : 32,
     borderRadius:30,
     alignItems:'center',
     justifyContent:'center'

@@ -6,6 +6,7 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
   useDerivedValue,
+  interpolateColor,
 } from "react-native-reanimated";
 import { toRad } from "react-native-redash";
 
@@ -36,7 +37,7 @@ const Handle: React.FC<HandleProps> = ({ style, animatedIndex }) => {
   const containerStyle = useMemo(() => [styles.header, style], [style]);
   const containerAnimatedStyle = useAnimatedStyle(() => {
 
-    
+ 
     const borderTopRadius = interpolate(
       animatedIndex.value,
       [1, 2],
@@ -106,10 +107,19 @@ const Handle: React.FC<HandleProps> = ({ style, animatedIndex }) => {
   });
   //#endregion
 
+  const containerAnimatedStyleBG = useAnimatedStyle(() => ({
+    // @ts-ignore
+    backgroundColor: interpolateColor(
+      animatedIndex.value,
+      [0, 1],
+      ["#eeeeee", "#eeeeee"]
+    ),
+  }));
+
   // render
   return (
     <Animated.View
-      style={[containerStyle, containerAnimatedStyle]}
+      style={[containerStyle, containerAnimatedStyle,containerAnimatedStyleBG]}
       renderToHardwareTextureAndroid={false}
     >
       <Animated.View style={[leftIndicatorStyle, leftIndicatorAnimatedStyle]} />
@@ -127,10 +137,9 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "white",
     paddingVertical: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: "#fff",
+    // borderBottomWidth: 1,
+    // borderBottomColor: "#fff",
 
   },
   indicator: {
