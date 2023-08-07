@@ -6,7 +6,7 @@ import Register from "../Screens/Profile/Register";
 import Login from "../Screens/Profile/Login";
 import Vertify from "../Screens/Profile/Vertify";
 import UserProfile from "../Screens/Profile/UserProfile";
-
+import UserSettings from "../Screens/Profile/UserSettings";
 type RegistrationData = {
     name: string;
     email: string;
@@ -14,7 +14,7 @@ type RegistrationData = {
 
   
 const ProfileNavigator = () => {
-    const [selectedScreen, setSelectedScreen] = useState(0);
+    const [selectedScreen, setSelectedScreen] = useState(4);
     const [registerData, setRegisterData] = useState<RegistrationData | null>(null);
     const handleViewPress = () => {
         Keyboard.dismiss();
@@ -32,14 +32,16 @@ const ProfileNavigator = () => {
         <TouchableWithoutFeedback onPress={handleViewPress}>
             
         {selectedScreen === 0 ? (
-            <UserProfile /> 
+            <UserProfile onScreenChange={handleScreenChange}/> 
         ) : selectedScreen === 1 ? (
             <Register onScreenChange={handleScreenChange} onRegisterData={handleRegisterData} />
             ) : selectedScreen === 2 ? (
             <Login onScreenChange={handleScreenChange} onRegisterData={handleRegisterData} />
             ) : selectedScreen === 3 ? (
             <Vertify registerData={registerData} onScreenChange={handleScreenChange} />
-            ) : null}
+            ) :  selectedScreen === 4 ? (
+            <UserSettings  onScreenChange={handleScreenChange} />
+              ) : null}
           </TouchableWithoutFeedback>
           </SafeAreaView >
    

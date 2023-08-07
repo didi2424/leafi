@@ -3,9 +3,12 @@ import React from 'react'
 import { Ionicons } from '@expo/vector-icons'; 
 import { ScrollView } from 'react-native-gesture-handler';
 
+type Props = {
+  onScreenChange: (screenNumber: number) => void;
+ 
+};
 
-
-const UserProfile = () => {
+const UserProfile = ({ onScreenChange  }: Props) => {
   
   const data = [
     { id: '1', name: 'Item 1',date: '2024-05-03T15:50:58.342Z',icon:'add-circle-sharp',action:'Add Smartpot',results:'Leafi Marble Mozaic' },
@@ -17,6 +20,9 @@ const UserProfile = () => {
     // Add more items as needed
   ];
   const reversedData = [...data].reverse();
+  const toUserSettings =() => {
+    onScreenChange(4)
+  }
 
   const renderItem = ({ item, index, data }: { item: typeof data[number]; index: number; data: typeof reversedData;icon: string }) => {
     const dateOnly = new Date(item.date).toLocaleDateString('en-US', { day: 'numeric' });
@@ -25,7 +31,7 @@ const UserProfile = () => {
   
     const isSameDay = index > 0 && new Date(item.date).getDate() === new Date(data[index - 1].date).getDate();
     const isNextDayDifferent = index < data.length - 1 && new Date(item.date).getDate() !== new Date(data[index + 1].date).getDate();
-  
+    
     return (
       <View style={{ padding: 2 }}>
         {!isSameDay && (
@@ -139,9 +145,9 @@ const UserProfile = () => {
             alignItems: "center",
             justifyContent:"space-between",paddingHorizontal:24}}>
         <Text style={styles.textStyle1}>Profile</Text>
-        <View style={{width:(Dimensions.get('window').width > 400 ? 40 : 30),aspectRatio:1,borderRadius:20,borderWidth:1,alignContent:'center',justifyContent:'center',alignItems:'center',borderColor:'#75af02'}}>
+        <TouchableOpacity style={{width:(Dimensions.get('window').width > 400 ? 40 : 30),aspectRatio:1,borderRadius:20,borderWidth:1,alignContent:'center',justifyContent:'center',alignItems:'center',borderColor:'#75af02'}} onPress={toUserSettings}>
           <Ionicons name="settings-sharp" size={(Dimensions.get('window').width > 400 ? 28 : 20)} color="#75af02" />
-        </View>
+        </TouchableOpacity>
       </View>
 
     <View style={{alignContent: 'space-between',alignItems:'center'}}> 
@@ -221,7 +227,7 @@ const styles = StyleSheet.create({
         paddingTop: 40,
       },
       android: {
-        paddingTop: 80,
+        paddingTop: 90,
       },
     }),
   },
