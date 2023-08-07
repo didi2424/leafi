@@ -6,10 +6,9 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 import Home from '../Screens/Home'
 import ProfileNavigator from './ProfileNavigator'
-import Cameras from '../Screens/Cameras'
+
 import SmartpotNavigator from './SmartpotNavigator';
 import CameraNavigator from './CameraNavigator';
-import { faLeftLong } from '@fortawesome/free-solid-svg-icons';
 
 export type TabsStackParamList = {
     Home: undefined

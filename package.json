@@ -20,10 +20,12 @@
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
+    "@react-navigation/stack": "^6.3.17",
     "axios": "^1.4.0",
     "babel-plugin-macros": "^3.1.0",
     "expo": "~48.0.18",
     "expo-blur": "~12.2.2",
+    "expo-camera": "~13.2.1",
     "expo-image-picker": "~14.1.1",
     "expo-linear-gradient": "^12.1.2",
     "expo-permissions": "~14.1.1",
@@ -51,8 +53,7 @@
     "react-native-svg-path-gradient": "^0.4.0",
     "react-native-svg-transformer": "^1.0.0",
     "react-native-web": "~0.18.10",
-    "update": "^0.7.4",
-    "expo-camera": "~13.2.1"
+    "update": "^0.7.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

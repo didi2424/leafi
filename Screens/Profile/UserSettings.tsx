@@ -7,19 +7,41 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 type Props = {
     onScreenChange: (screenNumber: number) => void;
-   
   };
 
-const UserSettings = ({ onScreenChange  }: Props) => {
+const UserSettings = ({ onScreenChange }: Props) => {
     const BackTouserProfile = () => {
         onScreenChange(0)
     }
+    const toAccountInformation = () => {
+        onScreenChange(5)
+    }
+    const toAddressInformation = () => {
+        onScreenChange(6)
+    }
+    const toAppereance = () => {
+        onScreenChange(7)
+    }
+    const toNotification = () => {
+        onScreenChange(0)
+    }
+    const toSupport = () => {
+        
+    }
+    const toFaq = () => {
+        
+    }
+    const toToS = () => {
+        
+    }
+
+
     const pressLogOut = () => {
         //onScreenChange(1)
         console.log('press logout')
     }
   return (
-    <View style={{flex:1,gap:10,paddingBottom:30}}>
+    <View style={{height:height,gap:10,paddingBottom:30}}>
         <View style={styles.headStyle}>
             
         <TouchableOpacity onPress={BackTouserProfile}>
@@ -39,38 +61,50 @@ const UserSettings = ({ onScreenChange  }: Props) => {
 
             <View style={styles.contentButtonMenu}>
                 <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
-                    <FontAwesomeIcon icon={icon({ name: 'user' })} style={{ color: '#7db149ff' }}  /> 
+                    <FontAwesomeIcon icon={icon({ name: 'user' })} style={{ color: ICON_COLOR }}  /> 
                     <Text style={styles.textStyle1}>Account information</Text>
                 </View>
-                    
-                <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: '#7db149ff' }}  /> 
+                <TouchableOpacity style={styles.IconMenustyles} onPress={toAccountInformation}>
+                    <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: ICON_COLOR }}  /> 
+                </TouchableOpacity>
+                
             </View>
 
             <View style={styles.contentButtonMenu}>
                 <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
-                    <FontAwesomeIcon icon={icon({ name: 'location-crosshairs' })} style={{ color: '#7db149ff' }}  /> 
+                    <FontAwesomeIcon icon={icon({ name: 'location-crosshairs' })} style={{ color: ICON_COLOR }}  /> 
                     <Text style={styles.textStyle1}>Address information</Text>
                 </View>
-                    
-                <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: '#7db149ff' }}  /> 
+                
+                <TouchableOpacity style={styles.IconMenustyles} onPress={toAddressInformation}>
+                    <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: ICON_COLOR }}/>
+                </TouchableOpacity>
+                 
             </View>
 
             <View style={styles.contentButtonMenu}>
                 <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
-                    <FontAwesomeIcon icon={icon({ name: 'gear' })} style={{ color: '#7db149ff' }}  /> 
+                    <FontAwesomeIcon icon={icon({ name: 'gear' })} style={{ color: ICON_COLOR }}  /> 
                     <Text style={styles.textStyle1}>Appereance</Text>
                 </View>
+
+                <TouchableOpacity style={styles.IconMenustyles} onPress={toAppereance}>
+                    <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: ICON_COLOR }}/> 
+                    </TouchableOpacity>
                     
-                <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: '#7db149ff' }}  /> 
+                
             </View>
 
             <View style={styles.contentButtonMenu}>
                 <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
-                    <FontAwesomeIcon icon={icon({ name: 'bell' })} style={{ color: '#7db149ff'}}  /> 
+                    <FontAwesomeIcon icon={icon({ name: 'bell' })} style={{ color: ICON_COLOR}}  /> 
                     <Text style={styles.textStyle1}>Notification</Text>
                 </View>
                     
-                <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: '#7db149ff'}}  /> 
+                <View style={styles.IconMenustyles}>
+                    <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: ICON_COLOR}}/> 
+                </View>
+               
             </View>
 
         </View>
@@ -80,29 +114,38 @@ const UserSettings = ({ onScreenChange  }: Props) => {
 
             <View style={styles.contentButtonMenu}>
                 <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
-                    <FontAwesomeIcon icon={icon({ name: 'bell' })} style={{ color: '#7db149ff'}}  /> 
+                    <FontAwesomeIcon icon={icon({ name: 'info' })} style={{ color: ICON_COLOR}}  /> 
                     <Text style={styles.textStyle1}>Support</Text>
                 </View>
                     
-                <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: '#7db149ff' }}  /> 
+                <View style={styles.IconMenustyles}>
+                    <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: ICON_COLOR }}  /> 
+                </View>
+                
             </View>
 
             <View style={styles.contentButtonMenu}>
                 <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
-                    <FontAwesomeIcon icon={icon({ name: 'question-circle' })} style={{ color: '#7db149ff' }}  /> 
+                    <FontAwesomeIcon icon={icon({ name: 'question-circle' })} style={{ color: ICON_COLOR }}  /> 
                     <Text style={styles.textStyle1}>FAQ</Text>
                 </View>
                     
-                <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: '#7db149ff' }}  /> 
+                <View style={styles.IconMenustyles}>
+                    <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: ICON_COLOR }}/> 
+                </View>
+               
             </View>
 
             <View style={styles.contentButtonMenu}>
                 <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
-                    <FontAwesomeIcon icon={icon({ name:'file-invoice' })} style={{ color: '#7db149ff' }}  /> 
+                    <FontAwesomeIcon icon={icon({ name:'file-invoice' })} style={{ color: ICON_COLOR }}  /> 
                     <Text style={styles.textStyle1}>Terms of Services</Text>
                 </View>
-                    
-                <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: '#7db149ff'}}  /> 
+                
+                <View style={styles.IconMenustyles}>
+                    <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: ICON_COLOR}}/> 
+                </View>
+                
             </View>
         </View>
 
@@ -121,23 +164,23 @@ const { width,height } = Dimensions.get("window");
 const BG_VIEW = "#C1FC49"
 const TEXT_COLOR = '#2a6f29'
 const CIRCLE_BG= '#86ba1c'
+const ICON_COLOR = "#2a6f29"
 
 const styles = StyleSheet.create({
   headStyle: {
-    flex: 0.2,
+    height:height/6,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: BG_VIEW,
     paddingTop: 30,
+    backgroundColor: BG_VIEW,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     paddingHorizontal: 24,
   },
   content1style: {
-    flex: 1,
     marginHorizontal: 18,
-    gap:12
+    gap: 12,
   },
   content2style: {
     flex: 1,
@@ -151,11 +194,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-    justifyContent:'space-between',
+    justifyContent: "space-between",
     backgroundColor: BG_VIEW,
     paddingHorizontal: 8,
-    borderRadius:8,
-    height:48,
+    borderRadius: 8,
+    height: 48,
+  },
+  IconMenustyles: {
+    width: 32,
+    aspectRatio: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 20,
+    backgroundColor: CIRCLE_BG,
   },
   textStyle: {
     fontSize: 20,
@@ -163,6 +214,6 @@ const styles = StyleSheet.create({
   },
   textStyle1: {
     fontSize: 16,
-    fontWeight: '400'
+    fontWeight: "400",
   },
 });

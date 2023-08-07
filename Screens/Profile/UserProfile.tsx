@@ -5,7 +5,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 type Props = {
   onScreenChange: (screenNumber: number) => void;
- 
 };
 
 const UserProfile = ({ onScreenChange  }: Props) => {
@@ -137,7 +136,7 @@ const UserProfile = ({ onScreenChange  }: Props) => {
 
   return (
 
-    <View style={{flex:1, borderBottomRightRadius:22, borderBottomLeftRadius:22}} >
+    <View style={{height:height, borderBottomRightRadius:22, borderBottomLeftRadius:22}} >
     
     <View style={styles.headContainerStyle} >
 
@@ -213,18 +212,18 @@ const UserProfile = ({ onScreenChange  }: Props) => {
 
 export default UserProfile
 
-const { width } = Dimensions.get("window");
+const { width,height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   headContainerStyle: {
-    flex: 1,
+    height: height/3,
     backgroundColor: "#C1FC49",
     borderBottomRightRadius: 30,
     borderBottomLeftRadius: 30,
     top: -50,
     ...Platform.select({
       ios: {
-        paddingTop: 40,
+        paddingTop: 90,
       },
       android: {
         paddingTop: 90,
