@@ -47,7 +47,17 @@ const Appereance = ({ onScreenChange }: Props) => {
             </View>
         </View>
 
-        <View style={{width:100,height:150, backgroundColor:'red', borderRadius:20}}></View>
+        <View style={{flexDirection:'column',alignContent:'center',alignItems:'center',gap:8}}>
+            <View style={{width:100,height:150, backgroundColor:'black', borderRadius:20}}></View>
+            
+            <View style={{height:24}}>
+                <Text>System</Text>
+            </View>
+            
+            <View style={{width:26,aspectRatio:1, borderRadius:15,borderWidth:2, justifyContent:'center', alignItems:'center'}}>
+                <View style={{width:16,aspectRatio:1, borderRadius:8,backgroundColor:'black'}}></View>
+            </View>
+        </View>
 
         </View>
         
