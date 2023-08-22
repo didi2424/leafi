@@ -6,6 +6,8 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { ScrollView } from 'react-native-gesture-handler';
 import CircleTemp from './CircleTemp';
 import CircleLight from './CircleLight';
+import { useTheme } from '../Profile/Settings/Account/ThemeContext';
+
 type DeviceData = {
   room: string;
   devices: string
@@ -18,6 +20,7 @@ type Props = {
 };
 
 const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
+  const { isDarkMode } = useTheme();
   const [selectedOption, setSelectedOption] = useState('1');  
   const devices = deviceData?.devices || [];
   const deviceCount = devices.length;
@@ -80,7 +83,7 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
   
   const { width,height } = Dimensions.get("window");
   return (
-    <View style={{height:height,width:width}}>
+    <View style={{height:height,width:width,backgroundColor: isDarkMode ? '#000': '#eeeeee'}}>
     <View style={{flex:1}} >
       <View style={{flex:0.6,backgroundColor:BG_VIEW}}>
         <View style={styles.headContainerStyle}>

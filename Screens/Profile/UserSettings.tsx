@@ -4,12 +4,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
-
+import { useTheme } from './Settings/Account/ThemeContext';
 type Props = {
     onScreenChange: (screenNumber: number) => void;
   };
 
 const UserSettings = ({ onScreenChange }: Props) => {
+    const { isDarkMode } = useTheme();
     const BackTouserProfile = () => {
         onScreenChange(0)
     }
@@ -23,7 +24,7 @@ const UserSettings = ({ onScreenChange }: Props) => {
         onScreenChange(7)
     }
     const toNotification = () => {
-        onScreenChange(0)
+        onScreenChange(8)
     }
     const toSupport = () => {
         
@@ -35,13 +36,13 @@ const UserSettings = ({ onScreenChange }: Props) => {
         
     }
 
-
+    console.log(isDarkMode)
     const pressLogOut = () => {
         //onScreenChange(1)
         console.log('press logout')
     }
   return (
-    <View style={{height:height,gap:10,paddingBottom:30}}>
+    <View style={{height:height,gap:10,paddingBottom:30, backgroundColor: isDarkMode ? '#000' : LIGHT_BG}}>
         <View style={styles.headStyle}>
             
         <TouchableOpacity onPress={BackTouserProfile}>
@@ -49,6 +50,7 @@ const UserSettings = ({ onScreenChange }: Props) => {
         </TouchableOpacity>
             
         <Text style={styles.textStyle}>Settings</Text>
+        
 
         <View style={{width:20}}>
 
@@ -101,9 +103,9 @@ const UserSettings = ({ onScreenChange }: Props) => {
                     <Text style={styles.textStyle1}>Notification</Text>
                 </View>
                     
-                <View style={styles.IconMenustyles}>
-                    <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: ICON_COLOR}}/> 
-                </View>
+                <TouchableOpacity style={styles.IconMenustyles} onPress={toNotification}>
+                    <FontAwesomeIcon icon={icon({ name: 'chevron-right' })} style={{ color: ICON_COLOR }}/> 
+                </TouchableOpacity>
                
             </View>
 
@@ -163,6 +165,7 @@ export default UserSettings
 const { width,height } = Dimensions.get("window");
 const BG_VIEW = "#C1FC49"
 const TEXT_COLOR = '#2a6f29'
+const LIGHT_BG = '#eeeeee'
 const CIRCLE_BG= '#86ba1c'
 const ICON_COLOR = "#2a6f29"
 

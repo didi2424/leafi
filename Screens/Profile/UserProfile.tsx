@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, FlatList, Platform, Dimensions,StyleSheet
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'; 
 import { ScrollView } from 'react-native-gesture-handler';
-
+import { useTheme } from './Settings/Account/ThemeContext';
 type Props = {
   onScreenChange: (screenNumber: number) => void;
 };
@@ -22,7 +22,7 @@ const UserProfile = ({ onScreenChange  }: Props) => {
   const toUserSettings =() => {
     onScreenChange(4)
   }
-
+  const { isDarkMode } = useTheme();
   const renderItem = ({ item, index, data }: { item: typeof data[number]; index: number; data: typeof reversedData;icon: string }) => {
     const dateOnly = new Date(item.date).toLocaleDateString('en-US', { day: 'numeric' });
     const monthsOnly = new Date(item.date).toLocaleDateString('en-US', { month: 'short' });
@@ -36,8 +36,8 @@ const UserProfile = ({ onScreenChange  }: Props) => {
         {!isSameDay && (
           <View style={{ flexDirection: 'row', height: 80,gap:8 }}>
             <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
-              <Text style={styles.textStyle2}>{dateOnly}</Text>
-              <Text style={styles.textStyle4}>{monthsOnly}</Text>
+              <Text style={[styles.textStyle2,{color: isDarkMode ? '#FFF':'#000'}]}>{dateOnly}</Text>
+              <Text style={[styles.textStyle4,{color: isDarkMode ? '#FFF':'#000'}]}>{monthsOnly}</Text>
             </View>
             <View style={{ flex: 0.22, alignContent: 'center', alignItems: 'center' }}>
                 <View style={styles.circleRadio1}>
@@ -162,7 +162,7 @@ const UserProfile = ({ onScreenChange  }: Props) => {
     <View style={{flex:2.7,paddingHorizontal:24,gap:12}} >
 
           <View style={{top:-20,height:280,gap:12}}>
-            <Text style={styles.textStyle2}>Activity</Text>
+            <Text style={[styles.textStyle2,{color: isDarkMode ? '#FFF':'#0000'}]}>Activity</Text>
             <FlatList
                 data={reversedData}
                 renderItem={({ item, index }) => renderItem({ item, index, data: reversedData })}
@@ -175,9 +175,9 @@ const UserProfile = ({ onScreenChange  }: Props) => {
               <View style={{flexDirection:"row",
                 alignItems: "center",
                 justifyContent:"space-between"}}>
-                <Text style={styles.textStyle2}>My Smartpot</Text>
+                <Text style={[styles.textStyle2,{color: isDarkMode ? '#FFF':'#0000'}]}>My Smartpot</Text>
                 <TouchableOpacity>
-                  <Text style={styles.textStyle5}>See all</Text>
+                  <Text style={[styles.textStyle5,{color: isDarkMode ? '#FFF':'#0000'}]}>See all</Text>
                 </TouchableOpacity>
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -272,6 +272,7 @@ const styles = StyleSheet.create({
   textStyle2: {
     fontSize: width > 400 ? 24 : 16,
     fontWeight: "600",
+    
   },
   textStyle3: {
     fontSize: width > 400 ? 20 : 12,

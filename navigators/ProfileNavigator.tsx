@@ -1,6 +1,5 @@
 import { Keyboard,TouchableWithoutFeedback, View } from "react-native";
-import { SafeAreaView } from "react-native";
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 
 import Register from "../Screens/Profile/Register";
 import Login from "../Screens/Profile/Login";
@@ -9,9 +8,11 @@ import Vertify from "../Screens/Profile/Vertify";
 import UserProfile from "../Screens/Profile/UserProfile";
 import UserSettings from "../Screens/Profile/UserSettings";
 
-import AccountInformation from "../Screens/Profile/Settings/AccountInformation";
-import AddressInfromation from "../Screens/Profile/Settings/AddressInfromation";
-import Appereance from "../Screens/Profile/Settings/Appereance";
+import AccountInformation from "../Screens/Profile/Settings/Account/AccountInformation";
+import AddressInfromation from "../Screens/Profile/Settings/Account/AddressInfromation";
+import Appereance from "../Screens/Profile/Settings/Account/Appereance";
+import Notification from "../Screens/Profile/Settings/Account/Notification";
+import { useTheme } from "../Screens/Profile/Settings/Account/ThemeContext";
 type RegistrationData = {
     name: string;
     email: string;
@@ -21,6 +22,9 @@ type RegistrationData = {
   };
   
 const ProfileNavigator = ({ onScreenChanges  }: Props) => {
+    const { isDarkMode } = useTheme();
+      
+      
     const [selectedScreen, setSelectedScreen] = useState(0);
     const [registerData, setRegisterData] = useState<RegistrationData | null>(null);
     const handleViewPress = () => {
@@ -34,8 +38,9 @@ const ProfileNavigator = ({ onScreenChanges  }: Props) => {
         setSelectedScreen(3);
       };
 
+
     return (
-        <View>
+        <View style={{ backgroundColor: isDarkMode ? '#000' : '#eeeeee'}}>
         <TouchableWithoutFeedback onPress={handleViewPress}>
             
         {selectedScreen === 0 ? (
@@ -54,6 +59,8 @@ const ProfileNavigator = ({ onScreenChanges  }: Props) => {
             <AddressInfromation  onScreenChange={handleScreenChange}/>
         ) : selectedScreen === 7 ? (
             <Appereance  onScreenChange={handleScreenChange}/>
+        ) : selectedScreen === 8 ? (
+            <Notification  onScreenChange={handleScreenChange}/>
         ) : null}
 
         </TouchableWithoutFeedback>

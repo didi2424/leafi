@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, DefaultTheme,Theme} from "@react-navigation/native"
 import RootNavigators from './navigators/RootNavigators';
+import { ThemeProvider } from './Screens/Profile/Settings/Account/ThemeContext';
 import { useMemo } from 'react';
 import {
   BottomSheetModalProvider,
@@ -20,6 +21,7 @@ export default function App() {
     []
   )
   return (
+    <ThemeProvider>
     <View style={styles.container}>
       <NavigationContainer theme={theme}>
       <GestureHandlerRootView style={{flex:1}}>
@@ -31,6 +33,7 @@ export default function App() {
       </NavigationContainer>
       <StatusBar style="auto" />
     </View>
+   </ThemeProvider>
   );
 }
 

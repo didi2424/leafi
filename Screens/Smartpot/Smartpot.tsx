@@ -2,7 +2,7 @@ import { View, Text, Dimensions, FlatList,StyleSheet, TouchableOpacity, SafeArea
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
-
+import { useTheme } from '../Profile/Settings/Account/ThemeContext';
 const BG = '#C1FC49'
 const CARD_BG = '#91D600'
 const CIRCLE_BG= '#86ba1c'
@@ -12,6 +12,7 @@ type Props = {
     onDeviceData: (data: any) => void;
   };
 const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
+  const { isDarkMode } = useTheme();
   const { width,height } = Dimensions.get("window");
   const [currentTime, setCurrentTime] = useState('');
   const [greeting, setGreeting] = useState('');
@@ -104,7 +105,7 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
   return (
     
     <View >
-        <View style={{width:width,height:height}}>
+        <View style={{width:width,height:height,backgroundColor: isDarkMode ? '#000': '#eeeeee'}}>
         
         <View style={styles.headContainerStyle}>
             <View style={{justifyContent:'center',alignItems:'center'}}>
@@ -123,7 +124,7 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
 
         <View style={{flex:3,marginHorizontal:24,gap:10,top:20}}>
           <View style={{justifyContent:'center'}}>
-                    <Text style={styles.headTextStyle}>Devices</Text>
+                    <Text style={[styles.headTextStyle,{color: isDarkMode ? 'white' : 'black'}]}>Devices</Text>
           </View>
 
           <View style={{justifyContent:'center',alignItems:'center',top:8}}>
@@ -141,7 +142,7 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
           </View>
 
           <View style={{justifyContent:'center'}}>
-          <Text style={styles.headTextStyle}>Alert</Text>
+          <Text style={[styles.headTextStyle,{color: isDarkMode ? 'white' : 'black'}]}>Alert</Text>
           </View>
         </View>
 
