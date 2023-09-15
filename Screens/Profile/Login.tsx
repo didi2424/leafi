@@ -2,6 +2,7 @@ import { Alert, Animated, Keyboard, StyleSheet, Text, TextInput, TouchableOpacit
 import React, { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { useTheme } from '../Profile/Settings/Account/ThemeContext';
 
 import api from '../../api';
 type Props = {
@@ -10,6 +11,7 @@ type Props = {
   };
 
 const Login = ({ onScreenChange, onRegisterData }: Props) => {
+    const { isDarkMode } = useTheme();
     const [password, onChangePassword] = useState('');
     const [email, onChangeEmail] = useState('');
     const [isTextInputVisibleLogin, setIsTextInputVisibleLogin] = useState(false);
@@ -106,14 +108,17 @@ const Login = ({ onScreenChange, onRegisterData }: Props) => {
             
         }
         
+        const ForgotPass = () => {
+          console.log('forgot password')
+        }
   return (
     
-    <Animated.View style={{flex: 1,marginHorizontal:2,alignContent:"center",justifyContent:"center",alignItems:'center'}}>
+    <Animated.View style={{height:height,marginHorizontal:2,alignContent:"center",justifyContent:"center",alignItems:'center'}}>
                         
             <Animated.View style={[{justifyContent:'center',alignItems:'center',opacity: fadeAnim,},animatedStyleLogin]} >
 
             <View style={styles.cardContainer}>
-                    <Text>Login</Text>
+                    <Text style={{color: isDarkMode ? 'black' : 'white'}}>Login</Text>
             </View>
         
             <Animated.View
@@ -121,11 +126,11 @@ const Login = ({ onScreenChange, onRegisterData }: Props) => {
                 opacity: fadeAnim,
                 top:68
             }}>
-                <Text style={styles.textStyle1}>Unlock the Power of AI: Explore 100+ Plants for Free!</Text>
-                <Text style={styles.textStyle2}>Didn't</Text>
-                <Text style={[styles.textStyle3, { top: 2 }]}>Have Account ?</Text>
+                <Text style={[styles.textStyle1,{color: isDarkMode ? 'white' : 'black' }]}>Unlock the Power of AI: Explore 100+ Plants for Free!</Text>
+                <Text style={[styles.textStyle2,{color: isDarkMode ? 'white' : 'black' }]}>Didn't</Text>
+                <Text style={[styles.textStyle3, { top: 2,color: isDarkMode ? 'white' : 'black'  }]}>Have Account ?</Text>
                     <View style={{top:2,flexDirection:'row',alignItems:'center',alignContent:'center',gap:10}}>
-                        <Text style={styles.textStyle4}>
+                        <Text style={[styles.textStyle4,{color: isDarkMode ? 'white' : 'black' }]}>
                             Register Now! It's Free!
                         </Text>
                         <TouchableOpacity onPress={handlePressCombined}  >
@@ -169,15 +174,13 @@ const Login = ({ onScreenChange, onRegisterData }: Props) => {
                         )}
                         </TouchableOpacity>
                      </View>
-            <TouchableOpacity style={{width:180,height:22,left:0,alignItems:'flex-start',alignContent:'flex-start',justifyContent:'center'}}>
-                <Text>Forgot Password?</Text>
+            <TouchableOpacity style={{width:180,height:18,left:0,alignItems:'flex-start',alignContent:'flex-start',justifyContent:'center'}} onPress={ForgotPass}>
+                <Text style={{color: isDarkMode ? 'white' : 'black' }}>Forgot Password?</Text>
             </TouchableOpacity>
-            <View style={{bottom:-18,width: width> 400 ? 32:22,aspectRatio:1,backgroundColor:'#000',borderRadius:50,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
-                <TouchableOpacity onPress={handleHideForm}> 
+            <TouchableOpacity style={{bottom:0,width: width> 400 ? 32:28,aspectRatio:1,backgroundColor: isDarkMode ? '#FFF' : '#000',borderRadius:50,alignItems:'center',alignContent:"center",justifyContent:'center'}} onPress={handleHideForm}>
                 <FontAwesomeIcon icon={icon({ name: 'xmark' })} size={width> 400 ? 24: 14}  style={{ color: '#7db149ff'}}  /> 
-                </TouchableOpacity>
-               
-                </View>
+            </TouchableOpacity>
+
             </Animated.View>
             </>
             )}
@@ -186,7 +189,7 @@ const Login = ({ onScreenChange, onRegisterData }: Props) => {
                 {selectedLoginButton === 1 ? (
                     <>
                     <TouchableOpacity onPress={handleButtonRegisterButton} >
-                            <Text style={styles.textStyle4}>Coutinue 2</Text>
+                            <Text style={styles.textStyle4}>Coutinue</Text>
                     </TouchableOpacity>
                     </>
                     ) : (
@@ -203,11 +206,11 @@ const Login = ({ onScreenChange, onRegisterData }: Props) => {
 }
 
 export default Login
-const { width } = Dimensions.get("window");
+const { width,height } = Dimensions.get("window");
 const styles = StyleSheet.create({
-
+  
   cardContainer: {
-    top: -40,
+    top:-40,
     height: width > 400 ? 250 : 180,
     width: width > 400 ? 160 : 120,
     backgroundColor: "#fff",
@@ -218,7 +221,7 @@ const styles = StyleSheet.create({
   },
  
   buttonHandle: {
-    top: width > 400 ? 110 : 110,
+    top: width > 400 ? 90 : 80,
     width: width > 400 ? 120 : 90,
     height: width > 400 ? 40 : 28,
     borderRadius: 18,
@@ -275,6 +278,8 @@ const styles = StyleSheet.create({
   textStyle6: {
     fontSize: width > 400 ? 14 : 10,
     fontWeight: "400",
+    width:120,
+    height:40
   },
   textStyle7: {
     top: width > 400 ? 5 : 3,

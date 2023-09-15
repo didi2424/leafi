@@ -3,6 +3,7 @@ import React, { useContext, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import api from '../../api';
+import { useTheme } from '../Profile/Settings/Account/ThemeContext';
 
 type Props = {
     onScreenChange: (screenNumber: number) => void;
@@ -12,6 +13,7 @@ type Props = {
 const Register = ({ onScreenChange, onRegisterData  }: Props) => {
     const [email, onChangeEmail] = useState('');
     const [password, onChangePassword] = useState('');
+    const { isDarkMode } = useTheme();
 
     const [fillEmail, setFillEmail] = useState(false);
     const [fillEmailEmpty, setFillEmailEmpty] = useState(false);
@@ -32,7 +34,6 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
             email,
             password
         };
-
         if (email === '') {
             setFillEmailEmpty(true);
             setFillEmail(false);
@@ -49,6 +50,7 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
         } else if (!passwordPattern.test(password)) {
             setFillPasswordEmpty(false);
             setFillPassword(true);
+            console.log('password pattern wrong')
         } else if (passwordPattern.test(password)) {
             setFillPasswordEmpty(false);
             setFillPassword(false);
@@ -56,6 +58,7 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
         if (emailPattern.test(email) && passwordPattern.test(password)) {
             setFillEmailEmpty(false);
             setFillEmail(false);
+            console.log('post!')
             api.post('/register', payload)
                 .then(response => {
                 console.log(response.data);
@@ -164,10 +167,10 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
   return (
     <>
     {isVertivyVisible && ( 
-    <View style={{flex: 1,marginHorizontal:2,justifyContent:"center",alignItems:'center',alignContent:'center'}}>
+    <View style={{height:height,marginHorizontal:2,justifyContent:"center",alignItems:'center',alignContent:'center'}}>
             <Animated.View style={[{justifyContent:'center',alignItems:'center',opacity: fadeAnim}, animatedStyle]}>
             <View style={styles.cardContainer}>
-                    <Text>Register</Text>
+                    <Text style={{color: isDarkMode ? 'black' : 'white'}}>Register</Text>
             </View>
          
             <Animated.View
@@ -175,14 +178,14 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
                 opacity: fadeAnim,
                 top:68
             }}>
-                <Text style={styles.textStyle1}>Unlock the Power of AI: Explore 100+ Plants for Free!</Text>
-                <Text style={styles.textStyle2}>Create</Text>
-                <Text style={styles.textStyle3}>Your Account</Text>
+                <Text style={[styles.textStyle1,{color: isDarkMode ? 'white' : 'black' }]}>Unlock the Power of AI: Explore 100+ Plants for Free!</Text>
+                <Text style={[styles.textStyle2,{color: isDarkMode ? 'white' : 'black' }]}>Create</Text>
+                <Text style={[styles.textStyle3,{color: isDarkMode ? 'white' : 'black' }]}>Your Account</Text>
                 <View style={{top:2,flexDirection:'row',alignItems:'center',alignContent:'center'}}>
-                    <Text style={styles.textStyle4}>
+                    <Text style={[styles.textStyle4,{color: isDarkMode ? 'white' : 'black' }]}>
                         Already a member ?
                     </Text>
-                    <TouchableOpacity  onPress={() => handlePressCombined()} >
+                    <TouchableOpacity  onPress={() => handlePressCombined()}  >
                         <Text style={styles.textStyle5}> Log in</Text>
                     </TouchableOpacity>
                 </View>
@@ -201,13 +204,13 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
                     />
                 </View>
                 {fillEmailEmpty && (
-                    <Text style={styles.textStyle7}>You must fill this</Text>
+                    <Text style={[styles.textStyle7,{color: isDarkMode ? 'white' : 'black' }]}>You must fill this</Text>
                         )}
                 {fillEmail && (
-                    <Text style={styles.textStyle7}>Email pattern failed</Text>
+                    <Text style={[styles.textStyle7,{color: isDarkMode ? 'white' : 'black' }]}>Email pattern failed</Text>
                 )}
                 {emailHasRegistered && (
-                    <Text style={styles.textStyle7}>Email has register!</Text>
+                    <Text style={[styles.textStyle7,{color: isDarkMode ? 'white' : 'black' }]}>Email has register!</Text>
                 )}
                 </View>
               
@@ -231,16 +234,16 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
 
                     <View style={{marginHorizontal:2}}>
                      {fillPasswordEmpty && (
-                        <Text style={styles.textStyle7}>You must fill this</Text>
+                        <Text style={[styles.textStyle7,{color: isDarkMode ? 'white' : 'black' }]}>You must fill this</Text>
                         )}
                         {fillPassword && (
-                        <Text style={styles.textStyle7}>At least 6 characters, with 1 capital letter and 1 symbol</Text>
+                        <Text style={[styles.textStyle7,{color: isDarkMode ? 'white' : 'black' }]}>At least 6 characters, with 1 capital letter and 1 symbol</Text>
                         )}
                     </View>
                    
-                    <View style={{top:12,width: width> 400 ? 32:22,aspectRatio:1,backgroundColor:'#000',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
+                    <View style={{top:12,width: width> 400 ? 32:22,aspectRatio:1,backgroundColor: isDarkMode ? '#FFF' :'#000',borderRadius:16,alignItems:'center',alignContent:"center",justifyContent:'center'}}>
                         <TouchableOpacity onPress={handleHideForm} > 
-                        <FontAwesomeIcon icon={icon({ name: 'xmark' })} size={width> 400 ? 24: 14}  style={{ color: '#7db149ff'}}  /> 
+                            <FontAwesomeIcon icon={icon({ name: 'xmark' })} size={width> 400 ? 24: 14}  style={{ color: '#7db149ff'}}  /> 
                         </TouchableOpacity>
                         </View>
                 </View>
@@ -274,7 +277,7 @@ const Register = ({ onScreenChange, onRegisterData  }: Props) => {
 
 export default Register
 
-const { width } = Dimensions.get("window");
+const { width,height } = Dimensions.get("window");
 const styles = StyleSheet.create({
 
   cardContainer: {
@@ -346,6 +349,8 @@ const styles = StyleSheet.create({
   textStyle6: {
     fontSize: width > 400 ? 14 : 10,
     fontWeight: "400",
+    height:40,
+    width:120
   },
   textStyle7: {
     top: width > 400 ? 5 : 3,

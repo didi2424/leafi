@@ -1,17 +1,20 @@
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
+import { useTheme } from './ThemeContext';
 
 type Props = {
     onScreenChange: (screenNumber: number) => void;
   };
   
 const Notification = ({ onScreenChange }: Props) => {
+    const { isDarkMode } = useTheme();
     const BackToUserSettings = () => {
         onScreenChange(4)
     }
+
   return (
-    <View style={{flex:1,gap:10,paddingBottom:30}}>
+    <View style={{height:height,gap:10,paddingBottom:30}}>
     <View style={styles.headStyle}>
           <TouchableOpacity onPress={BackToUserSettings}>
               <Ionicons name="chevron-back-circle-outline" size={(Dimensions.get('window').width > 400 ? 38 : 30 )} color="#2a6f29" />
@@ -27,27 +30,27 @@ const Notification = ({ onScreenChange }: Props) => {
       <View style={styles.contentNotification}>
           <View>
             <Text style={{fontSize:16, fontWeight:'600'}}>System Notification</Text>
-            <Text>Receive notifications about leatest news & system update from us.</Text>
+            <Text style={{color: isDarkMode ? 'white' : 'black'}}>Receive notifications about leatest news & system update from us.</Text>
           </View>
 
           <View style={{flexDirection:'row',justifyContent:'space-between'}}>
             <Text>Push</Text>
-            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'pink'}}>
-              <View style={{width:26,height:26,borderRadius:13,backgroundColor:'white'}}></View>
+            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'gray',justifyContent:'center',paddingHorizontal:2}}>
+              <View style={{width:25, height:25,borderRadius:20,backgroundColor:'white'}}></View>
             </TouchableOpacity>
           </View>
 
           <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-            <Text>Email</Text>
-            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'pink'}}>
-              <View style={{width:26,height:26,borderRadius:13,backgroundColor:'white'}}></View>
+            <Text style={{color: isDarkMode ? 'white' : 'black'}}>Email</Text>
+            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'gray',justifyContent:'center',paddingHorizontal:2}}>
+              <View style={{width:25, height:25,borderRadius:20,backgroundColor:'white'}}></View>
             </TouchableOpacity>
           </View>
 
           <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-            <Text>SMS</Text>
-            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'pink'}}>
-              <View style={{width:26,height:26,borderRadius:13,backgroundColor:'white'}}></View>
+            <Text style={{color: isDarkMode ? 'white' : 'black'}}>SMS</Text>
+            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'gray',justifyContent:'center',paddingHorizontal:2}}>
+              <View style={{width:25, height:25,borderRadius:20,backgroundColor:'white'}}></View>
             </TouchableOpacity>
           </View>
 
@@ -56,37 +59,67 @@ const Notification = ({ onScreenChange }: Props) => {
       <View style={styles.contentNotification}>
           <View>
             <Text style={{fontSize:16, fontWeight:'600'}}>Marketing Notification</Text>
-            <Text>Receive notifications with personalized offers and information about promotions.</Text>
+            <Text style={{color: isDarkMode ? 'white' : 'black'}}>Receive notifications with personalized offers and information about promotions.</Text>
           </View>
 
           <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-            <Text>Push</Text>
-            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'pink'}}>
-              <View style={{width:26,height:26,borderRadius:13,backgroundColor:'white'}}></View>
+            <Text style={{color: isDarkMode ? 'white' : 'black'}}>Push</Text>
+            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'gray',justifyContent:'center',paddingHorizontal:2}}>
+              <View style={{width:25, height:25,borderRadius:20,backgroundColor:'white'}}></View>
             </TouchableOpacity>
           </View>
 
           <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-            <Text>Email</Text>
-            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'pink'}}>
-              <View style={{width:26,height:26,borderRadius:13,backgroundColor:'white'}}></View>
+            <Text style={{color: isDarkMode ? 'white' : 'black'}}>Email</Text>
+            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'gray',justifyContent:'center',paddingHorizontal:2}}>
+              <View style={{width:25, height:25,borderRadius:20,backgroundColor:'white'}}></View>
             </TouchableOpacity>
           </View>
 
           <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-            <Text>SMS</Text>
-            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'pink'}}>
-              <View style={{width:26,height:26,borderRadius:13,backgroundColor:'white'}}></View>
+            <Text style={{color: isDarkMode ? 'white' : 'black'}}>SMS</Text>
+            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'gray',justifyContent:'center',paddingHorizontal:2}}>
+              <View style={{width:25, height:25,borderRadius:20,backgroundColor:'white'}}></View>
             </TouchableOpacity>
           </View>
 
       </View>
-      <Text> Reminders Notifications</Text>
-    </View>
 
-    <View style={styles.content1style}>
+      <View style={styles.contentNotification}>
+          <View>
+            <Text style={{fontSize:16, fontWeight:'600'}}>Reminders Notification</Text>
+            <Text style={{color: isDarkMode ? 'white' : 'black'}}>Receive notifications about your smartpot devices</Text>
+          </View>
+
+          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+            <Text style={{color: isDarkMode ? 'white' : 'black'}}>Push</Text>
+            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'gray',justifyContent:'center',paddingHorizontal:2}}>
+              <View style={{width:25, height:25,borderRadius:20,backgroundColor:'white'}}></View>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+            <Text style={{color: isDarkMode ? 'white' : 'black'}}>Email</Text>
+            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'gray',justifyContent:'center',paddingHorizontal:2}}>
+              <View style={{width:25, height:25,borderRadius:20,backgroundColor:'white'}}></View>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+            <Text style={{color: isDarkMode ? 'white' : 'black'}}>SMS</Text>
+            <TouchableOpacity style={{width:60,height:28, borderRadius:20,backgroundColor:'gray',justifyContent:'center',paddingHorizontal:2}}>
+              <View style={{width:25, height:25,borderRadius:20,backgroundColor:'white'}}></View>
+            </TouchableOpacity>
+          </View>
+
+      </View>
+
+      <View style={{height:40,backgroundColor: BG_VIEW,borderRadius:20,justifyContent:'center',alignItems:'center'}}>
+          <Text style={{fontSize:16}}>Save</Text>
+      </View>
 
     </View>
+    
     
   </View>
   )
@@ -115,7 +148,7 @@ const styles = StyleSheet.create({
   },
   contentNotification: {
     alignContent:'space-between',
-    width: width > 400 ? 200 : 320,
+    
     gap:12
   },
   content2style: {

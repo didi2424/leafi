@@ -18,6 +18,7 @@ interface ThemeContextType {
 
 const Appereance = ({ onScreenChange }: Props) => {
     const { isDarkMode, setToLightTheme, setToDarkTheme, setToSystemTheme } = useTheme();
+    const [isSelectedOption, setSelectedOption] = useState(1)
     const BackToUserSettings = () => {
         onScreenChange(4)
     }
@@ -36,9 +37,9 @@ const Appereance = ({ onScreenChange }: Props) => {
       </View>
 
       <View style={styles.content2style}>
-        <View style={{width:300,height:200}}>
+        <View style={{height:200}}>
           <Text style={[styles.textStyle1,{color: isDarkMode ? LIGHT_BG:DARKBG_VIEW}]}>Appereance</Text>
-          <Text style={[styles.textStyle1,{color: isDarkMode ? LIGHT_BG:DARKBG_VIEW}]}>Selecting a particular option will change the appearance (coloring) of the application according to your preferences.</Text>
+          <Text style={[styles.textStyle2,{color: isDarkMode ? LIGHT_BG:DARKBG_VIEW}]}>Selecting a particular option will change the appearance (coloring) of the application according to your preferences.</Text>
         </View>
       </View>
 
@@ -52,7 +53,13 @@ const Appereance = ({ onScreenChange }: Props) => {
             </View>
             
             <TouchableOpacity style={{width:26,aspectRatio:1, borderRadius:15,borderWidth:2, justifyContent:'center', alignItems:'center', borderColor: isDarkMode ? TEXT_VIEW : DARKBG_VIEW}} >
-                <View style={{width:16,aspectRatio:1, borderRadius:8, backgroundColor: isDarkMode ? TEXT_VIEW : DARKBG_VIEW}}></View>
+              {isSelectedOption === 0 ? (
+                <View style={{width:16,aspectRatio:1, borderRadius:8, backgroundColor: isDarkMode ? 'transparent' : 'transparent'}}></View>
+              ) : (
+                <View style={{width:16,aspectRatio:1, borderRadius:8, backgroundColor: isDarkMode ? 'transparent' : DARKBG_VIEW}}></View>
+              
+              ) 
+            }
             </TouchableOpacity>
         </TouchableOpacity>
 
@@ -64,21 +71,17 @@ const Appereance = ({ onScreenChange }: Props) => {
             </View>
             
             <View style={{width:26,aspectRatio:1, borderRadius:15,borderWidth:2, justifyContent:'center', alignItems:'center', borderColor: isDarkMode ? TEXT_VIEW : DARKBG_VIEW}}>
-                <View style={{width:16,aspectRatio:1, borderRadius:8, backgroundColor: isDarkMode ? TEXT_VIEW : DARKBG_VIEW}}></View>
+            {isSelectedOption === 0 ? (
+                <View style={{width:16,aspectRatio:1, borderRadius:8, backgroundColor: isDarkMode ? 'transparent' : 'transparent'}}></View>
+              ) : (
+                <View style={{width:16,aspectRatio:1, borderRadius:8, backgroundColor: isDarkMode ? TEXT_VIEW : 'transparent'}}></View>
+              
+              )
+            }
             </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={{flexDirection:'column',alignContent:'center',alignItems:'center',gap:8}} onPress={setToSystemTheme}>
-            <View style={{width:100,height:150, backgroundColor:'black', borderRadius:20}}></View>
-            
-            <View style={{height:24}}>
-                <Text style={{color: isDarkMode ? TEXT_VIEW : DARKBG_VIEW}}>System</Text>
-            </View>
-            
-            <View style={{width:26,aspectRatio:1, borderRadius:15,borderWidth:2, justifyContent:'center', alignItems:'center', borderColor: isDarkMode ?TEXT_VIEW : DARKBG_VIEW}}>
-                <View style={{width:16,aspectRatio:1, borderRadius:8, backgroundColor: isDarkMode ? TEXT_VIEW : DARKBG_VIEW}}></View>
-            </View>
-        </TouchableOpacity>
+       
 
         </View>
         
@@ -91,7 +94,7 @@ export default Appereance
 const { width,height } = Dimensions.get("window");
 const BG_VIEW = "#C1FC49"
 const LIGHT_BG = '#eeeeee'
-const DARKBG_VIEW = "#000"
+const DARKBG_VIEW = "#3d3c3fff"
 const TEXT_VIEW = "#FFF"
 const styles = StyleSheet.create({
   headStyle: {
@@ -108,9 +111,9 @@ const styles = StyleSheet.create({
   content1style: {
     height:300,
     flexDirection:'row',
-    justifyContent:'space-between',
+    justifyContent:'center',
     marginHorizontal: 24,
-    gap: 12,
+    gap: 22,
   },
   content2style: {
     height:80,
@@ -124,6 +127,10 @@ const styles = StyleSheet.create({
     fontWeight:'600'
   },
   textStyle1:{
+    fontSize:16,
+    fontWeight:'600'
+  },
+  textStyle2:{
     fontSize:14,
     fontWeight:'400'
   }

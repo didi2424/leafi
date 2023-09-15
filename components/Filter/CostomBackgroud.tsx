@@ -6,18 +6,20 @@ import Animated, {
   Extrapolate,
   interpolate,
 } from "react-native-reanimated";
+import { useTheme } from "../../Screens/Profile/Settings/Account/ThemeContext";
 
 const CustomBackground: React.FC<BottomSheetBackgroundProps> = ({
   style,
   animatedIndex,
 }) => {
   //#region styles
+  const { isDarkMode } = useTheme();
   const containerAnimatedStyle = useAnimatedStyle(() => {
     // Interpolate background color
     const backgroundColor = interpolateColor(
       animatedIndex.value,
       [0, 1],
-      ["#eeeeee", "#eeeeee"]
+      [ isDarkMode ?  "#3d3c3fff" : "#eeeeee", isDarkMode ?  "#3d3c3fff" : "#eeeeee"]
     );
 
     // Interpolate border radius

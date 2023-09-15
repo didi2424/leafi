@@ -162,7 +162,7 @@ const UserProfile = ({ onScreenChange  }: Props) => {
     <View style={{flex:2.7,paddingHorizontal:24,gap:12}} >
 
           <View style={{top:-20,height:280,gap:12}}>
-            <Text style={[styles.textStyle2,{color: isDarkMode ? '#FFF':'#0000'}]}>Activity</Text>
+            <Text style={[styles.textStyle2,{color: isDarkMode ? '#FFF':'#000'}]}>Activity</Text>
             <FlatList
                 data={reversedData}
                 renderItem={({ item, index }) => renderItem({ item, index, data: reversedData })}
@@ -175,9 +175,9 @@ const UserProfile = ({ onScreenChange  }: Props) => {
               <View style={{flexDirection:"row",
                 alignItems: "center",
                 justifyContent:"space-between"}}>
-                <Text style={[styles.textStyle2,{color: isDarkMode ? '#FFF':'#0000'}]}>My Smartpot</Text>
+                <Text style={[styles.textStyle2,{color: isDarkMode ? '#FFF':'#000'}]}>My Smartpot</Text>
                 <TouchableOpacity>
-                  <Text style={[styles.textStyle5,{color: isDarkMode ? '#FFF':'#0000'}]}>See all</Text>
+                  <Text style={[styles.textStyle5,{color: isDarkMode ? '#FFF':'#000'}]}>See all</Text>
                 </TouchableOpacity>
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>

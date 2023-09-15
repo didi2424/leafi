@@ -36,13 +36,13 @@ const UserSettings = ({ onScreenChange }: Props) => {
         
     }
 
-    console.log(isDarkMode)
+
     const pressLogOut = () => {
         //onScreenChange(1)
         console.log('press logout')
     }
   return (
-    <View style={{height:height,gap:10,paddingBottom:30, backgroundColor: isDarkMode ? '#000' : LIGHT_BG}}>
+    <View style={{height:height,gap:10,paddingBottom:30, backgroundColor: isDarkMode ? '#3d3c3fff' : LIGHT_BG}}>
         <View style={styles.headStyle}>
             
         <TouchableOpacity onPress={BackTouserProfile}>
@@ -152,11 +152,16 @@ const UserSettings = ({ onScreenChange }: Props) => {
         </View>
 
         <View style={styles.content3style}>
-            <Text> Copyright The Day 21</Text>
+            <Text> Copyright Dimas Kurniawan</Text>
         </View>
 
-
-        
+        <View style={styles.content3style}>
+            <TouchableOpacity onPress={pressLogOut}>
+                <Text>
+                    Logout
+                </Text>
+            </TouchableOpacity>
+        </View>
     </View>
   )
 }
@@ -164,7 +169,6 @@ const UserSettings = ({ onScreenChange }: Props) => {
 export default UserSettings
 const { width,height } = Dimensions.get("window");
 const BG_VIEW = "#C1FC49"
-const TEXT_COLOR = '#2a6f29'
 const LIGHT_BG = '#eeeeee'
 const CIRCLE_BG= '#86ba1c'
 const ICON_COLOR = "#2a6f29"

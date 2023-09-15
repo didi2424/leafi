@@ -9,6 +9,7 @@ import Animated, {
   interpolateColor,
 } from "react-native-reanimated";
 import { toRad } from "react-native-redash";
+import { useTheme } from "../../Screens/Profile/Settings/Account/ThemeContext";
 
 // @ts-ignore
 export const transformOrigin = ({ x, y }, ...transformations) => {
@@ -27,6 +28,7 @@ interface HandleProps extends BottomSheetHandleProps {
 }
 
 const Handle: React.FC<HandleProps> = ({ style, animatedIndex }) => {
+  const isDarkMode = useTheme()
   //#region animations
   const indicatorTransformOriginY = useDerivedValue(() =>
     interpolate(animatedIndex.value, [0, 1, 2], [-1, 0, 1], Extrapolate.CLAMP)
@@ -112,7 +114,7 @@ const Handle: React.FC<HandleProps> = ({ style, animatedIndex }) => {
     backgroundColor: interpolateColor(
       animatedIndex.value,
       [0, 1],
-      ["#eeeeee", "#eeeeee"]
+      [isDarkMode ? "#3d3c3fff": "#eeeeee", isDarkMode ? "#3d3c3fff": "#eeeeee"]
     ),
   }));
 

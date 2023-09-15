@@ -40,7 +40,7 @@ const ProfileNavigator = ({ onScreenChanges  }: Props) => {
 
 
     return (
-        <View style={{ backgroundColor: isDarkMode ? '#000' : '#eeeeee'}}>
+        <View style={{ backgroundColor: isDarkMode ? '#3d3c3fff' : '#eeeeee'}}>
         <TouchableWithoutFeedback onPress={handleViewPress}>
             
         {selectedScreen === 0 ? (

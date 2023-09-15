@@ -57,7 +57,7 @@ const TabNavigators = () => {
                 tabBarIcon: ({ focused }) => (
                   <View style={[ styles.icoContainer1, {
                     backgroundColor: focused ? '#2a6f29' : 'transparent', 
-                    shadowColor: focused ? 'white' : 'transparent',
+                    shadowColor: focused ? '#48A860' : 'transparent',
                   }]}>
                         <View style={[styles.icoContainer, {shadowColor: {focused} ? '#2a6f29' : 'transparent',shadowOpacity: focused ? 0.5 : 0,backgroundColor: focused ? '#2a6f29' : 'transparent' }]} />
                         <FontAwesomeIcon icon={icon({ name: 'home' })} style={{ color: focused ? BG_VIEW: '#2a6f29' }}  /> 

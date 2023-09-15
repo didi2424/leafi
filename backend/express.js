@@ -67,8 +67,6 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-
-
 app.get('/users', (req, res) => {
   const sql = 'SELECT * FROM usersprofile';
   connection.query(sql, (err, results) => {
