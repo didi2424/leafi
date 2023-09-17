@@ -2,6 +2,7 @@ import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 import React, { createContext, useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import {useTheme} from '../Account/ThemeContext'
+import { theme, darkTheme } from '../../../../Style/style'
 
 type Props = {
     onScreenChange: (screenNumber: number) => void;
@@ -17,14 +18,17 @@ interface ThemeContextType {
 
 
 const Appereance = ({ onScreenChange }: Props) => {
-    const { isDarkMode, setToLightTheme, setToDarkTheme, setToSystemTheme } = useTheme();
+    const { isDarkMode, setToLightTheme, setToDarkTheme } = useTheme();
+    const selectedTheme = isDarkMode ? darkTheme : theme;
+    const { colors, spacing, textVariants } = selectedTheme;
+    
     const [isSelectedOption, setSelectedOption] = useState(1)
     const BackToUserSettings = () => {
         onScreenChange(4)
     }
 
   return (
-    <View style={{height:height,gap:10,paddingBottom:30,backgroundColor: isDarkMode ? DARKBG_VIEW:LIGHT_BG}}>
+    <View style={{height:height,gap:10,paddingBottom:30}}>
       <View style={styles.headStyle}>
             <TouchableOpacity onPress={BackToUserSettings}>
                 <Ionicons name="chevron-back-circle-outline" size={(Dimensions.get('window').width > 400 ? 38 : 30 )} color="#2a6f29" />
@@ -38,18 +42,18 @@ const Appereance = ({ onScreenChange }: Props) => {
 
       <View style={styles.content2style}>
         <View style={{height:200}}>
-          <Text style={[styles.textStyle1,{color: isDarkMode ? LIGHT_BG:DARKBG_VIEW}]}>Appereance</Text>
-          <Text style={[styles.textStyle2,{color: isDarkMode ? LIGHT_BG:DARKBG_VIEW}]}>Selecting a particular option will change the appearance (coloring) of the application according to your preferences.</Text>
+          <Text style={[styles.textStyle1,{color:colors.textcolor}]}>Appereance</Text>
+          <Text style={[styles.textStyle2,{color:colors.textcolor}]}>Selecting a particular option will change the appearance (coloring) of the application according to your preferences.</Text>
         </View>
       </View>
 
-    <View style={[styles.content1style,{backgroundColor: isDarkMode ? DARKBG_VIEW:LIGHT_BG}]}>
+    <View style={[styles.content1style,{backgroundColor: colors.background}]}>
 
         <TouchableOpacity style={{flexDirection:'column',alignContent:'center',alignItems:'center',gap:8}} onPress={setToLightTheme}>
             <View style={{width:100,height:150, backgroundColor:'white', borderRadius:20}}></View>
             
             <View style={{height:24}}>
-                <Text style={{color: isDarkMode ? TEXT_VIEW : DARKBG_VIEW}}>Light</Text>
+                <Text style={{ color:colors.textcolor}}>Light</Text>
             </View>
             
             <TouchableOpacity style={{width:26,aspectRatio:1, borderRadius:15,borderWidth:2, justifyContent:'center', alignItems:'center', borderColor: isDarkMode ? TEXT_VIEW : DARKBG_VIEW}} >
@@ -67,7 +71,7 @@ const Appereance = ({ onScreenChange }: Props) => {
             <View style={{width:100,height:150, backgroundColor:'#191919', borderRadius:20}}></View>
             
             <View style={{height:24}}>
-                <Text style={{color: isDarkMode ? TEXT_VIEW : DARKBG_VIEW}}>Dark</Text>
+                <Text style={{color:colors.textcolor}}>Dark</Text>
             </View>
             
             <View style={{width:26,aspectRatio:1, borderRadius:15,borderWidth:2, justifyContent:'center', alignItems:'center', borderColor: isDarkMode ? TEXT_VIEW : DARKBG_VIEW}}>
@@ -93,7 +97,6 @@ export default Appereance
 
 const { width,height } = Dimensions.get("window");
 const BG_VIEW = "#C1FC49"
-const LIGHT_BG = '#eeeeee'
 const DARKBG_VIEW = "#3d3c3fff"
 const TEXT_VIEW = "#FFF"
 const styles = StyleSheet.create({

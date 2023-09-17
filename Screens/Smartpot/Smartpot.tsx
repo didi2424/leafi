@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useTheme } from '../Profile/Settings/Account/ThemeContext';
+import {theme,darkTheme} from '../../Style/style'
 const BG = '#C1FC49'
 const CARD_BG = '#91D600'
 const CIRCLE_BG= '#86ba1c'
@@ -13,6 +14,9 @@ type Props = {
   };
 const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
   const { isDarkMode } = useTheme();
+  const selectedTheme = isDarkMode ? darkTheme : theme;
+  const { colors, spacing, textVariants } = selectedTheme;
+
   const { width,height } = Dimensions.get("window");
   const [currentTime, setCurrentTime] = useState('');
   const [greeting, setGreeting] = useState('');
@@ -105,7 +109,7 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
   return (
     
     <View >
-        <View style={{width:width,height:height,backgroundColor: isDarkMode ? '#000': '#eeeeee'}}>
+        <View style={{width:width,height:height,backgroundColor: colors.background}}>
         
         <View style={styles.headContainerStyle}>
             <View style={{justifyContent:'center',alignItems:'center'}}>

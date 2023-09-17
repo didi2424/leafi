@@ -1,4 +1,4 @@
-import { View, Text,Image, StyleSheet,Dimensions, Platform, ImageBackground, ScrollView  } from 'react-native'
+import { View, Text,Image, StyleSheet,Dimensions, Platform, ImageBackground, ScrollView,  } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
@@ -8,14 +8,25 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import {
   BottomSheetModal,
 } from '@gorhom/bottom-sheet';
-
+import { useTheme } from './Profile/Settings/Account/ThemeContext';
+import {theme,darkTheme} from '../Style/style'
 import api from '../api';
+
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  interpolateColor,
+ 
+} from "react-native-reanimated";
+import CustomBackdrop from "../components/Filter/CustomBackdrop";
+import CustomHandle from "../components/Filter/CustomHandle";
+import CustomBackground from "../components/Filter/CostomBackgroud";
+
 type Props = {
   onScreenChange: (screenNumber: number) => void;
   onDeviceData: (data: any) => void;
 };
-
-import BottomSheetDetails from './Camera/BottomSheetDetails';
 
 const Cameras = ({onScreenChange,onDeviceData}: Props) => {
   const [imageUri, setImageUri] = useState<null | string>(null);
@@ -24,11 +35,54 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [flashMode, setFlashMode] = useState<string>('off');
-  const openDetachModalRef = useRef<BottomSheetModal>(null);
-  const openDetachuModal = useCallback(()=> {
-    console.log('prees details')
-    openDetachModalRef.current?.present();
-  },[])
+
+  const openFilterModalRef = useRef<BottomSheetModal>(null);
+  const openFilterModal = useCallback(() => {
+    openFilterModalRef.current?.present();
+  }, []);
+
+  const { isDarkMode } = useTheme();
+  const selectedTheme = isDarkMode ? darkTheme : theme;
+  const { colors } = selectedTheme;
+
+  const [selectedButton, setSelectedButton] = useState('Details'); 
+  const selectedButtonPosition = useSharedValue(12);
+    useEffect(() => {
+        // Trigger the animation once the component has mounted
+        selectedButtonPosition.value = withTiming(12);
+        setSelectedButton('Details')
+
+      }, []);
+  const handleButtonPress = (buttonText: string) => {
+    setSelectedButton(buttonText);
+    switch (buttonText) {
+      case "Details":
+        selectedButtonPosition.value = withTiming(12);
+        break;
+      case "Treatment":
+        selectedButtonPosition.value = withTiming((width-24) / 3);
+        break;
+      case "Shop":
+        selectedButtonPosition.value = withTiming(((width -30) *2) / 3);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const buttonIndicatorStyle = useAnimatedStyle(() => {
+    const backgroundColor = interpolateColor(
+      selectedButtonPosition.value,
+      [12, (width -24) / 3, ((width -36) *2) / 3],
+      [CIRCLE_BG, CIRCLE_BG, CIRCLE_BG]
+    );
+
+    return {
+      transform: [{ translateX: selectedButtonPosition.value }],
+      backgroundColor,
+    };
+  });
+
   const snapPoints = useMemo(() => [ height*0.50, height*0.75], []);
 
   if (!permission) {
@@ -136,9 +190,6 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
     <View style={{height:height,width:width}}>
      <View style={{flex:1,alignContent:'center'}}>
     
-
-      <BottomSheetDetails snapPoints={snapPoints} ref={openDetachModalRef} />
-     
        {imageUri ? (
         <View style={{alignContent:'center',alignItems:'center',flex: 1}}>
 
@@ -159,7 +210,7 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
                   </TouchableOpacity>
 
 
-              <TouchableOpacity style={styles.showDetailsButtton}  onPress={() => openDetachuModal()}>
+              <TouchableOpacity style={styles.showDetailsButtton}  onPress={() => openFilterModal()}>
                     <Text>Details</Text>
               </TouchableOpacity>
          
@@ -211,8 +262,133 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
           
         <View>
         </View>
+
+        <BottomSheetModal 
+          snapPoints={snapPoints} 
+          index={0} 
+          ref={openFilterModalRef}
+          backdropComponent={props => <CustomBackdrop {...props}/>}
+          handleComponent={props => <CustomHandle {...props}/>}
+          backgroundComponent={(props) => <CustomBackground {...props} />}
+          >
+          <View style={{gap:10}}>
+           <View style={{gap:12,paddingHorizontal:24}}>
+              <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+              <View style={{flexDirection:'column',justifyContent:'space-between', alignContent:'flex-end', alignItems:'flex-start'}}>
+                
+                  <Text style={{ fontSize: 18, color: colors.textcolor }}>Disease</Text>
+                  <Text style={{ fontSize: 36, fontWeight:'600', color: colors.textcolor }}>Leaf Spot</Text>
+
+              </View>
+
+              <View>
+                  <FontAwesomeIcon size={20} color={CIRCLE_BG} icon={icon({ name: 'bookmark'})} />
+              </View>
+
+              </View>
+              <View style={{flexDirection:'column',justifyContent:'space-between'}}>
+              <View style={{ flexDirection: "row", gap: 20 }}>
+                <View style={{ width: 120 }}>
+                  <Text style={[styles.textStyle1,{color: colors.textcolor }]}>Plants Kind</Text>
+                </View>
+                <View style={{ width: 120 }}>
+                  <Text style={[styles.textStyle1,{color: colors.textcolor }]}>Monstera Kind</Text>
+                </View>
+              </View>
+              <View style={{ flexDirection: "row", gap: 20 }}>
+                <View style={{ width: 120 }}>
+                  <Text style={{color: isDarkMode ? "white": "black"  }}>Monstera</Text>
+                </View>
+                <View style={{width: 120 }}>
+                  <Text style={{color: isDarkMode ? "white": "black"  }}>Swiss Cheese</Text>
+                </View>
+              </View>
+              </View>
+            </View>
+
+            <View style={styles.containerMenu}>
+                <Animated.View
+                  style={[
+                    styles.buttonIndicator,
+                    buttonIndicatorStyle,
+                  ]}
+                />
+                  <TouchableOpacity
+                    style={[
+                      styles.ButtonMenu,
+                      {
+                         
+                      },
+                    ]}
+
+                    onPress={() => handleButtonPress("Details")}
+                  >
+                    <Text > Details</Text>
+                  </TouchableOpacity>
+
+                  <View style={styles.borderHorizontal}>
+
+                  </View>
+
+                  <TouchableOpacity
+                    style={[
+                      styles.ButtonMenu,
+                      {
+                      
+                      },
+                    ]}
+            
+                    onPress={() => handleButtonPress("Treatment")}
+                  >
+                    <Text> Treatment </Text>
+                  </TouchableOpacity>
+
+                  <View style={styles.borderHorizontal}>
+
+                  </View>
+
+                  <TouchableOpacity
+                    style={[
+                      styles.ButtonMenu,
+                      {
+                      
+                      },
+                    ]}
+            
+                    onPress={() => handleButtonPress("Shop")}
+                  >
+                    <Text> Shop </Text>
+                  </TouchableOpacity>
+
+                 
+                  
+                </View>
+
+                {selectedButton === "Details" && (
+                      <View style={{gap:9,marginHorizontal:24}}>
+                          <Text style={[styles.textStyle1,{color: colors.textcolor }]}>Details Content</Text>
+                          <ScrollView style={{borderRadius:12,padding:12,gap:8,borderColor: colors.textcolor,borderWidth:2}}>
+                          <Text style={{textAlign: "justify",color: colors.textcolor}}>Leaf spot is a common fungal disease that can affect various plant species, including Monstera plants. It is caused by different types of fungi and can result in circular or irregularly shaped spots on the leaves of the affected plants. The disease is more likely to occur in conditions of high humidity and when the foliage remains wet for extended periods.</Text>
+                          <Text style={{color:colors.textcolor}}>Symptoms:</Text>
+                              <Text style={{textAlign: "justify",color: colors.textcolor}}>Circular or irregularly shaped spots on the leaves, usually with a distinct border.
+                                  Spots can be of various colors, including yellow, brown, or black, depending on the stage and type of the disease.
+                                  As the disease progresses, the spots may increase in size and number, leading to leaf yellowing and wilting.
+                              </Text>
+                          </ScrollView>
+                      </View>
+                    )}
+                {selectedButton === "Treatment" && (
+                  <View style={{marginHorizontal:24}}>
+                    <Text style={[styles.textStyle1,{color: colors.textcolor }]}>Treatment Content</Text>
+                  </View>
+                )}
+            </View>
+            
+          </BottomSheetModal>
       </View>
+
   )
+  
 }
 
 export default Cameras 
@@ -234,6 +410,21 @@ const styles = StyleSheet.create({
     width:width,
     height:height
   },
+  borderHorizontal: {
+    backgroundColor: "gray",
+    width: 2,
+    height: 24,
+    borderRadius: 2,
+  }, 
+  ButtonMenu: {
+    width: width / 4,
+    height: 28,
+    borderRadius: 8,
+    
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+  },
 
   headContainerStyle: {
     height:120,
@@ -253,6 +444,16 @@ const styles = StyleSheet.create({
         paddingTop: 30,
       }
     })
+  },
+  containerMenu: {
+    backgroundColor: BG,
+    borderRadius: 12,
+    height: 40,
+    marginHorizontal: 24,
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "center",
   },
  
   headRow: {
@@ -302,6 +503,15 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     alignContent:'center',
+  },
+  buttonIndicator: {
+    position: "absolute",
+  
+    left: 0,
+    width: width / 4.4,
+    height: 28,
+
+    borderRadius: 8,
   },
   FlashButton: {
     width:width > 400 ? 48 : 42,

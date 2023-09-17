@@ -2,17 +2,21 @@ import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { TextInput } from 'react-native-gesture-handler';
-import { useTheme } from './ThemeContext';
+import { useTheme } from '../Account/ThemeContext'
+import { theme, darkTheme } from '../../../../Style/style'
+
 type Props = {
   onScreenChange: (screenNumber: number) => void;
 };
 
 const AccountInformation = ({ onScreenChange }: Props) => {
-  const { isDarkMode } = useTheme();
   const BackToUserSettings = () => {
     onScreenChange(4)
   }
   const [selectedOption, setSelectedOption] = useState(0);
+  const { isDarkMode } = useTheme();
+  const selectedTheme = isDarkMode ? darkTheme : theme;
+  const { colors, spacing, textVariants } = selectedTheme;
   return (
     <View style={{height:height, gap:20, paddingBottom:30}}>
       <View style={styles.headStyle}>
@@ -29,9 +33,9 @@ const AccountInformation = ({ onScreenChange }: Props) => {
       <View style={styles.content1style}>
           <View style={{width:300,height:300,flexDirection:'row',gap:18}}>
               <TouchableOpacity style={{width:120,alignItems:'center',gap:5}} onPress={() => setSelectedOption(0)}>
-                <Text style={{fontSize:16,color: isDarkMode ? 'white' : 'black'}}>Account Data</Text>
+                <Text style={{fontSize:16,color:colors.textcolor}}>Account Data</Text>
                 {selectedOption === 0 ? (
-                  <View style={{width:120,height:2,backgroundColor: isDarkMode ? 'white' : 'black'}}></View>
+                  <View style={{width:120,height:2,backgroundColor: colors.textcolor}}></View>
                 ) : (
                   <View></View>
                 )}
@@ -39,11 +43,11 @@ const AccountInformation = ({ onScreenChange }: Props) => {
               </TouchableOpacity>
 
               <TouchableOpacity style={{width:120,alignItems:'center',gap:5,}} onPress={() => setSelectedOption(1)}>
-                <Text style={{fontSize:16,color: isDarkMode ? 'white' : 'black'}}>Personal Data</Text>
+                <Text style={{fontSize:16,color:colors.textcolor}}>Personal Data</Text>
                {selectedOption === 0 ? (
                   <View></View>
                 ) : (
-                  <View style={{width:120,height:2,backgroundColor: isDarkMode ? 'white' : 'black'}}></View>
+                  <View style={{width:120,height:2,backgroundColor: colors.textcolor}}></View>
                 )}
               </TouchableOpacity>
           </View>
@@ -52,18 +56,18 @@ const AccountInformation = ({ onScreenChange }: Props) => {
       {selectedOption === 0 ? (
       <View style={styles.content1style}>
       <View style={{height:300,flexDirection:'column',gap:12}}>
-        <Text style={{fontSize:14,color: isDarkMode ? 'white' : 'black'}}>Email Address</Text>
+        <Text style={{fontSize:14,color:colors.textcolor}}>Email Address</Text>
         <TextInput style={{backgroundColor:BG_VIEW, height:40,borderRadius:20,paddingLeft:12}} >
 
         </TextInput>
 
-        <Text style={{fontSize:14,color: isDarkMode ? 'white' : 'black'}}>Password</Text>
+        <Text style={{fontSize:14,color:colors.textcolor}}>Password</Text>
         <TextInput style={{backgroundColor:BG_VIEW, height:40,borderRadius:20,paddingLeft:12}}>
 
           </TextInput>
         <View style={{paddingTop:10}}>
-        <Text style={{fontSize:14,color: isDarkMode ? 'white' : 'black'}}>Delete account</Text>
-        <Text style={{fontSize:14,color: isDarkMode ? 'white' : 'black'}}>Your Account will be permanently removed from the application. All your data will be lost.
+        <Text style={{fontSize:14,color:colors.textcolor}}>Delete account</Text>
+        <Text style={{fontSize:14,color:colors.textcolor}}>Your Account will be permanently removed from the application. All your data will be lost.
         </Text>
         </View>
 
@@ -77,15 +81,15 @@ const AccountInformation = ({ onScreenChange }: Props) => {
       ) : (
         <View style={styles.content1style}>
         <View style={{height:300,flexDirection:'column',gap:12}}>
-              <Text style={{fontSize:14,color: isDarkMode ? 'white' : 'black'}}>First Name</Text>
+              <Text style={{fontSize:14,color:colors.textcolor}}>First Name</Text>
               <TextInput style={{backgroundColor:BG_VIEW, height:40,borderRadius:20,paddingLeft:12}} >
 
                 </TextInput>
-              <Text style={{fontSize:14,color: isDarkMode ? 'white' : 'black'}}>Last Name</Text>
+              <Text style={{fontSize:14,color:colors.textcolor}}>Last Name</Text>
               <TextInput style={{backgroundColor:BG_VIEW, height:40,borderRadius:20,paddingLeft:12}} >
 
                 </TextInput>
-              <Text style={{fontSize:14,color: isDarkMode ? 'white' : 'black'}}>Phone Number</Text>
+              <Text style={{fontSize:14,color:colors.textcolor}}>Phone Number</Text>
               <TextInput style={{backgroundColor:BG_VIEW, height:40,borderRadius:20,paddingLeft:12}} >
 
                 </TextInput>

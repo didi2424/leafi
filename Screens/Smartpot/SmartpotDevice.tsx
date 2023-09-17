@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import CircleTemp from './CircleTemp';
 import CircleLight from './CircleLight';
 import { useTheme } from '../Profile/Settings/Account/ThemeContext';
+import { theme,darkTheme } from '../../Style/style';
 
 type DeviceData = {
   room: string;
@@ -21,6 +22,8 @@ type Props = {
 
 const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
   const { isDarkMode } = useTheme();
+  const selectedTheme = isDarkMode ? darkTheme : theme;
+  const { colors, spacing, textVariants } = selectedTheme;
   const [selectedOption, setSelectedOption] = useState('1');  
   const devices = deviceData?.devices || [];
   const deviceCount = devices.length;
@@ -83,7 +86,7 @@ const SmartpotDevice = ({onScreenChange, deviceData }: Props) => {
   
   const { width,height } = Dimensions.get("window");
   return (
-    <View style={{height:height,width:width,backgroundColor: isDarkMode ? '#000': '#eeeeee'}}>
+    <View style={{height:height,width:width,backgroundColor: colors.background}}>
     <View style={{flex:1}} >
       <View style={{flex:0.6,backgroundColor:BG_VIEW}}>
         <View style={styles.headContainerStyle}>

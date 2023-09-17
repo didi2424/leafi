@@ -3,27 +3,16 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, DefaultTheme,Theme} from "@react-navigation/native"
 import RootNavigators from './navigators/RootNavigators';
 import { ThemeProvider } from './Screens/Profile/Settings/Account/ThemeContext';
-import { useMemo } from 'react';
 import {
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
-
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 export default function App() {
-  const theme: Theme = useMemo(
-    () => ({
-      ...DefaultTheme,
-      colors: {
-        ...DefaultTheme.colors,
-        background: '#eeeeee'
-      },
-    }),
-    []
-  )
+
   return (
     <ThemeProvider>
     <View style={styles.container}>
-      <NavigationContainer theme={theme}>
+      <NavigationContainer>
       <GestureHandlerRootView style={{flex:1}}>
         <BottomSheetModalProvider>
           <RootNavigators />
@@ -41,6 +30,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#7db149ff'
-
   },
 });

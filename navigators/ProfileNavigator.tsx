@@ -25,7 +25,7 @@ const ProfileNavigator = ({ onScreenChanges  }: Props) => {
     const { isDarkMode } = useTheme();
       
       
-    const [selectedScreen, setSelectedScreen] = useState(0);
+    const [selectedScreen, setSelectedScreen] = useState(1);
     const [registerData, setRegisterData] = useState<RegistrationData | null>(null);
     const handleViewPress = () => {
         Keyboard.dismiss();

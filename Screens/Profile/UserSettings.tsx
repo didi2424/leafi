@@ -5,12 +5,16 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useTheme } from './Settings/Account/ThemeContext';
+import { theme, darkTheme } from '../../Style/style'
+import { color } from 'react-native-reanimated';
 type Props = {
     onScreenChange: (screenNumber: number) => void;
   };
 
 const UserSettings = ({ onScreenChange }: Props) => {
     const { isDarkMode } = useTheme();
+    const selectedTheme = isDarkMode ? darkTheme : theme;
+    const { colors, spacing, textVariants } = selectedTheme;
     const BackTouserProfile = () => {
         onScreenChange(0)
     }
@@ -42,7 +46,7 @@ const UserSettings = ({ onScreenChange }: Props) => {
         console.log('press logout')
     }
   return (
-    <View style={{height:height,gap:10,paddingBottom:30, backgroundColor: isDarkMode ? '#3d3c3fff' : LIGHT_BG}}>
+    <View style={{height:height,gap:10,paddingBottom:30, backgroundColor:colors.background}}>
         <View style={styles.headStyle}>
             
         <TouchableOpacity onPress={BackTouserProfile}>
@@ -59,7 +63,7 @@ const UserSettings = ({ onScreenChange }: Props) => {
         
        
         <View style={styles.content1style}>
-            <Text style={{fontSize:20}}>Account</Text>
+            <Text style={{fontSize:20,color:colors.textcolor}}>Account</Text>
 
             <View style={styles.contentButtonMenu}>
                 <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
@@ -112,7 +116,7 @@ const UserSettings = ({ onScreenChange }: Props) => {
         </View>
 
         <View style={styles.content1style}>
-            <Text style={{fontSize:20}}>General</Text>
+            <Text style={{fontSize:20,color:colors.textcolor}}>General</Text>
 
             <View style={styles.contentButtonMenu}>
                 <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
@@ -157,7 +161,7 @@ const UserSettings = ({ onScreenChange }: Props) => {
 
         <View style={styles.content3style}>
             <TouchableOpacity onPress={pressLogOut}>
-                <Text>
+                <Text style={{color:colors.textcolor}}>
                     Logout
                 </Text>
             </TouchableOpacity>
@@ -169,7 +173,6 @@ const UserSettings = ({ onScreenChange }: Props) => {
 export default UserSettings
 const { width,height } = Dimensions.get("window");
 const BG_VIEW = "#C1FC49"
-const LIGHT_BG = '#eeeeee'
 const CIRCLE_BG= '#86ba1c'
 const ICON_COLOR = "#2a6f29"
 

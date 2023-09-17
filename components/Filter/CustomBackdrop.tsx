@@ -4,7 +4,6 @@ import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedProps,
-  useAnimatedStyle,
 } from "react-native-reanimated";
 import {BlurView} from "expo-blur"
 

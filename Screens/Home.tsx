@@ -1,17 +1,19 @@
 import { Text, View, ScrollView, Image, TouchableOpacity, useWindowDimensions, FlatList} from "react-native";
 import { SafeAreaView } from "react-native";
-import  {useTheme} from "@react-navigation/native"
+import { useTheme } from "./Profile/Settings/Account/ThemeContext";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useState,useMemo,useEffect, useRef, useCallback  } from "react";
-import Animated, {useSharedValue, useAnimatedStyle,useAnimatedScrollHandler,interpolate, event} from "react-native-reanimated";
+import Animated, {useSharedValue, useAnimatedStyle,useAnimatedScrollHandler,interpolate, event, color} from "react-native-reanimated";
 import {
   BottomSheetModal,
 } from '@gorhom/bottom-sheet';
 import CustomBackdrop from "../components/Filter/CustomBackdrop";
 import CustomHandle from "../components/Filter/CustomHandle";
-import BottomSheetBackground from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackground/BottomSheetBackground";
+import CustomBackground from "../components/Filter/CostomBackgroud";
 
+import {theme, darkTheme} from '../Style/style'
+ 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSun, faTint, faTree,faCloud, faTemperature3, faScissors } from '@fortawesome/free-solid-svg-icons';
 library.add(faSun, faTint, faTree,faCloud,faTemperature3, faScissors);
@@ -328,12 +330,15 @@ const CustomCard3 = ({newDiscover} ) => {
 
   
 const Home = () => {
+  const { isDarkMode } = useTheme();
+  const selectedTheme = isDarkMode ? darkTheme : theme;
+  const { colors } = selectedTheme;
     const initialDiscover = [
         { key: 'spacer-left' },
         ...dataPlants,
         { key: 'spacer-right' },
       ];
-    const {colors} = useTheme()
+
     const [categoryIndex, setCategoryIndex] = useState(0);
     const [newDiscovers, setNewDiscover] = useState(initialDiscover);
     const snapPoints = useMemo(() => ['25%', '85%'], []);
@@ -405,7 +410,6 @@ const Home = () => {
             <View style={{ borderRadius: 18, backgroundColor: '#ACE1AF', marginTop: 22, marginHorizontal: 12, height: isPressedCategory ? 200 : 118 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View style={{ alignItems: 'center', paddingHorizontal: 12 }}>
-                {/* <FontAwesomeIcon icon={icon({ name: 'leaf' })} style={{ opacity: 0.9, color: '#2a6f29',width:40,height:40 }}  />  */}
                 {icons && <FontAwesomeIcon icon={icons} style={{ opacity: 0.9, color: '#2a6f29', width: 40, height: 40 }} />}
                 </View>
   
@@ -486,8 +490,8 @@ const Home = () => {
           }
       };
     return (
-    <ScrollView style={{marginBottom:78}}>
-        <SafeAreaView style={{paddingVertical:24,gap:24}}>
+    <ScrollView style={{paddingBottom:90, backgroundColor:colors.background}}>
+        <View style={{paddingVertical:24,gap:24}}>
             {/* Header Section*/}
         <View style={{
                 paddingHorizontal: 24,
@@ -505,8 +509,8 @@ const Home = () => {
                 ></Image>
 
                 <View style={{flex:1 }}>
-                    <Text style={{fontSize:18, fontWeight:"600", marginBottom:8}} numberOfLines={1}>Hi! Mita 👋🏻 </Text>
-                    <Text style={{color:colors.text, opacity:0.5 }} numberOfLines={1}>Discover Plant!</Text>
+                    <Text style={{fontSize:18, fontWeight:"600", marginBottom:8, color: colors.textcolor}} numberOfLines={1}>Hi! Mita 👋🏻 </Text>
+                    <Text style={{color:colors.textcolor, opacity:0.5 }} numberOfLines={1}>Discover Plant!</Text>
                 </View>
 
                 <TouchableOpacity style={{
@@ -516,17 +520,17 @@ const Home = () => {
                     justifyContent: "center",
                     borderRadius:52,
                     borderWidth:1,
-                    borderColor: colors.border,
+                    borderColor: colors.textcolor,
                 }}>
-                    <FontAwesomeIcon icon={icon({ name: 'bell' })} /> 
+                    <FontAwesomeIcon icon={icon({ name: 'bell' })} style={{ opacity: 0.9, color: colors.textcolor}} /> 
                 </TouchableOpacity>
 
             </View>
             {/*Search Section*/}
         <View style={{flexDirection:"row",paddingHorizontal:24,gap:12}}>
-            <TouchableOpacity style={{flex:1,height:52, borderRadius:52, borderWidth:1.2, borderColor: colors.border,alignItems: 'center', paddingHorizontal:24,gap:12,flexDirection:'row'}}>
-            <FontAwesomeIcon icon={icon({ name: 'magnifying-glass' })} style={{ opacity: 0.9, color: '#2a6f29' }} /> 
-            <Text style={{color: '#2a6f29', opacity:0.7}}>
+            <TouchableOpacity style={{flex:1,height:52, borderRadius:52, borderWidth:1.2, borderColor: colors.textcolor,alignItems: 'center', paddingHorizontal:24,gap:12,flexDirection:'row'}}>
+            <FontAwesomeIcon icon={icon({ name: 'magnifying-glass' })} style={{ opacity: 0.9, color: colors.textcolor}} /> 
+            <Text style={{color: colors.textcolor, opacity:0.7}}>
                 Search
             </Text>
 
@@ -540,12 +544,12 @@ const Home = () => {
                     justifyContent: "center",
                     borderRadius:52,
                     borderWidth:1,
-                    borderColor: colors.border,
+                    borderColor: colors.textcolor,
                   
                  
                 }}
                 >
-                    <FontAwesomeIcon icon={icon({ name: 'sliders' })} style={{color: '#2a6f29'}}/> 
+                    <FontAwesomeIcon icon={icon({ name: 'sliders' })} style={{color: colors.textcolor}}/> 
                 </TouchableOpacity>
             </View>
             {/* Discover Section*/}
@@ -556,20 +560,21 @@ const Home = () => {
             justifyContent:"space-between",
             marginBottom:12
         }}>
-            <Text style={{fontSize:24}}>
+            <Text style={{fontSize:24,color:colors.textcolor}}>
                 Discover
             </Text>
             <TouchableOpacity>
-                <Text>See All</Text>
+                <Text style={{color:colors.textcolor}}>See All</Text>
             </TouchableOpacity>
         
             </View>            
             </View>
-        <View style={{paddingHorizontal:12}} >
-            {newDiscovers.length > 0 && (
-                <CustomCard3 newDiscover={newDiscovers} />
-            )}
-            </View>
+          <View style={{paddingHorizontal:12}} >
+              {newDiscovers.length > 0 && (
+                  <CustomCard3 newDiscover={newDiscovers} />
+              )}
+              </View>
+
             {/* FlatList Section */}
         <FlatList
                 contentContainerStyle={{paddingHorizontal:24,gap:12}}
@@ -580,17 +585,17 @@ const Home = () => {
                     const isSelected = categoryIndex === index
                     return (
                         <TouchableOpacity onPress={() => handleCategoryPress(index, item)}
-                            style={{backgroundColor: isSelected ? '#B2D3C2' : colors.card,
+                            style={{backgroundColor: isSelected ? colors.cardcolor : 'transparent',
                             paddingHorizontal:24,
-                            paddingVertical:16,
+                            paddingVertical:12,
                             borderRadius:20,
                             }}
                         >
                             <Text style={{
-                            color: isSelected ? '#7db149ff' : 'rgba(125, 177, 73, 1)',
+                            color: isSelected ? colors.textcolor : colors.textcolor,
                             fontWeight:"600",
-                            fontSize:16,
-                            opacity: isSelected ? 1 : 0.8
+                            fontSize: isSelected ? 16 : 14,
+                            opacity: isSelected ? 1 : 0.7
                             }}
                             >{item.text}
                             </Text>
@@ -601,12 +606,12 @@ const Home = () => {
             />
           {/* Foryou Section */}
         <View style={{paddingHorizontal:24,position:'relative',overflow: 'hidden'}}>
-              <Text style={{fontSize:24, marginBottom:12}}>
+              <Text style={{fontSize:24, marginBottom:12,color:colors.textcolor}}>
                 For You 
               </Text>
         
               {FORYOU.map((item, index) => (
-                <View style={{backgroundColor: '#fff',
+                <View style={{backgroundColor: colors.cardcolor,
                 borderTopLeftRadius:24,
                 borderTopRightRadius:24,
                 borderBottomLeftRadius:24,
@@ -626,11 +631,11 @@ const Home = () => {
                 marginTop:12,
                 marginBottom:12
             }}>
-                <Text style={{fontWeight: "600",fontSize: 28}} >{item.text}</Text>
+                <Text style={{fontWeight: "600",fontSize: 28,color:colors.textcolor}} >{item.text}</Text>
                   <View  style={{ flexDirection: 'row',gap:8, alignContent:'center', justifyContent: 'center'}}>
-                          <TouchableOpacity  style={{flexDirection:"row",gap:2,backgroundColor:"#2a6f29",width:52, height:22, borderRadius:8, alignItems:"center",alignContent:'center', justifyContent: 'center',marginTop:4}}>
-                                <FontAwesomeIcon icon={icon({ name: 'eye' })} style={{ color: '#7db149ff',width:40,height:40 }}  /> 
-                                <Text style={{color:'white'}}>{item.views}</Text>
+                          <TouchableOpacity  style={{flexDirection:"row",gap:2, backgroundColor:"#2a6f29", width:52, height:22, borderRadius:8, alignItems:"center",alignContent:'center', justifyContent: 'center',marginTop:4}}>
+                                <FontAwesomeIcon icon={icon({ name: 'eye' })} style={{ color: '#7db149ff', width:40,height:40 }}  /> 
+                                <Text style={{color: colors.textcolor}}>{item.views}</Text>
                               </TouchableOpacity>
 
                           <TouchableOpacity onPress={() => openForYouModal(item)}>
@@ -643,10 +648,10 @@ const Home = () => {
 
                 
 
-            <View style={{marginHorizontal:22 ,backgroundColor: 'rgba(125, 177, 73, 0.25)', borderRadius: 15,marginBottom:22}}>
+            <View style={{marginHorizontal:22 , backgroundColor: colors.background, borderRadius: 15 ,marginBottom:22}}>
                     <View style={{flex:1,justifyContent:"center",padding:12}} >
-                      <Text style={{fontSize:14, fontWeight:"600", marginBottom:8}} numberOfLines={4}>{item.describe} </Text>
-                      <Text style={{color:colors.text, opacity:0.5 }} numberOfLines={1}>{item.describe1}</Text>
+                      <Text style={{fontSize:14, fontWeight:"600", marginBottom:8, color:colors.textcolor}} numberOfLines={4}>{item.describe} </Text>
+                      <Text style={{color:colors.textcolor }} numberOfLines={1}>{item.describe1}</Text>
                   </View>
                 </View>
                 
@@ -665,9 +670,10 @@ const Home = () => {
           ref={openFilterModalRef}
           backdropComponent={props => <CustomBackdrop {...props}/>}
           handleComponent={props => <CustomHandle {...props}/>}
+          backgroundComponent={(props) => <CustomBackground {...props} />}
           >
            
-          <Text>Filter</Text>
+          <Text style={{color:colors.textcolor}}>Filter</Text>
 
           </BottomSheetModal>
 
@@ -755,13 +761,10 @@ const Home = () => {
             )}
           </BottomSheetModal>
 
-        </SafeAreaView>
+        </View>
     </ScrollView>
     )
      
 } 
-
-
-
 
 export default Home;
