@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 import Home from '../Screens/Home'
+import CommunityHome from '../Screens/Community/CommunityHome';
 import ProfileNavigator from './ProfileNavigator'
-
 import SmartpotNavigator from './SmartpotNavigator';
 import CameraNavigator from './CameraNavigator';
 
@@ -14,7 +14,7 @@ export type TabsStackParamList = {
     Home: undefined
     Smartpot: undefined
     Image: undefined
-    History: undefined
+    CommunityHome: undefined
     Profile: undefined
 }
 
@@ -100,8 +100,8 @@ const TabNavigators = () => {
             }}
             />
             <TabStack.Screen
-            name='History'
-            component={Example}
+            name='CommunityHome'
+            component={CommunityHome}
             options={{
                 headerShown: false,
                 tabBarIcon: ({focused}) => (

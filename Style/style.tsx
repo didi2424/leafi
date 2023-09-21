@@ -8,7 +8,9 @@ const palette = {
     lightText: '#eeeeee',
     lightText2: '#2a6f29',
     darkcard: '#222124',
-    lightcard: '#dedede'
+    lightcard: '#dedede',
+    lightbutton: '#a3d936',
+    darkbutton: '#C1FC49'
   }
   
   export const theme = {
@@ -18,6 +20,7 @@ const palette = {
       textcolor: palette.darkText,
       textcolor1: palette.lightText2,
       cardcolor: palette.lightcard,
+      buttoncolor: palette.lightbutton,
       primary: palette.purple,
       success: palette.green,
       danger: palette.red,
@@ -26,7 +29,10 @@ const palette = {
     spacing: {
       s: 8,
       m: 16,
-      l: 24,
+      l: 18,
+      ll: 20,
+      lll: 22,
+      llll: 24,
       xl: 40,
     },
     textVariants: {
@@ -51,6 +57,7 @@ const palette = {
       textcolor1: palette.darkText,
       foreground: palette.white,
       cardcolor: palette.darkcard,
+      buttoncolor: palette.darkbutton
       
     }
   }

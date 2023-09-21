@@ -3,6 +3,7 @@ import React from 'react'
 import { Ionicons } from '@expo/vector-icons'; 
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from './Settings/Account/ThemeContext';
+import { theme, darkTheme } from '../../Style/style'
 type Props = {
   onScreenChange: (screenNumber: number) => void;
 };
@@ -23,6 +24,9 @@ const UserProfile = ({ onScreenChange  }: Props) => {
     onScreenChange(4)
   }
   const { isDarkMode } = useTheme();
+  const selectedTheme = isDarkMode ? darkTheme : theme;
+  const { colors, spacing } = selectedTheme;
+
   const renderItem = ({ item, index, data }: { item: typeof data[number]; index: number; data: typeof reversedData;icon: string }) => {
     const dateOnly = new Date(item.date).toLocaleDateString('en-US', { day: 'numeric' });
     const monthsOnly = new Date(item.date).toLocaleDateString('en-US', { month: 'short' });
@@ -34,20 +38,20 @@ const UserProfile = ({ onScreenChange  }: Props) => {
     return (
       <View style={{ padding: 2 }}>
         {!isSameDay && (
-          <View style={{ flexDirection: 'row', height: 80,gap:8 }}>
+          <View style={{ flexDirection: 'row', height: 80, gap:8 }}>
             <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
-              <Text style={[styles.textStyle2,{color: isDarkMode ? '#FFF':'#000'}]}>{dateOnly}</Text>
-              <Text style={[styles.textStyle4,{color: isDarkMode ? '#FFF':'#000'}]}>{monthsOnly}</Text>
+              <Text style={[styles.textStyle2,{color: colors.textcolor}]}>{dateOnly}</Text>
+              <Text style={[styles.textStyle4,{color: colors.textcolor}]}>{monthsOnly}</Text>
             </View>
             <View style={{ flex: 0.22, alignContent: 'center', alignItems: 'center' }}>
                 <View style={styles.circleRadio1}>
                   <View style={styles.circleRadio2}></View>
                 </View>
-                <View style={{width:2, height:'100%', backgroundColor:'white'}}>
+                <View style={{width:2, height:'100%', backgroundColor: colors.cardcolor}}>
                 </View>
             </View>
             <View style={{ flex: 3}}>
-              <View style={{ backgroundColor: 'white', height: 60, marginHorizontal: 8, marginVertical: 2, borderRadius: 12, justifyContent:'center',
+              <View style={{ backgroundColor: colors.cardcolor, height: 60, marginHorizontal: 8, marginVertical: 2, borderRadius: 12, justifyContent:'center',
               shadowColor: "#000",
               shadowOffset: {
                 width: 0,
@@ -58,11 +62,11 @@ const UserProfile = ({ onScreenChange  }: Props) => {
               padding:10 }}>
                 <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                   <View style={{gap:2}}>
-                    <Text style={styles.textStyle4}>{item.action}</Text>
-                    <Text style={styles.textStyle5}>{item.results}</Text>
-                    <Text style={styles.textStyle6}>{fullDate}</Text>
+                    <Text style={[styles.textStyle4,{color: colors.textcolor}]}>{item.action}</Text>
+                    <Text style={[styles.textStyle5,{color: colors.textcolor}]}>{item.results}</Text>
+                    <Text style={[styles.textStyle6,{color: colors.textcolor}]}>{fullDate}</Text>
                   </View>
-                    <Ionicons name={item.icon} size={26} color="#83C303" />
+                    <Ionicons name={item.icon} size={26} color={colors.buttoncolor} />
                 </View>
               </View>
             </View>
@@ -73,12 +77,11 @@ const UserProfile = ({ onScreenChange  }: Props) => {
           <View style={{ flexDirection: 'row', height: 80,gap:8 }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 0.2, alignContent: 'center', alignItems: 'center' }}>
-               
-                <View style={{width:2, height:'100%', backgroundColor:'white'}}>
+                <View style={{width:2, height:'100%', backgroundColor: colors.cardcolor}}>
                 </View>
             </View>
             <View style={{ flex: 3}}>
-              <View style={{ backgroundColor: 'white', height: 60, marginHorizontal: 8, marginVertical: 2, borderRadius: 12, justifyContent:'center',
+              <View style={{ backgroundColor: colors.cardcolor, height: 60, marginHorizontal: 8, marginVertical: 2, borderRadius: 12, justifyContent:'center',
               shadowColor: "#000",
               shadowOffset: {
                 width: 0,
@@ -89,11 +92,11 @@ const UserProfile = ({ onScreenChange  }: Props) => {
               padding:10 }}>
                 <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                   <View style={{gap:4}}>
-                    <Text style={styles.textStyle4}>{item.action}</Text>
-                    <Text style={styles.textStyle5}>{item.results}</Text>
-                    <Text style={styles.textStyle6}>{fullDate}</Text>
+                    <Text style={[styles.textStyle4,{color: colors.textcolor}]}>{item.action}</Text>
+                    <Text style={[styles.textStyle5,{color: colors.textcolor}]}>{item.results}</Text>
+                    <Text style={[styles.textStyle6,{color: colors.textcolor}]}>{fullDate}</Text>
                   </View>
-                    <Ionicons name={item.icon} size={26} color="#83C303" />
+                    <Ionicons name={item.icon} size={26} color={colors.buttoncolor} />
                 </View>
               </View>
             </View>
@@ -105,11 +108,11 @@ const UserProfile = ({ onScreenChange  }: Props) => {
             <View style={{ flex: 1 }} />
             <View style={{ flex: 0.2, alignContent: 'center', alignItems: 'center' }}>
                 
-                <View style={{width:2, height:'100%', backgroundColor:'white'}}>
+                <View style={{width:2, height:'100%', backgroundColor: colors.cardcolor}}>
                 </View>
             </View>
             <View style={{ flex: 3}}>
-              <View style={{ backgroundColor: 'white', height: 60, marginHorizontal: 8, marginVertical: 2, borderRadius: 12, justifyContent:'center',
+              <View style={{ backgroundColor: colors.cardcolor, height: 60, marginHorizontal: 8, marginVertical: 2, borderRadius: 12, justifyContent:'center',
               shadowColor: "#000",
               shadowOffset: {
                 width: 0,
@@ -120,11 +123,11 @@ const UserProfile = ({ onScreenChange  }: Props) => {
               padding:10 }}>
                 <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                   <View style={{gap:3}}>
-                    <Text style={styles.textStyle4}>{item.action}</Text>
-                    <Text style={styles.textStyle5}>{item.results}</Text>
-                    <Text style={styles.textStyle6}>{fullDate}</Text>
+                    <Text style={[styles.textStyle4,{color: colors.textcolor}]}>{item.action}</Text>
+                    <Text style={[styles.textStyle5,{color: colors.textcolor}]}>{item.results}</Text>
+                    <Text style={[styles.textStyle6,{color: colors.textcolor}]}>{fullDate}</Text>
                   </View>
-                    <Ionicons name={item.icon} size={26} color="#83C303" />
+                    <Ionicons name={item.icon} size={26} color={colors.buttoncolor} />
                 </View>
               </View>
             </View>
@@ -162,7 +165,7 @@ const UserProfile = ({ onScreenChange  }: Props) => {
     <View style={{flex:2.7,paddingHorizontal:24,gap:12}} >
 
           <View style={{top:-20,height:280,gap:12}}>
-            <Text style={[styles.textStyle2,{color: isDarkMode ? '#FFF':'#000'}]}>Activity</Text>
+            <Text style={[styles.textStyle2,{color: colors.textcolor, fontSize: spacing.llll}]}>Activity</Text>
             <FlatList
                 data={reversedData}
                 renderItem={({ item, index }) => renderItem({ item, index, data: reversedData })}
@@ -175,9 +178,9 @@ const UserProfile = ({ onScreenChange  }: Props) => {
               <View style={{flexDirection:"row",
                 alignItems: "center",
                 justifyContent:"space-between"}}>
-                <Text style={[styles.textStyle2,{color: isDarkMode ? '#FFF':'#000'}]}>My Smartpot</Text>
+                <Text style={[styles.textStyle2,{color: colors.textcolor,fontSize: spacing.llll}]}>My Smartpot</Text>
                 <TouchableOpacity>
-                  <Text style={[styles.textStyle5,{color: isDarkMode ? '#FFF':'#000'}]}>See all</Text>
+                  <Text style={[styles.textStyle5,{color: colors.textcolor}]}>See all</Text>
                 </TouchableOpacity>
               </View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -186,8 +189,8 @@ const UserProfile = ({ onScreenChange  }: Props) => {
                     <View style={styles.mySmartpotContainerImage}>
                     </View>
                       <View style={{flexDirection:'column',gap:4}}>
-                        <Text style={styles.textStyle5}> Spider Plants</Text>
-                        <Text style={styles.textStyle6}> SmartPot At Bedroom</Text>
+                        <Text style={styles.textStyle5}>Spider Plants</Text>
+                        <Text style={styles.textStyle6}>SmartPot At Bedroom</Text>
                       </View>
                   </View>
 
@@ -195,8 +198,8 @@ const UserProfile = ({ onScreenChange  }: Props) => {
                     <View style={styles.mySmartpotContainerImage}>
                     </View>
                       <View style={{flexDirection:'column',gap:4}}>
-                        <Text style={styles.textStyle5}> Spider Plants</Text>
-                        <Text style={styles.textStyle6}> SmartPot At Bedroom</Text>
+                        <Text style={styles.textStyle5}>Spider Plants</Text>
+                        <Text style={styles.textStyle6}>SmartPot At Bedroom</Text>
                       </View>
                   </View>
                 </View>

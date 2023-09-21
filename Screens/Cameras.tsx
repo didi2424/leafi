@@ -12,6 +12,11 @@ import { useTheme } from './Profile/Settings/Account/ThemeContext';
 import {theme,darkTheme} from '../Style/style'
 import api from '../api';
 
+import * as tf from '@tensorflow/tfjs';
+import { decodeJpeg } from '@tensorflow/tfjs-react-native';
+import { bundleResourceIO } from '@tensorflow/tfjs-react-native';
+import * as FileSystem from 'expo-file-system';
+
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -30,7 +35,6 @@ type Props = {
 
 const Cameras = ({onScreenChange,onDeviceData}: Props) => {
   const [imageUri, setImageUri] = useState<null | string>(null);
-  const [uploadResponse, setUploadResponse] = useState('');
   const cameraRef = useRef<Camera | null>(null); 
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -45,14 +49,73 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
   const selectedTheme = isDarkMode ? darkTheme : theme;
   const { colors } = selectedTheme;
 
+  const [isTfReady, setIsTfReady] = useState(false);
+  const [result, setResult] = useState<null | string>(null);
+  const [pickedImage, setPickedImage] = useState<null | string>(null);
+  const [model, setModel] = useState(null);
+  const class_names = ['cat', 'dog'];
+
+  const load = async () => {
+    try {
+      await tf.ready();
+      const modelJSON = require('../assets/models/norescalecatdog.json');
+      const modelWeights = require('../assets/models/norescalecatdog.bin');
+      const model = await tf.loadLayersModel(
+        bundleResourceIO(modelJSON, modelWeights)
+      );
+      setModel(model);
+      setIsTfReady(true);
+    } catch (err) {
+      console.error(err);
+      setResult('Error: Unable to classify.');
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const classifyImage = async () => {
+    if (!model) {
+      setResult('Error: No image selected or model not loaded.');
+      return;
+    }
+
+    try {
+      const imgB64 = await FileSystem.readAsStringAsync(pickedImage, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      const imgBuffer = tf.util.encodeString(imgB64, 'base64').buffer;
+      const raw = new Uint8Array(imgBuffer)
+      const imageTensor = decodeJpeg(raw);
+      
+      const resizedImageTensor = tf.image.resizeBilinear(imageTensor, [80, 80]);
+      const batchedImageTensor = tf.stack([resizedImageTensor]);
+
+      const predictions = model.predict(batchedImageTensor);
+      const score = tf.softmax(predictions).dataSync();
+
+      const maxPredictionIndex = score.indexOf(Math.max(...score));
+      const confidence = (score[maxPredictionIndex] * 100).toFixed(2);
+
+      setResult(`Class: ${class_names[maxPredictionIndex]}, Confidence: ${confidence}%`);
+      console.log(class_names[maxPredictionIndex], confidence);
+    } catch (error) {
+      console.error('Error classifying image:', error);
+      setResult('Error: Unable to classify the selected image.');
+    }
+  };
+
+
+
   const [selectedButton, setSelectedButton] = useState('Details'); 
   const selectedButtonPosition = useSharedValue(12);
-    useEffect(() => {
-        // Trigger the animation once the component has mounted
-        selectedButtonPosition.value = withTiming(12);
-        setSelectedButton('Details')
+  useEffect(() => {
+      // Trigger the animation once the component has mounted
+      selectedButtonPosition.value = withTiming(12);
+      setSelectedButton('Details')
 
-      }, []);
+    }, []);
   const handleButtonPress = (buttonText: string) => {
     setSelectedButton(buttonText);
     switch (buttonText) {
@@ -93,10 +156,10 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
   if (!permission.granted) {
     // Camera permissions are not granted yet
     return (
-      <View style={styles.containerPermission}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to use the camera</Text>
-        <TouchableOpacity onPress={requestPermission} style={{backgroundColor:CIRCLE_BG,width:120,height:30,alignItems:'center',justifyContent:'center',borderRadius:20}} >
-            <Text>Grant Permission</Text>
+      <View style={{gap:10, width:width,height:height,justifyContent:'center', alignItems:'center', backgroundColor:colors.background}}>
+        <Text style={{ textAlign: 'center', color: colors.textcolor }}>We need your permission to use the camera</Text>
+        <TouchableOpacity onPress={requestPermission} style={{backgroundColor: colors.buttoncolor , width:130, height:30,alignItems:'center',justifyContent:'center',borderRadius:20}} >
+            <Text>Grant Permission !</Text>
           </TouchableOpacity>
       </View>
     );
@@ -122,14 +185,14 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
     try {
       if (cameraRef.current) {
         const photo = await (cameraRef.current as any).takePictureAsync({flashMode:flashMode});
-        console.log('Photo taken!', photo);
         setImageUri(photo.uri);
+        setPickedImage(photo.uri)
+
       }
     } catch (error) {
       console.error('Error while taking photo:', error);
     }
   };
-
 
   const selectImage = async () => {
     try {
@@ -147,34 +210,16 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
   
       if (!result.canceled) {
         const selectedImage = result.assets[0];
-        setImageUri(selectedImage.uri);
+        setImageUri(selectedImage.uri)
+        setPickedImage(selectedImage.uri)
+
+
       }
     } catch (error) {
       console.error('Error selecting image:', error);
     }
   };
   
-  const uploadImage = async () => {
-    try {
-
-      const formData = new FormData();
-      formData.append('file', {
-        uri: imageUri,
-        name: 'image.jpg',
-        type: 'image/jpg',
-      });
-      const response = await api.post('/predict', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      setUploadResponse(response.data);
-      return false;
-
-    } catch (error) {
-      console.error('Error uploading image:', error);
-    }
-  };
 
   const pressHistory = () => {
     console.log('Pressed History')
@@ -182,6 +227,8 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
 
   const resetImage = () => {
     setImageUri(null);
+    setPickedImage(null);
+    setResult(null);
   };
 
 
@@ -189,7 +236,7 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
   return (
     <View style={{height:height,width:width}}>
      <View style={{flex:1,alignContent:'center'}}>
-    
+     
        {imageUri ? (
         <View style={{alignContent:'center',alignItems:'center',flex: 1}}>
 
@@ -198,6 +245,8 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
                       <View style={styles.headRow}>
                         <Text style={styles.HeadtextStyle1}>Results</Text>
                         <Text style={styles.textStyle2}>Enjoy our scan plants</Text>
+                       
+                        
                       </View>
                       <TouchableOpacity onPress={pressHistory}>
                         <FontAwesomeIcon size={24} color={CIRCLE_BG} icon={icon({ name: 'history'})} />
@@ -209,8 +258,10 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
                     <Text>Retake</Text>
                   </TouchableOpacity>
 
-
-              <TouchableOpacity style={styles.showDetailsButtton}  onPress={() => openFilterModal()}>
+              <TouchableOpacity style={styles.showDetailsButtton} onPress={() => {
+                classifyImage(); // Call the classifyImage function
+                openFilterModal(); // Call the openFilterModal function
+              }}>
                     <Text>Details</Text>
               </TouchableOpacity>
          
@@ -222,6 +273,7 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
 
         </View>
       ) : (
+        
             <View style={{alignContent:'center',flex:1,backgroundColor:'red'}}>
                  <Camera flashMode={flashMode} style={styles.camera} type={type} ref={cameraRef} ratio="16:9" >
                   <View style={styles.MenuContainerStyle} >
@@ -235,21 +287,30 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
                       </TouchableOpacity>
                   </View>
 
-                  <Image  source={require('../assets/cameraBox.png')}></Image>
+
+        
+                  <View style={{  justifyContent: 'center', alignItems: 'center' }}>
+                    <Image source={require('../assets/cameraBox.png')} style={{  resizeMode: 'cover' }} />
+                    {!isTfReady && 
+                    <View style={{backgroundColor: colors.buttoncolor, width: 120, height: 40, borderRadius:20, position:'absolute',justifyContent:'center',alignItems:'center'}}>
+                      <Text>Loading Model...</Text>
+                    </View>
+                    }
+                  </View>
 
                   <View style={styles.ContainerSelect}>
-
-                      <TouchableOpacity style={styles.FlashButton} onPress={toggleFlash}>
+                     
+                      <TouchableOpacity style={styles.FlashButton} onPress={toggleFlash}  disabled={!isTfReady}>
 
                       <FontAwesomeIcon  size={22} color={flashMode === 'auto' ? BG  : flashMode === 'on' ? 'yellow' : 'green'} icon={icon({ name: 'bolt'})} />
  
                       </TouchableOpacity> 
 
-                      <TouchableOpacity style={styles.takePhotosButton} onPress={takePicture}>
+                      <TouchableOpacity style={styles.takePhotosButton} onPress={takePicture}  disabled={!isTfReady}>
                         <FontAwesomeIcon size={18} color={BG} icon={icon({ name: 'camera'})} /> 
                       </TouchableOpacity> 
 
-                      <TouchableOpacity style={styles.selectPhotosButton} onPress={selectImage}>
+                      <TouchableOpacity style={styles.selectPhotosButton} onPress={selectImage}  disabled={!isTfReady}>
                         <FontAwesomeIcon size={18} color={BG} icon={icon({ name: 'image'})} /> 
                       </TouchableOpacity>
                     </View>
@@ -277,7 +338,7 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
               <View style={{flexDirection:'column',justifyContent:'space-between', alignContent:'flex-end', alignItems:'flex-start'}}>
                 
                   <Text style={{ fontSize: 18, color: colors.textcolor }}>Disease</Text>
-                  <Text style={{ fontSize: 36, fontWeight:'600', color: colors.textcolor }}>Leaf Spot</Text>
+                  <Text style={{ fontSize: 36, fontWeight:'600', color: colors.textcolor }}>{result}</Text>
 
               </View>
 
@@ -383,7 +444,6 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
                   </View>
                 )}
             </View>
-            
           </BottomSheetModal>
       </View>
 

@@ -128,7 +128,7 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
 
         <View style={{flex:3,marginHorizontal:24,gap:10,top:20}}>
           <View style={{justifyContent:'center'}}>
-                    <Text style={[styles.headTextStyle,{color: isDarkMode ? 'white' : 'black'}]}>Devices</Text>
+                    <Text style={[styles.headTextStyle,{color: colors.textcolor, fontSize: spacing.llll}]}>Devices</Text>
           </View>
 
           <View style={{justifyContent:'center',alignItems:'center',top:8}}>
@@ -146,17 +146,11 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
           </View>
 
           <View style={{justifyContent:'center'}}>
-          <Text style={[styles.headTextStyle,{color: isDarkMode ? 'white' : 'black'}]}>Alert</Text>
+          <Text style={[styles.headTextStyle, {color: colors.textcolor, fontSize: spacing.llll}]}>Alert</Text>
           </View>
         </View>
-
-        
-        
-        
     </View>
     </View>
-   
-
   )
 }
 
@@ -179,7 +173,6 @@ const styles = StyleSheet.create({
     })
   },
   headTextStyle: {
-    fontSize: width > 400 ? 32 : 22,
     fontWeight: "600",
   },
   textStyle600: {
