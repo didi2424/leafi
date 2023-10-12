@@ -3,13 +3,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useTheme } from '../Profile/Settings/Account/ThemeContext';
+import * as SecureStore from 'expo-secure-store';
 
-import api from '../../api';
+import api, { SendOTP } from '../../ClientSideAPI/api'; 
 type Props = {
     onScreenChange: (screenNumber: number) => void;
     onRegisterData: (data: any) => void;
   };
-
 const Login = ({ onScreenChange, onRegisterData }: Props) => {
     const { isDarkMode } = useTheme();
     const [password, onChangePassword] = useState('');
@@ -42,30 +42,66 @@ const Login = ({ onScreenChange, onRegisterData }: Props) => {
     };
    
     const handleLogin = () => {
-        const payload = {
-            email,
-            password,
-        };
-        const registerData = {
-            email,
-          };
-        console.log(email,password)
-        api.post('/hasregistered/login', payload)
-            .then(response => {
-            console.log(response.data);
-            })
-            .catch(error => {
-            if (error.response && error.response.status === 401) {
-                Alert.alert('Error', 'email or Password cannot be found');
-            } else if (error.response && error.response.status === 402) {
-                Alert.alert('Error', 'Account Found but not registered');
-                onRegisterData(registerData);
-            } 
-            else {
-                console.error(error);
-            }
-            });
-        };
+      const payload = {
+        email,
+        password,
+      };
+      const registerData = {
+        email,
+      };
+    
+      api.post('/Auth/login', payload)
+        .then(async (response) => {
+          console.log(response.data);
+          const { token } = response.data;
+    
+          if (token) {
+            // Store the token securely
+            await SecureStore.setItemAsync('authenticationToken', token);
+            onScreenChange(0)
+          } else {
+            console.error('No token found in the response.');
+            // Handle the case where no token is returned, e.g., show an error message
+          }
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 401) {
+            Alert.alert('Error', 'email or Password cannot be found');
+          } else if (error.response && error.response.status === 402) {
+            Alert.alert(
+              'Error',
+              'Account Found but not Activated',
+              [
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {
+                  text: 'Send OTP',
+                  onPress: () => {
+                    SendOTP(email)
+                      .then((response) => {
+                        console.log(response);
+                        onRegisterData(registerData);
+                      })
+                      .catch((error) => {
+                        if (error.message === 'OTP request limit exceeded. Please wait for the reset time') {
+                          // Handle this case if needed
+                        } else {
+                          console.error('API call failed:', error);
+                        }
+                      });
+                  },
+                },
+              ],
+              { cancelable: true }
+            );
+          } else {
+            console.error(error);
+          }
+        });
+    };
         const fadeAnim = useRef(new Animated.Value(0)).current;
         const fadeIn = () => {
             Animated.timing(fadeAnim, {
@@ -156,6 +192,7 @@ const Login = ({ onScreenChange, onRegisterData }: Props) => {
                 placeholder="email"
                 autoFocus={true}
                 placeholderTextColor="#999999"
+                autoCapitalize='none'
             />
             </View>
             <View style={styles.textInputPasswordContainer}>
@@ -164,7 +201,8 @@ const Login = ({ onScreenChange, onRegisterData }: Props) => {
                         onChangeText={onChangePassword}
                         placeholder="Password"
                         placeholderTextColor="#999999"
-                        secureTextEntry={secureTextEntry} 
+                        secureTextEntry={secureTextEntry}
+                        autoCapitalize='none'
                         />
                     <TouchableOpacity style={{width:28,height:48,alignItems:'center',alignContent:"center",justifyContent:'center' }} onPress={togglePasswordVisibility}> 
                     {secureTextEntry === true ? (

@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, DefaultTheme,Theme} from "@react-navigation/native"
-import RootNavigators from './navigators/RootNavigators';
+import RootNavigators from './Navigation/RootNavigators';
 import { ThemeProvider } from './Screens/Profile/Settings/Account/ThemeContext';
 import {
   BottomSheetModalProvider,

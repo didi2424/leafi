@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
-import api from '../api';
+import api from '../ClientSideAPI/api';
 
 type Props = {
   onScreenChange: (screenNumber: number) => void;

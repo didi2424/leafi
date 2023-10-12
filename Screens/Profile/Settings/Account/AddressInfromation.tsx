@@ -1,6 +1,8 @@
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
+import {theme, darkTheme} from '../../../../Style/style'
+import { useTheme } from './ThemeContext'
 
 type Props = {
     onScreenChange: (screenNumber: number) => void;
@@ -10,8 +12,11 @@ const AddressInfromation = ({ onScreenChange }: Props) => {
     const BackToUserSettings = () => {
         onScreenChange(4)
     }
+    const { isDarkMode } = useTheme();
+    const selectedTheme = isDarkMode ? darkTheme : theme;
+    const { colors} = selectedTheme;
   return (
-    <View style={{flex:1,gap:10,paddingBottom:30}}>
+    <View style={{gap:10,paddingBottom:30,backgroundColor:colors.background,height:height}}>
     <View style={styles.headStyle}>
           <TouchableOpacity onPress={BackToUserSettings}>
               <Ionicons name="chevron-back-circle-outline" size={(Dimensions.get('window').width > 400 ? 38 : 30 )} color="#2a6f29" />

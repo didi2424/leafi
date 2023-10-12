@@ -10,8 +10,6 @@ import {
 } from '@gorhom/bottom-sheet';
 import { useTheme } from './Profile/Settings/Account/ThemeContext';
 import {theme,darkTheme} from '../Style/style'
-import api from '../api';
-
 import * as tf from '@tensorflow/tfjs';
 import { decodeJpeg } from '@tensorflow/tfjs-react-native';
 import { bundleResourceIO } from '@tensorflow/tfjs-react-native';
@@ -24,9 +22,10 @@ import Animated, {
   interpolateColor,
  
 } from "react-native-reanimated";
-import CustomBackdrop from "../components/Filter/CustomBackdrop";
-import CustomHandle from "../components/Filter/CustomHandle";
-import CustomBackground from "../components/Filter/CostomBackgroud";
+import CustomBackdrop from "../Components/Filter/CustomBackdrop";
+import CustomHandle from "../Components/Filter/CustomHandle";
+import CustomBackground from "../Components/Filter/CostomBackgroud";
+import {getDiseaseData} from "../ClientSideAPI/api"
 
 type Props = {
   onScreenChange: (screenNumber: number) => void;
@@ -53,7 +52,7 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
   const [result, setResult] = useState<null | string>(null);
   const [pickedImage, setPickedImage] = useState<null | string>(null);
   const [model, setModel] = useState(null);
-  const class_names = ['cat', 'dog'];
+  const class_names = ['Cat', 'Dog'];
 
   const load = async () => {
     try {
@@ -73,8 +72,23 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
 
   useEffect(() => {
     load();
+   
   }, []);
 
+  const [diseaseName, setDiseaseName] = useState('yellows');
+  const [data, setData] = useState([]);
+
+  const predict = () => {
+    getDiseaseData(diseaseName)
+      .then((response) => {
+        setData(response);
+        console.log(data)
+      })
+      .catch((error) => {
+        console.error('API call failed:', error);
+      });
+  };
+  
   const classifyImage = async () => {
     if (!model) {
       setResult('Error: No image selected or model not loaded.');
@@ -98,8 +112,16 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
       const maxPredictionIndex = score.indexOf(Math.max(...score));
       const confidence = (score[maxPredictionIndex] * 100).toFixed(2);
 
-      setResult(`Class: ${class_names[maxPredictionIndex]}, Confidence: ${confidence}%`);
-      console.log(class_names[maxPredictionIndex], confidence);
+      const resultObject = {
+        class: class_names[maxPredictionIndex],
+        confidence: `${confidence}%`
+      };
+
+      const jsonString = JSON.stringify(resultObject);
+      setResult(jsonString);
+
+      // setResult(`Class: ${class_names[maxPredictionIndex]}, Confidence: ${confidence}%`);
+
     } catch (error) {
       console.error('Error classifying image:', error);
       setResult('Error: Unable to classify the selected image.');
@@ -231,12 +253,10 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
     setResult(null);
   };
 
-
-  
   return (
+    
     <View style={{height:height,width:width}}>
      <View style={{flex:1,alignContent:'center'}}>
-     
        {imageUri ? (
         <View style={{alignContent:'center',alignItems:'center',flex: 1}}>
 
@@ -259,16 +279,14 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
                   </TouchableOpacity>
 
               <TouchableOpacity style={styles.showDetailsButtton} onPress={() => {
-                classifyImage(); // Call the classifyImage function
-                openFilterModal(); // Call the openFilterModal function
+                classifyImage()
+                openFilterModal()
+                //predict() 
               }}>
                     <Text>Details</Text>
               </TouchableOpacity>
          
               </View>
-             
-                 
-            
               </ImageBackground>
 
         </View>
@@ -336,9 +354,9 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
            <View style={{gap:12,paddingHorizontal:24}}>
               <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
               <View style={{flexDirection:'column',justifyContent:'space-between', alignContent:'flex-end', alignItems:'flex-start'}}>
-                
+                  
                   <Text style={{ fontSize: 18, color: colors.textcolor }}>Disease</Text>
-                  <Text style={{ fontSize: 36, fontWeight:'600', color: colors.textcolor }}>{result}</Text>
+                  <Text style={{ fontSize: 36, fontWeight:'600', color: colors.textcolor }}>{result ? JSON.parse(result).class : 'No result available'}</Text>
 
               </View>
 
@@ -350,7 +368,7 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
               <View style={{flexDirection:'column',justifyContent:'space-between'}}>
               <View style={{ flexDirection: "row", gap: 20 }}>
                 <View style={{ width: 120 }}>
-                  <Text style={[styles.textStyle1,{color: colors.textcolor }]}>Plants Kind</Text>
+                  <Text style={[styles.textStyle1,{color: colors.textcolor }]}>{result}</Text>
                 </View>
                 <View style={{ width: 120 }}>
                   <Text style={[styles.textStyle1,{color: colors.textcolor }]}>Monstera Kind</Text>

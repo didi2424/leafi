@@ -1,10 +1,11 @@
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { TextInput } from 'react-native-gesture-handler';
 import { useTheme } from '../Account/ThemeContext'
 import { theme, darkTheme } from '../../../../Style/style'
-
+import * as SecureStore from 'expo-secure-store';
+import { GetUser, UpdateUser } from '../../../../ClientSideAPI/UserAPI';
 type Props = {
   onScreenChange: (screenNumber: number) => void;
 };
@@ -16,7 +17,98 @@ const AccountInformation = ({ onScreenChange }: Props) => {
   const [selectedOption, setSelectedOption] = useState(0);
   const { isDarkMode } = useTheme();
   const selectedTheme = isDarkMode ? darkTheme : theme;
-  const { colors, spacing, textVariants } = selectedTheme;
+  const { colors} = selectedTheme;
+
+  const [token, setToken] = useState<string | null>(null);
+  const [userData, setUserData] = useState<any[]>([]);
+
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const getStoredToken = async () => {
+    try {
+      const storedToken = await SecureStore.getItemAsync('authenticationToken');
+    
+      if (storedToken) {
+        // Token is available, set it in the state
+        console.log(storedToken)
+        setToken(storedToken);
+      } else {
+        // Handle the case where no token is found
+        console.error('No token found in SecureStore.');
+      }
+    } catch (error) {
+      // Handle errors that may occur when accessing SecureStore
+      console.error('Error retrieving token from SecureStore:', error);
+    }
+  };
+  
+  const getUser = async () => {
+    if (token) {
+      try {
+        const response = await GetUser(token);
+        setUserData(response);
+        console.log('Received data:', response);
+      } catch (error) {
+        // Handle different error cases here
+        console.error('API call failed');
+      }
+    } else {
+      console.error('Token is null. Cannot fetch user data.');
+      // Handle the case where there is no valid token, e.g., display an error message
+    }
+  };
+  
+  useEffect(() => {
+    // Call getStoredToken when the component mounts
+    getStoredToken();
+  }, []);
+  
+  // Trigger getUser whenever the token changes
+  useEffect(() => {
+    if (token) {
+      getUser();
+    }
+  }, [token]);
+
+  useEffect(() => {
+    // Check if both input fields have values to enable the button
+    if (firstname.length > 0 && lastname.length > 0) {
+      setIsButtonDisabled(false); // Enable the button
+    } else {
+      setIsButtonDisabled(true); // Disable the button
+    }
+  }, [firstname, lastname]);
+
+  const handleFirstnameChange = (text: string) => { // Explicitly specify the type as string
+    setFirstname(text);
+  };
+
+  const handleLastnameChange = (text: string) => { // Explicitly specify the type as string
+    setLastname(text);
+  };
+
+  const handleSaveUser = () => {
+    console.log('save user')
+    UpdateUser(firstname, lastname, token)
+    .then((response) => {
+      console.log(response);
+      setIsButtonDisabled(false)
+    })
+    .catch((error) => {
+      // Handle different error messages
+      if (error.response && error.response.status === 401) {
+        console.log('unautorized')
+      } else if (error.response && error.response.status === 403) {
+        console.log('required firstname and lastname')
+      } else if (error.message === 'User not found') {
+      } else {
+        console.error('API call failed:', error);
+      }
+    });
+  }
+  
   return (
     <View style={{height:height, gap:20, paddingBottom:30}}>
       <View style={styles.headStyle}>
@@ -57,14 +149,17 @@ const AccountInformation = ({ onScreenChange }: Props) => {
       <View style={styles.content1style}>
       <View style={{height:300,flexDirection:'column',gap:12}}>
         <Text style={{fontSize:14,color:colors.textcolor}}>Email Address</Text>
-        <TextInput style={{backgroundColor:BG_VIEW, height:40,borderRadius:20,paddingLeft:12}} >
 
-        </TextInput>
+        {userData.map((user, index) => (
+          <>
+            <TextInput defaultValue={user.email} style={{backgroundColor:BG_VIEW, height:40,borderRadius:20,paddingLeft:12}} >
+            </TextInput>
+          </>
+        ))}
 
         <Text style={{fontSize:14,color:colors.textcolor}}>Password</Text>
         <TextInput style={{backgroundColor:BG_VIEW, height:40,borderRadius:20,paddingLeft:12}}>
-
-          </TextInput>
+        </TextInput>
         <View style={{paddingTop:10}}>
         <Text style={{fontSize:14,color:colors.textcolor}}>Delete account</Text>
         <Text style={{fontSize:14,color:colors.textcolor}}>Your Account will be permanently removed from the application. All your data will be lost.
@@ -81,21 +176,26 @@ const AccountInformation = ({ onScreenChange }: Props) => {
       ) : (
         <View style={styles.content1style}>
         <View style={{height:300,flexDirection:'column',gap:12}}>
-              <Text style={{fontSize:14,color:colors.textcolor}}>First Name</Text>
-              <TextInput style={{backgroundColor:BG_VIEW, height:40,borderRadius:20,paddingLeft:12}} >
+              
+          {userData.map((user, index) => (
+              <View key={index} style={{gap:10}}>
+                <Text style={{ fontSize: 14, color: colors.textcolor }}>First Name</Text>
+                <TextInput
+                  defaultValue={user.firstname}
+                  onChangeText={(text) => handleFirstnameChange(text)}
+                  style={{ backgroundColor: BG_VIEW, height: 40, borderRadius: 20, paddingLeft: 12 }}
+                />
 
-                </TextInput>
-              <Text style={{fontSize:14,color:colors.textcolor}}>Last Name</Text>
-              <TextInput style={{backgroundColor:BG_VIEW, height:40,borderRadius:20,paddingLeft:12}} >
-
-                </TextInput>
-              <Text style={{fontSize:14,color:colors.textcolor}}>Phone Number</Text>
-              <TextInput style={{backgroundColor:BG_VIEW, height:40,borderRadius:20,paddingLeft:12}} >
-
-                </TextInput>
-
+                <Text style={{ fontSize: 14, color: colors.textcolor }}>Last Name</Text>
+                <TextInput 
+                  defaultValue={user.lastname}
+                  onChangeText={(text) => handleLastnameChange(text)}
+                  style={{ backgroundColor: BG_VIEW, height: 40, borderRadius: 20, paddingLeft: 12 }}
+                />
+              </View>
+            ))}
                 <View style={{height:40,borderRadius:20,justifyContent:'center',alignItems:'center'}}>
-              <TouchableOpacity style={{height:40,width:120,backgroundColor: BG_VIEW,borderRadius:20,justifyContent:'center',alignItems:'center'}}>
+              <TouchableOpacity style={{height:40,width:120,backgroundColor: BG_VIEW,borderRadius:20,justifyContent:'center',alignItems:'center'}} onPress={ ()=> handleSaveUser()} disabled={isButtonDisabled}>
                 <Text style={{fontSize:16,color:'#2a6f29'}}>Save</Text>
               </TouchableOpacity>
               </View>

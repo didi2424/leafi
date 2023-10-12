@@ -1,15 +1,16 @@
 import { View, Text, TouchableOpacity, FlatList, Platform, Dimensions,StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'; 
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from './Settings/Account/ThemeContext';
 import { theme, darkTheme } from '../../Style/style'
+import { GetUser } from '../../ClientSideAPI/UserAPI';
+import * as SecureStore from 'expo-secure-store';
 type Props = {
   onScreenChange: (screenNumber: number) => void;
 };
 
 const UserProfile = ({ onScreenChange  }: Props) => {
-  
   const data = [
     { id: '1', name: 'Item 1',date: '2024-05-03T15:50:58.342Z',icon:'add-circle-sharp',action:'Add Smartpot',results:'Leafi Marble Mozaic' },
     { id: '2', name: 'Item 2',date: '2024-06-04T06:59:58.342Z',icon:'add-circle-sharp',action:'Add Smartpot',results:'Leafi Marble Liquid' },
@@ -17,7 +18,6 @@ const UserProfile = ({ onScreenChange  }: Props) => {
     { id: '4', name: 'Item 4',date: '2024-06-04T04:45:58.342Z',icon:'scan-circle',action:'Scan Plants',results:'Maranta : Fusarium Wilt',percen:'92%'},
     { id: '5', name: 'Item 5',date: '2024-06-18T04:50:58.342Z',icon:'scan-circle',action:'Scan Plants',results:'Maranta : Powdery Mildew',percen:'82%'},
     { id: '6', name: 'Item 6',date: '2024-07-22T16:50:58.342Z',icon:'scan-circle',action:'Scan Plants',results:'Monstera : Spider Mites',percen:'87%'},
-    // Add more items as needed
   ];
   const reversedData = [...data].reverse();
   const toUserSettings =() => {
@@ -26,6 +26,54 @@ const UserProfile = ({ onScreenChange  }: Props) => {
   const { isDarkMode } = useTheme();
   const selectedTheme = isDarkMode ? darkTheme : theme;
   const { colors, spacing } = selectedTheme;
+
+  const [token, setToken] = useState<string | null>(null);
+  const [userData, setUserData] = useState<any[]>([]);
+
+const getStoredToken = async () => {
+  try {
+    const storedToken = await SecureStore.getItemAsync('authenticationToken');
+  
+    if (storedToken) {
+      // Token is available, set it in the state
+      setToken(storedToken);
+    } else {
+      // Handle the case where no token is found
+      console.error('No token found in SecureStore.');
+    }
+  } catch (error) {
+    // Handle errors that may occur when accessing SecureStore
+    console.error('Error retrieving token from SecureStore:', error);
+  }
+};
+
+const getUser = async () => {
+  if (token) {
+    try {
+      const response = await GetUser(token);
+      setUserData(response);
+      console.log('Received data:', response);
+    } catch (error) {
+      // Handle different error cases here
+      console.error('API call failed');
+    }
+  } else {
+    console.error('Token is null. Cannot fetch user data.');
+    // Handle the case where there is no valid token, e.g., display an error message
+  }
+};
+
+useEffect(() => {
+  // Call getStoredToken when the component mounts
+  getStoredToken();
+}, []);
+
+// Trigger getUser whenever the token changes
+useEffect(() => {
+  if (token) {
+    getUser();
+  }
+}, [token]);
 
   const renderItem = ({ item, index, data }: { item: typeof data[number]; index: number; data: typeof reversedData;icon: string }) => {
     const dateOnly = new Date(item.date).toLocaleDateString('en-US', { day: 'numeric' });
@@ -146,7 +194,7 @@ const UserProfile = ({ onScreenChange  }: Props) => {
     <View style={{flexDirection:"row",
             alignItems: "center",
             justifyContent:"space-between",paddingHorizontal:24}}>
-        <Text style={styles.textStyle1}>Profile</Text>
+        <Text style={[styles.textStyle1,{fontSize: spacing.llll}]}>Profile</Text>
         <TouchableOpacity style={{width:(Dimensions.get('window').width > 400 ? 40 : 30),aspectRatio:1,borderRadius:20,borderWidth:1,alignContent:'center',justifyContent:'center',alignItems:'center',borderColor:'#75af02'}} onPress={toUserSettings}>
           <Ionicons name="settings-sharp" size={(Dimensions.get('window').width > 400 ? 28 : 20)} color="#75af02" />
         </TouchableOpacity>
@@ -156,8 +204,20 @@ const UserProfile = ({ onScreenChange  }: Props) => {
         <View style={{top:12,gap:12,alignContent: 'space-between',alignItems:'center'}}>
             <View style={styles.PictureStyle}>
               </View>
-            <Text style={styles.textStyle2}>username</Text>
-          <Text style={styles.textStyle3}>Member</Text>
+              {userData.map((user, index) => (
+                <>
+                <Text key={index} style={styles.textStyle2}>{user.firstname + ' ' + user.lastname}</Text>
+                {user.RoleID === 1 && (
+                  <Text style={styles.textStyle3}>Botanis</Text>
+                )}
+                {user.RoleID === 2 && (
+                  <Text style={styles.textStyle3}>Member</Text>
+                )}
+                {user.RoleID === 3 && (
+                  <Text style={styles.textStyle3}>Admin</Text>
+                )}
+                </>
+              ))}
         </View>
     </View>
     </View>
@@ -247,6 +307,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 7,
+    gap:8
   },
   mySmartpotContainerImage: {
     width: width > 400 ? 38 : 28,

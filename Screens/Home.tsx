@@ -7,9 +7,9 @@ import Animated, {useSharedValue, useAnimatedStyle,useAnimatedScrollHandler,inte
 import {
   BottomSheetModal,
 } from '@gorhom/bottom-sheet';
-import CustomBackdrop from "../components/Filter/CustomBackdrop";
-import CustomHandle from "../components/Filter/CustomHandle";
-import CustomBackground from "../components/Filter/CostomBackgroud";
+import CustomBackdrop from "../Components/Filter/CustomBackdrop";
+import CustomHandle from "../Components/Filter/CustomHandle";
+import CustomBackground from "../Components/Filter/CostomBackgroud";
 
 
 
@@ -296,6 +296,7 @@ const Home = () => {
         
             </View>            
             </View>
+            
           <View style={{paddingHorizontal:12}} >
               {newDiscovers.length > 0 && (
                   <CustomCard3 newDiscover={newDiscovers} />

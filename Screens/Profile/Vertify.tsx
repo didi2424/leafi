@@ -3,14 +3,21 @@ import React, { useEffect, useRef, useState } from 'react'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
-import api from '../../api';
+import api from '../../ClientSideAPI/api';
+import { useTheme } from './Settings/Account/ThemeContext';
+import {theme,darkTheme} from '../../Style/style'
+
+import { SendOTP } from '../../ClientSideAPI/api'; 
 
 type VertifyProps = {
   onScreenChange: (screenNumber: number) => void;
   registerData: any;
 };
 
-const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
+const Vertify = ({onScreenChange, registerData }: VertifyProps) => {
+    const { isDarkMode } = useTheme();
+    const selectedTheme = isDarkMode ? darkTheme : theme;
+    const { colors } = selectedTheme;
 
     const firstInput = useRef() as React.MutableRefObject<HTMLInputElement>;
     const secondInput = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -31,7 +38,7 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
         email,
         otp
       }
-      api.post('/otp/verify', payload2)
+      api.post('/Auth/verifyotp', payload2)
           .then(response => {
             if (response.status === 200) 
             console.log('otp same and update registered')
@@ -84,7 +91,7 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
         email
       }
 
-      api.post('/otp/send', payload2)
+      api.post('/Auth/sendotp', payload2)
           .then(response => {
             if (response.status === 200) {
               console.log('OTP sent');
@@ -110,23 +117,23 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
 
       };
   return (
-    <View style={{top:40}}>
-
+    <View>
+    <View style={{height:height,paddingTop:36}}>
       <View style={styles.headContainer}>
         <TouchableOpacity onPress={() => BacktoRegister()} style={styles.buttonBack}>
             <FontAwesomeIcon size={Dimensions.get("window").width > 400 ? 22 : 16} icon={icon({ name: 'chevron-left' })} style={{ color: '#7db149ff' }}  /> 
           </TouchableOpacity>
         </View>
           
-        
-      <View style={{alignContent:'center',alignItems:'center',justifyContent:'space-between'}}>
+      <View style={{alignContent:'center',alignItems:'center',justifyContent:'space-between' }}>
       <View style={styles.cardContainer}>
-              <Text>Vertify</Text>
-            </View>
-        <View style={{top:22}}>
-          <Text style={styles.textStyle1}>Enter OTP</Text>
-          <Text style={styles.textStyle2}>An 6 Digit Code has been send to</Text>
-          <Text style={styles.textStyle2}>{registerData.email}</Text>
+            <Text>Vertify</Text>
+      </View>
+
+      <View style={{top:30}}>
+          <Text style={[styles.textStyle1,{color: colors.textcolor}]}>Enter OTP</Text>
+          <Text style={[styles.textStyle2,{color: colors.textcolor}]}>An 6 Digit Code has been send to</Text>
+          <Text style={[styles.textStyle2,{color: colors.textcolor}]}>{registerData.email}</Text>
 
         <View style={{top:12,flexDirection:'row',gap:12}}>
         <View style={{flexDirection:'row',gap:8}}>
@@ -269,21 +276,21 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
       </View>
       
       <View style={{top:52,gap:8,flexDirection:'column',alignContent:'center',alignItems:'center',justifyContent:'space-between'}}>
-          <TouchableOpacity disabled={disabled} onPress={handleVerify} style={styles.buttonHandle}>
+          <TouchableOpacity disabled={disabled} onPress={handleVerify} style={[styles.buttonHandle,{backgroundColor: colors.buttoncolor}]}>
               <Text style={styles.textStyle2}>Vertify</Text>
           </TouchableOpacity>
       <View >
         {infailedOTP && (
-        <Text style={styles.textStyle4}>Invalid or Experied OTP</Text>
+        <Text style={[styles.textStyle4,{color: colors.textcolor}]}>Invalid or Experied OTP</Text>
         )}
         {disabled && (
-        <Text style={styles.textStyle4} numberOfLines={2}>
+        <Text style={[styles.textStyle4,{color: colors.textcolor}]} numberOfLines={2}>
           OTP request limit exceeded, Please wait for {formatTime(timer)}
         </Text>
       )}
       </View>
       <View style={{flexDirection:'row',alignContent:'center',alignItems:'center',justifyContent:'space-between',gap:8}}>
-      <Text style={styles.textStyle5}>Didn't receive the email ?</Text>
+      <Text style={[styles.textStyle5,{color: colors.textcolor}]}>Didn't receive the email ?</Text>
         <TouchableOpacity onPress={resendOTP} disabled={disabled} style={{justifyContent:'center',alignItems:'center'}}>
             <Text style={styles.textStyle6}>Click to resend</Text>
         </TouchableOpacity>
@@ -291,15 +298,15 @@ const Vertify = ({onScreenChange,registerData }: VertifyProps) => {
       </View>
       
       </View>
-    
-  </View>
+      </View>
     </View>
+  </View>
   )
 }
 
 export default Vertify
 
-const { width } = Dimensions.get("window");
+const { width,height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   headContainer: {
@@ -349,7 +356,6 @@ const styles = StyleSheet.create({
     width: width > 400 ? 120 : 110,
     height: width > 400 ? 42 : 32,
     borderRadius: width > 400 ? 22 : 18,
-    backgroundColor: "#ACE1AF",
     justifyContent: "center",
     alignItems: "center",
   },

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useTheme } from './Settings/Account/ThemeContext';
 import { theme, darkTheme } from '../../Style/style'
-import { color } from 'react-native-reanimated';
+import * as SecureStore from 'expo-secure-store';
 type Props = {
     onScreenChange: (screenNumber: number) => void;
   };
@@ -14,7 +14,7 @@ type Props = {
 const UserSettings = ({ onScreenChange }: Props) => {
     const { isDarkMode } = useTheme();
     const selectedTheme = isDarkMode ? darkTheme : theme;
-    const { colors, spacing, textVariants } = selectedTheme;
+    const { colors} = selectedTheme;
     const BackTouserProfile = () => {
         onScreenChange(0)
     }
@@ -40,9 +40,17 @@ const UserSettings = ({ onScreenChange }: Props) => {
         
     }
 
-
+    const deleteAuthenticationToken = async () => {
+        try {
+          await SecureStore.deleteItemAsync('authenticationToken');
+          console.log('Token deleted.');
+        } catch (error) {
+          console.error('Error deleting token:', error);
+        }
+      };
     const pressLogOut = () => {
-        //onScreenChange(1)
+        deleteAuthenticationToken()
+        onScreenChange(1)
         console.log('press logout')
     }
   return (

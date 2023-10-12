@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useTheme } from '../Profile/Settings/Account/ThemeContext';
 import {theme,darkTheme} from '../../Style/style'
+
 const BG = '#C1FC49'
 const CARD_BG = '#91D600'
 const CIRCLE_BG= '#86ba1c'
@@ -113,7 +114,7 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
         
         <View style={styles.headContainerStyle}>
             <View style={{justifyContent:'center',alignItems:'center'}}>
-                <Text style={styles.headTextStyle}>Smartpot</Text>
+                <Text style={[styles.headTextStyle,{fontSize:spacing.llll}]}>Smartpot</Text>
             </View>
             <View style={{marginHorizontal:24}}>
                 <Text style={styles.textStyle600}>{greeting}</Text>
