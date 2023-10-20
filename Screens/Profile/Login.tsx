@@ -5,7 +5,7 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useTheme } from '../Profile/Settings/Account/ThemeContext';
 import * as SecureStore from 'expo-secure-store';
 
-import api, { SendOTP } from '../../ClientSideAPI/api'; 
+import api, { SendOTP } from '../../ClientSideAPI/Api'; 
 type Props = {
     onScreenChange: (screenNumber: number) => void;
     onRegisterData: (data: any) => void;

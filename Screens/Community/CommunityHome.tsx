@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native';
-import Role from '../Profile/Role';
-
 
 const CommunityHome = () => {
 
@@ -16,7 +14,7 @@ const CommunityHome = () => {
         justifyContent: 'center',
       }}
     >
-      <Role/>
+      <Text>This is Community Home</Text>
     </View>
   )
 }

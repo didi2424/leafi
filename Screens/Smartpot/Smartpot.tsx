@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useTheme } from '../Profile/Settings/Account/ThemeContext';
 import {theme,darkTheme} from '../../Style/style'
+import * as SecureStore from 'expo-secure-store';
+import { GetUser } from '../../ClientSideAPI/UserAPI';
 
 const BG = '#C1FC49'
 const CARD_BG = '#91D600'
@@ -21,8 +23,48 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
   const { width,height } = Dimensions.get("window");
   const [currentTime, setCurrentTime] = useState('');
   const [greeting, setGreeting] = useState('');
+
+  const [userData, setUserData] = useState<any[]>([]);
+  const [token, setToken] = useState<string | null>(null);
+
+  const getUser = async () => {
+    if (token) {
+      try {
+        const response = await GetUser(token);
+        setUserData(response);
+        console.log('Received data:', response);
+      } catch (error) {
+        // Handle different error cases here
+        console.error('API call failed');
+      }
+    } else {
+      console.error('Token is null. Cannot fetch user data.');
+      // Handle the case where there is no valid token, e.g., display an error message
+    }
+  };
+  const getStoredToken = async () => {
+    try {
+      const storedToken = await SecureStore.getItemAsync('authenticationToken');
+    
+      if (storedToken) {
+        // Token is available, set it in the state
+        setToken(storedToken);
+      } else {
+        // Handle the case where no token is found
+        console.error('No token found in SecureStore.');
+      }
+    } catch (error) {
+      // Handle errors that may occur when accessing SecureStore
+      console.error('Error retrieving token from SecureStore:', error);
+    }
+  };
   
+
   useEffect(() => {
+    getStoredToken();
+    if (token) {
+      getUser();
+    }
     const interval = setInterval(() => {
       const now = new Date();
       const formattedTime = now.toLocaleString([], { dateStyle: 'full'}); // Format the time as HH:MM
@@ -43,7 +85,7 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [token]);
   
   const data3 = [
     {
@@ -114,11 +156,16 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
         
         <View style={styles.headContainerStyle}>
             <View style={{justifyContent:'center',alignItems:'center'}}>
-                <Text style={[styles.headTextStyle,{fontSize:spacing.llll}]}>Smartpot</Text>
+                <Text style={[styles.headTextStyle,{fontSize:spacing.lx}]}>Smartpot</Text>
             </View>
             <View style={{marginHorizontal:24}}>
                 <Text style={styles.textStyle600}>{greeting}</Text>
-                <Text style={styles.textStyle400}>username</Text>
+                {userData.map((user, index) => (
+                <>
+                <Text style={styles.textStyle400}>{user.firstname}</Text>
+                </>
+                ))}
+               
             </View>
             <View style={{justifyContent:'space-between',alignItems:'flex-end',marginHorizontal:24}}>
                 <Text style={styles.textStyle300}>{currentTime}</Text>
@@ -156,7 +203,9 @@ const Smartpot = ({onScreenChange,onDeviceData}: Props) => {
 }
 
 export default Smartpot
+
 const { width,height } = Dimensions.get("window");
+
 const styles = StyleSheet.create({
   headContainerStyle: {
     flex: 0.6,

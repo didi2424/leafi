@@ -12,7 +12,6 @@ function generateOTP(length) {
 }
 
 function otpRouter(connection) {
-    
       router.get('/getotp', (req, res) => {
         const { email } = req.body;
         const selectQuery = 'SELECT otp, request_count,expiration_time, reset_time FROM otp WHERE email = ?';

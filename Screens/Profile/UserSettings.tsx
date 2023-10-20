@@ -168,8 +168,8 @@ const UserSettings = ({ onScreenChange }: Props) => {
         </View>
 
         <View style={styles.content3style}>
-            <TouchableOpacity onPress={pressLogOut}>
-                <Text style={{color:colors.textcolor}}>
+            <TouchableOpacity style={{width:80, height:40, backgroundColor:colors.buttoncolor, justifyContent:'center', alignItems:'center', borderRadius:20}} onPress={pressLogOut}>
+                <Text style={{color:colors.textcolor1}}>
                     Logout
                 </Text>
             </TouchableOpacity>

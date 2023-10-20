@@ -1,20 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const jwtMiddleware  = require('../jwtMiddleware');
-
+const { v4: uuidv4 } = require('uuid');
 function diseasesRouter(connection) {
   router.post('/diseases', jwtMiddleware.verifyToken, (req, res) => {
+    const id = uuidv4();
     const { disease, plantskind, detailscontent, treatment, shop } = req.body;
     const userRole = req.user.role; // Get the user's role from the JWT token
-    console.log(userRole)
-    // Check if the user's role is 1 (assuming 1 means restricted role)
-    if (userRole === 1) {
-      return res.status(403).json({ error: 'Permission denied' });
-    }
+    // Check if the user's role is 1 (assuming 1 means restricted role
   
     const selectQuery = 'SELECT * FROM diseasestable WHERE disease = ?';
     const insertQuery =
-      'INSERT INTO diseasestable (disease, plantskind, detailscontent, treatment, shop, role) VALUES (?, ?, ?, ?, ?, ?)';
+      'INSERT INTO diseasestable (id, disease, plantskind, detailscontent, treatment, shop) VALUES (?, ?, ?, ?, ?, ?)';
   
     // Check if a record with the same disease already exists
     connection.query(selectQuery, [disease], (selectError, selectResults) => {
@@ -27,11 +24,11 @@ function diseasesRouter(connection) {
         return res.status(400).json({ error: 'Disease already exists' });
       }
   
-      // If the disease doesn't exist and the user's role is allowed (role 2), insert the new record
-      if (userRole === 2) {
+      // If the disease doesn't exist and the user's role is allowed (role 1), insert the new record
+      if (userRole === 1) {
         connection.query(
           insertQuery,
-          [disease, plantskind, detailscontent, treatment, shop, userRole],
+          [id, disease, plantskind, detailscontent, treatment, shop],
           (insertError, insertResults) => {
             if (insertError) {
               return res.status(500).json({ error: 'Data cannot be null' });
@@ -84,27 +81,37 @@ function diseasesRouter(connection) {
       });
     });
 
-    router.get('/diseasesdata',jwtMiddleware.verifyToken, (req, res) => {
-      // Get the disease name from the query parameters
-      const { diseaseName } =  req.query;
-    
-      // Define the SQL query with a WHERE clause to filter by disease name
-      const selectQuery = 'SELECT * FROM diseasestable WHERE disease = ?';
-    
-      // Execute the SQL query with the disease name as a parameter
-      connection.query(selectQuery, [diseaseName], (error, results) => {
+
+    router.put('/diseases', jwtMiddleware.verifyToken, (req, res) => {
+      const userId = req.user.id; // Extract user ID from the token payload
+      const tokenUserId = req.user.id;
+  
+      // Check if the user making the request matches the requested user ID
+      if (userId !== tokenUserId) {
+        return res.status(401).json({ error: 'Access denied' });
+      }
+  
+      // Extract updated user profile data including firstname and lastname
+      const {id, disease, plantskind, detailscontent, treatment, shop } = req.body;
+  
+       if (!disease || !plantskind) {
+        return res.status(403).json({ error: 'Firstname and lastname are required' });
+      }
+      const updateQuery = 'UPDATE diseasestable SET disease = ?, plantskind = ?, detailscontent = ?, treatment = ?, shop = ? WHERE id = ?';
+      connection.query(updateQuery, [disease, plantskind, detailscontent, treatment, shop, id], (error, result) => {
         if (error) {
-          return res.status(500).json({ error: 'Internal Server Error' });
+          return res.status(500).json({ error: 'Failed to update user profile' });
         }
-    
-        // Data retrieved successfully
-        console.log('Data retrieved successfully:', results);
-        res.status(200).json(results);
+  
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ error: 'Diseases not found' });
+        }
+  
+        console.log('Diseases updated successfully');
+        res.status(200).json({ message: 'Diseases updated' });
       });
     });
-        
-
 
     return router;
   }
-module.exports = diseasesRouter;
+module.exports = diseasesRouter; 

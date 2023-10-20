@@ -8,8 +8,8 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import {
   BottomSheetModal,
 } from '@gorhom/bottom-sheet';
-import { useTheme } from './Profile/Settings/Account/ThemeContext';
-import {theme,darkTheme} from '../Style/style'
+import { useTheme } from '../Profile/Settings/Account/ThemeContext';
+import {theme,darkTheme} from '../../Style/style'
 import * as tf from '@tensorflow/tfjs';
 import { decodeJpeg } from '@tensorflow/tfjs-react-native';
 import { bundleResourceIO } from '@tensorflow/tfjs-react-native';
@@ -22,10 +22,10 @@ import Animated, {
   interpolateColor,
  
 } from "react-native-reanimated";
-import CustomBackdrop from "../Components/Filter/CustomBackdrop";
-import CustomHandle from "../Components/Filter/CustomHandle";
-import CustomBackground from "../Components/Filter/CostomBackgroud";
-import {getDiseaseData} from "../ClientSideAPI/api"
+import CustomBackdrop from "../../Components/Filter/CustomBackdrop";
+import CustomHandle from "../../Components/Filter/CustomHandle";
+import CustomBackground from "../../Components/Filter/CostomBackgroud";
+import {getDiseaseData} from "../../ClientSideAPI/Api"
 
 type Props = {
   onScreenChange: (screenNumber: number) => void;
@@ -57,8 +57,8 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
   const load = async () => {
     try {
       await tf.ready();
-      const modelJSON = require('../assets/models/norescalecatdog.json');
-      const modelWeights = require('../assets/models/norescalecatdog.bin');
+      const modelJSON = require('../../assets/models/norescalecatdog.json');
+      const modelWeights = require('../../assets/models/norescalecatdog.bin');
       const model = await tf.loadLayersModel(
         bundleResourceIO(modelJSON, modelWeights)
       );
@@ -308,7 +308,7 @@ const Cameras = ({onScreenChange,onDeviceData}: Props) => {
 
         
                   <View style={{  justifyContent: 'center', alignItems: 'center' }}>
-                    <Image source={require('../assets/cameraBox.png')} style={{  resizeMode: 'cover' }} />
+                    <Image source={require('../../assets/cameraBox.png')} style={{  resizeMode: 'cover' }} />
                     {!isTfReady && 
                     <View style={{backgroundColor: colors.buttoncolor, width: 120, height: 40, borderRadius:20, position:'absolute',justifyContent:'center',alignItems:'center'}}>
                       <Text>Loading Model...</Text>

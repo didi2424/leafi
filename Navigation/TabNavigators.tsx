@@ -56,10 +56,10 @@ const TabNavigators = () => {
                 headerShown: false,
                 tabBarIcon: ({ focused }) => (
                   <View style={[ styles.icoContainer1, {
-                    backgroundColor: focused ? '#2a6f29' : 'transparent', 
+                    backgroundColor: focused ? '#B2D3C2' : 'transparent', 
                     shadowColor: focused ? '#48A860' : 'transparent',
                   }]}>
-                        <View style={[styles.icoContainer, {shadowColor: {focused} ? '#2a6f29' : 'transparent',shadowOpacity: focused ? 0.5 : 0,backgroundColor: focused ? '#2a6f29' : 'transparent' }]} />
+                        <View style={[styles.icoContainer, {shadowColor: {focused} ? 'white' : 'transparent',shadowOpacity: focused ? 0.2 : 0, backgroundColor: focused ? '#2a6f29' : 'transparent' }]} />
                         <FontAwesomeIcon icon={icon({ name: 'home' })} style={{ color: focused ? BG_VIEW: '#2a6f29' }}  /> 
                       </View>
                 ),
@@ -75,7 +75,7 @@ const TabNavigators = () => {
                     backgroundColor: focused ? '#B2D3C2' : 'transparent', 
                     shadowColor: focused ? '#48A860' : 'transparent',
                   }]}>
-                         <View style={[styles.icoContainer, {shadowColor: {focused} ? '#2a6f29' : 'transparent',shadowOpacity: focused ? 0.5 : 0,backgroundColor: focused ? '#2a6f29' : 'transparent' }]} />
+                         <View style={[styles.icoContainer, {shadowColor: {focused} ? 'white' : 'transparent',shadowOpacity: focused ? 0.2 : 0, backgroundColor: focused ? '#2a6f29' : 'transparent' }]} />
                         <FontAwesomeIcon icon={icon({ name: 'leaf' })} style={{ color: focused ? BG_VIEW: '#2a6f29' }}  /> 
                       </View>
                     
@@ -92,7 +92,7 @@ const TabNavigators = () => {
                     backgroundColor: focused ? '#B2D3C2' : 'transparent', 
                     shadowColor: focused ? '#48A860' : 'transparent',
                   }]}>
-                       <View style={[styles.icoContainer, {shadowColor: {focused} ? '#2a6f29' : 'transparent',shadowOpacity: focused ? 0.5 : 0,backgroundColor: focused ? '#2a6f29' : 'transparent' }]} />
+                       <View style={[styles.icoContainer, {shadowColor: {focused} ? 'white' : 'transparent',shadowOpacity: focused ? 0.5 : 0,backgroundColor: focused ? '#2a6f29' : 'transparent' }]} />
                         <FontAwesomeIcon icon={icon({ name: 'expand' })} style={{ color: focused ? BG_VIEW: '#2a6f29' }}  /> 
                       </View>
                     
@@ -109,7 +109,7 @@ const TabNavigators = () => {
                     backgroundColor: focused ? '#B2D3C2' : 'transparent', 
                     shadowColor: focused ? '#48A860' : 'transparent',
                   }]}>
-                   <View style={[styles.icoContainer, {shadowColor: {focused} ? '#2a6f29' : 'transparent',shadowOpacity: focused ? 0.5 : 0,backgroundColor: focused ? '#2a6f29' : 'transparent' }]} />
+                   <View style={[styles.icoContainer, {shadowColor: {focused} ? 'white' : 'transparent',shadowOpacity: focused ? 0.5 : 0,backgroundColor: focused ? '#2a6f29' : 'transparent' }]} />
                     <FontAwesomeIcon icon={icon({ name: 'user-group' })} style={{ color: focused ? BG_VIEW: '#2a6f29' }}  /> 
                   </View>
                     
@@ -126,7 +126,7 @@ const TabNavigators = () => {
                     backgroundColor: focused ? '#B2D3C2' : 'transparent', 
                     shadowColor: focused ? '#48A860' : 'transparent',
                   }]}>
-                     <View style={[styles.icoContainer, {shadowColor: {focused} ? '#2a6f29' : 'transparent',shadowOpacity: focused ? 0.5 : 0,backgroundColor: focused ? '#2a6f29' : 'transparent' }]} />
+                     <View style={[styles.icoContainer, {shadowColor: {focused} ? 'white' : 'transparent',shadowOpacity: focused ? 0.5 : 0,backgroundColor: focused ? '#2a6f29' : 'transparent' }]} />
                     <FontAwesomeIcon icon={icon({ name: 'user' })} style={{ color: focused ? BG_VIEW: '#2a6f29' }}  /> 
                   </View>
                 ),

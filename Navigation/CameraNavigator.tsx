@@ -1,6 +1,6 @@
 import { View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import Cameras from '../Screens/Cameras';
+import Cameras from '../Screens/Camera/Cameras';
 
 
 type DeviceData = {

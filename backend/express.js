@@ -1,17 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
-const bcrypt = require('bcrypt');
-const { v4: uuidv4 } = require('uuid');
-const jwt = require('jsonwebtoken');
-
 
 const loginRouter = require('./ServicesUser/login')
 const registerRouter = require('./ServicesUser/register')
 const otpRouter = require('./ServicesUser/otp');
 const deleteRouter = require('./ServicesUser/delete')
 const userRouter = require('./ServicesUser/user')
-
+const userActivity = require('./ServicesUser/useractivity')
 const diseasesRouter = require('./ServicesAdmin/diseases')
 
 
@@ -54,7 +50,6 @@ app.post('/ver', async (req, res) => {
   
 })
 
-
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'admin',
@@ -62,11 +57,10 @@ const connection = mysql.createConnection({
     database: 'users'
   });
   
-
-  connection.connect(err => {
-    if (err) throw err;
-    console.log('Connected to MySQL database');
-  });
+connection.connect(err => {
+  if (err) throw err;
+  console.log('Connected to MySQL database');
+});
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -79,8 +73,6 @@ app.get('/users', (req, res) => {
     res.json(results);
   });
 });
-
-
 
 app.post('/users', (req, res) => {
   const {email} = req.body;
@@ -112,7 +104,8 @@ app.use('/Auth', otpRouter(connection));
 app.use('/Auth', loginRouter(connection));
 app.use('/Auth', registerRouter(connection));
 app.use('/Auth', deleteRouter(connection));
-app.use('/Auth', userRouter(connection))
+app.use('/Auth', userRouter(connection));
+app.use('/Auth', userActivity(connection));
 
 app.use('/diseasesv1', diseasesRouter(connection))
 

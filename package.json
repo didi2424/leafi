@@ -60,6 +60,7 @@
     "react-native-svg": "13.4.0",
     "react-native-svg-path-gradient": "^0.4.0",
     "react-native-svg-transformer": "^1.0.0",
+    "react-native-swipeable": "^0.6.0",
     "react-native-web": "~0.18.10",
     "update": "^0.7.4"
   },

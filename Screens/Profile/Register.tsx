@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useTheme } from '../Profile/Settings/Account/ThemeContext';
 import {theme, darkTheme} from '../../Style/style'
-import { registerData, SendOTP } from '../../ClientSideAPI/api';
+import { registerData, SendOTP } from '../../ClientSideAPI/Api';
 import { set } from 'react-native-reanimated';
 import Role from './Role';
 

@@ -3,11 +3,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
-import api from '../../ClientSideAPI/api';
+import api from '../../ClientSideAPI/Api';
 import { useTheme } from './Settings/Account/ThemeContext';
 import {theme,darkTheme} from '../../Style/style'
 
-import { SendOTP } from '../../ClientSideAPI/api'; 
+import { SendOTP } from '../../ClientSideAPI/Api'; 
 
 type VertifyProps = {
   onScreenChange: (screenNumber: number) => void;

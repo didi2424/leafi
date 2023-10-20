@@ -108,6 +108,11 @@ const AccountInformation = ({ onScreenChange }: Props) => {
       }
     });
   }
+
+  const handleDeleteUser = () => {
+    console.log('button delete user')
+  }
+
   
   return (
     <View style={{height:height, gap:20, paddingBottom:30}}>
@@ -166,7 +171,7 @@ const AccountInformation = ({ onScreenChange }: Props) => {
         </Text>
         </View>
 
-        <TouchableOpacity style={{backgroundColor:BG_VIEW,height:40,alignContent:'center',justifyContent:'center',alignItems:'center',borderRadius:20}}>
+        <TouchableOpacity style={{backgroundColor:BG_VIEW,height:40,alignContent:'center',justifyContent:'center',alignItems:'center',borderRadius:20}} onPress={() => handleDeleteUser()}>
           <Text style={{color:'#2a6f29',fontSize:16}}>Delete Account</Text>
         </TouchableOpacity>
 

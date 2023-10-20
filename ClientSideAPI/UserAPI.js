@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://192.168.10.2:3000'; // Replace with your API URL
+const baseURL = 'http://192.168.1.32:3000'; // Replace with your API URL
 
 const api = axios.create({
   baseURL,
@@ -74,3 +74,29 @@ export const GetUser = (token) => {
       });
   };
   
+  export const GetUserActivity =  (token) => {
+    const headers = {
+      Authorization: `${token}`,
+    };
+    return api
+      .get(`/Auth/useractivity`, { headers: headers })
+      .then((response) => {
+        return response.data;
+        
+      })
+      .catch((error) => {
+      if (error.response) {
+        if (error.response.status === 404) {
+          throw new Error('ActivityNull'); // Throw an error for handling 409
+        }
+        else if (response.status === 200) {
+          console.error('User not found');
+          throw new Error('User not found');
+        } 
+        } else {
+          console.error('API call failed:', error);
+          throw error; // Re-throw other errors for further handling, if needed
+        }
+      });
+  
+  };

@@ -33,6 +33,7 @@ const palette = {
       ll: 20,
       lll: 22,
       llll: 24,
+      lx:28,
       xl: 40,
     },
     textVariants: {

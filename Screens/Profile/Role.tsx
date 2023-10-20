@@ -43,8 +43,6 @@ const Role = () => {
         <View style={{width:32, height:32, borderRadius:16, borderWidth:2, borderColor: colors.cardcolor, justifyContent:'center', alignItems:'center'}}>
           <View style={{width:20,height:20, borderRadius:20, backgroundColor: chooseRoleMember ? colors.buttoncolor : 'transparent'}}></View>
         </View>
-
-
         </View>
 
         <View style={{justifyContent:'center', alignContent:'center', alignItems:'center', gap:12}}>

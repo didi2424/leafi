@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, FlatList, Platform, Dimensions,StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, Platform, Dimensions,StyleSheet, RefreshControl  } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'; 
 import { ScrollView } from 'react-native-gesture-handler';
@@ -6,20 +6,13 @@ import { useTheme } from './Settings/Account/ThemeContext';
 import { theme, darkTheme } from '../../Style/style'
 import { GetUser } from '../../ClientSideAPI/UserAPI';
 import * as SecureStore from 'expo-secure-store';
+import api from '../../ClientSideAPI/Api'; 
+import Swipeable from "react-native-gesture-handler/Swipeable"
 type Props = {
   onScreenChange: (screenNumber: number) => void;
 };
 
 const UserProfile = ({ onScreenChange  }: Props) => {
-  const data = [
-    { id: '1', name: 'Item 1',date: '2024-05-03T15:50:58.342Z',icon:'add-circle-sharp',action:'Add Smartpot',results:'Leafi Marble Mozaic' },
-    { id: '2', name: 'Item 2',date: '2024-06-04T06:59:58.342Z',icon:'add-circle-sharp',action:'Add Smartpot',results:'Leafi Marble Liquid' },
-    { id: '3', name: 'Item 3',date: '2024-06-04T05:20:58.342Z',icon:'add-circle-sharp',action:'Add Smartpot',results:'Leafi Wood Walnut' },
-    { id: '4', name: 'Item 4',date: '2024-06-04T04:45:58.342Z',icon:'scan-circle',action:'Scan Plants',results:'Maranta : Fusarium Wilt',percen:'92%'},
-    { id: '5', name: 'Item 5',date: '2024-06-18T04:50:58.342Z',icon:'scan-circle',action:'Scan Plants',results:'Maranta : Powdery Mildew',percen:'82%'},
-    { id: '6', name: 'Item 6',date: '2024-07-22T16:50:58.342Z',icon:'scan-circle',action:'Scan Plants',results:'Monstera : Spider Mites',percen:'87%'},
-  ];
-  const reversedData = [...data].reverse();
   const toUserSettings =() => {
     onScreenChange(4)
   }
@@ -29,6 +22,12 @@ const UserProfile = ({ onScreenChange  }: Props) => {
 
   const [token, setToken] = useState<string | null>(null);
   const [userData, setUserData] = useState<any[]>([]);
+  const [userActivityData, setUserActivityData] = useState<any[]>([]);
+  const [activitynull, setActivityNotNull] = useState(false)
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  
 
 const getStoredToken = async () => {
   try {
@@ -48,11 +47,11 @@ const getStoredToken = async () => {
 };
 
 const getUser = async () => {
+  
   if (token) {
     try {
       const response = await GetUser(token);
       setUserData(response);
-      console.log('Received data:', response);
     } catch (error) {
       // Handle different error cases here
       console.error('API call failed');
@@ -63,26 +62,149 @@ const getUser = async () => {
   }
 };
 
-useEffect(() => {
-  // Call getStoredToken when the component mounts
-  getStoredToken();
-}, []);
+const getActivity = () => {
+  
+  if (!token) {
+    
+    console.error('Token is null. Cannot fetch user data.');
+    return;
+  }
+
+  const headers = {
+    Authorization: `${token}`,
+  };
+  console.log(token)
+
+  // Make an HTTP GET request to the API endpoint
+  api.get('/Auth/usersactivity', { headers: headers })
+  .then(response => {
+    if (response.status === 200) {
+      console.log('data respone',response.data.results);
+      setActivityNotNull(false)
+      setUserActivityData(response.data.results)
+      setRefreshing(false); 
+      
+      // Handle the data from the response here if needed
+    } else {
+      console.log('Unexpected response status:', response.status);
+    }
+  })
+  .catch(error => {
+    if (error.response) {
+      // The request was made and the server responded with a non-2xx status
+        if (error.response.status === 401) {
+        console.error('Unauthorized: Check your token and authentication');
+        // Handle the unauthorized error here
+      }
+      else if (error.response.status === 404) {
+        console.error('Activity Not Found');
+        setActivityNotNull(true)
+        // Handle the unauthorized error here
+      }
+    } else {
+      // The request was not made, or something went wrong in the network
+      console.error('Error:', error.message);
+    }
+  });
+};
+
 
 // Trigger getUser whenever the token changes
 useEffect(() => {
+  getStoredToken();
   if (token) {
     getUser();
+    getActivity()
   }
 }, [token]);
 
-  const renderItem = ({ item, index, data }: { item: typeof data[number]; index: number; data: typeof reversedData;icon: string }) => {
+const handleEndReached = () => {
+  // This function is called when the user scrolls to the end of the list.
+  // You can use it to trigger a data refresh.
+  getActivity();
+};
+
+const handleRefresh = () => {
+  // This function is called when the user pulls down to refresh.
+  // You can use it to refresh the data.
+  setRefreshing(true);
+
+  // Fetch fresh data here.
+  getActivity();
+
+  // After fetching data, update the 'data' state and reset the refreshing flag.
+  // Example:
+  // setData(newData);
+  // setRefreshing(false);
+};
+
+  const reversedData = [...userActivityData].reverse();
+
+  const dataWithKeys = reversedData.map((item, index) => ({
+    ...item,
+    key: `${index}`, // Generate unique keys using the index
+  }));
+
+  
+const deleteActivity = (idactivity:number) => {
+      if (!token) {
+        console.error('Token is null. Cannot fetch user data.');
+        return;
+      }
+      const headers = {
+        Authorization: `${token}`,
+      };
+      const payload = {
+        idActivity: idactivity
+      }
+      // Make an HTTP GET request to the API endpoint
+      api.delete('/Auth/usersactivity',{ headers: headers, data: payload })
+      .then(response => {
+        if (response.status === 200) {
+          console.log('Activity Deleted');
+          getActivity();
+          // Handle the data from the response here if needed
+        } else {
+          console.log('Unexpected response status:');
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a non-2xx status
+            if (error.response.status === 401) {
+            console.error('Unauthorized: Check your token and authentication');
+            // Handle the unauthorized error here
+          }
+          else if (error.response.status === 404) {
+            console.error('Activity Not Found');
+            // Handle the unauthorized error here
+          }
+        } else {
+          // The request was not made, or something went wrong in the network
+          console.error('Error:', error.message);
+        }
+      });
+    }
+  
+
+  const renderItem = ({ item, index, data }: { item: typeof dataWithKeys[number]; index: number; data: typeof dataWithKeys;icon: string }) => {
     const dateOnly = new Date(item.date).toLocaleDateString('en-US', { day: 'numeric' });
     const monthsOnly = new Date(item.date).toLocaleDateString('en-US', { month: 'short' });
     const fullDate = new Date(item.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour:'numeric',minute:'numeric',});
-  
+
     const isSameDay = index > 0 && new Date(item.date).getDate() === new Date(data[index - 1].date).getDate();
     const isNextDayDifferent = index < data.length - 1 && new Date(item.date).getDate() !== new Date(data[index + 1].date).getDate();
     
+    
+
+    const renderLeftActions = () =>  {
+      return (
+      <TouchableOpacity style={{backgroundColor:colors.buttoncolor,width: 60, height:58, borderRadius:20,justifyContent:'center', alignItems:'center',alignContent:'center'}} onPress={() => deleteActivity(item.idactivity)}>
+          <Text>Delete</Text>
+      </TouchableOpacity>
+      )
+    }
+
     return (
       <View style={{ padding: 2 }}>
         {!isSameDay && (
@@ -99,7 +221,9 @@ useEffect(() => {
                 </View>
             </View>
             <View style={{ flex: 3}}>
-              <View style={{ backgroundColor: colors.cardcolor, height: 60, marginHorizontal: 8, marginVertical: 2, borderRadius: 12, justifyContent:'center',
+            
+            <Swipeable renderRightActions={() => renderLeftActions()}>
+              <TouchableOpacity style={{ backgroundColor: colors.cardcolor, height: 60, marginHorizontal: 8, borderRadius: 12, justifyContent:'center',
               shadowColor: "#000",
               shadowOffset: {
                 width: 0,
@@ -108,15 +232,18 @@ useEffect(() => {
               shadowOpacity: 0.23,
               shadowRadius: 2.62,
               padding:10 }}>
+                
                 <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                   <View style={{gap:2}}>
                     <Text style={[styles.textStyle4,{color: colors.textcolor}]}>{item.action}</Text>
-                    <Text style={[styles.textStyle5,{color: colors.textcolor}]}>{item.results}</Text>
+                    <Text style={[styles.textStyle5,{color: colors.textcolor}]}>{item.plantskind} : {item.diseasesname} </Text>
                     <Text style={[styles.textStyle6,{color: colors.textcolor}]}>{fullDate}</Text>
                   </View>
                     <Ionicons name={item.icon} size={26} color={colors.buttoncolor} />
                 </View>
-              </View>
+                
+              </TouchableOpacity>
+              </Swipeable>
             </View>
           </View>
         )}
@@ -129,7 +256,8 @@ useEffect(() => {
                 </View>
             </View>
             <View style={{ flex: 3}}>
-              <View style={{ backgroundColor: colors.cardcolor, height: 60, marginHorizontal: 8, marginVertical: 2, borderRadius: 12, justifyContent:'center',
+            <Swipeable renderRightActions={() => renderLeftActions()}>
+              <TouchableOpacity style={{ backgroundColor: colors.cardcolor, height: 60, marginHorizontal: 8, borderRadius: 12, justifyContent:'center',
               shadowColor: "#000",
               shadowOffset: {
                 width: 0,
@@ -141,12 +269,13 @@ useEffect(() => {
                 <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                   <View style={{gap:4}}>
                     <Text style={[styles.textStyle4,{color: colors.textcolor}]}>{item.action}</Text>
-                    <Text style={[styles.textStyle5,{color: colors.textcolor}]}>{item.results}</Text>
+                    <Text style={[styles.textStyle5,{color: colors.textcolor}]}>{item.plantskind} : {item.diseasesname} </Text>
                     <Text style={[styles.textStyle6,{color: colors.textcolor}]}>{fullDate}</Text>
                   </View>
                     <Ionicons name={item.icon} size={26} color={colors.buttoncolor} />
                 </View>
-              </View>
+              </TouchableOpacity>
+              </Swipeable>
             </View>
           </View>
         )}
@@ -160,7 +289,8 @@ useEffect(() => {
                 </View>
             </View>
             <View style={{ flex: 3}}>
-              <View style={{ backgroundColor: colors.cardcolor, height: 60, marginHorizontal: 8, marginVertical: 2, borderRadius: 12, justifyContent:'center',
+            <Swipeable renderRightActions={() => renderLeftActions()}>
+              <TouchableOpacity style={{ backgroundColor: colors.cardcolor, height: 60, marginHorizontal: 8, borderRadius: 12, justifyContent:'center',
               shadowColor: "#000",
               shadowOffset: {
                 width: 0,
@@ -172,12 +302,13 @@ useEffect(() => {
                 <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                   <View style={{gap:3}}>
                     <Text style={[styles.textStyle4,{color: colors.textcolor}]}>{item.action}</Text>
-                    <Text style={[styles.textStyle5,{color: colors.textcolor}]}>{item.results}</Text>
+                    <Text style={[styles.textStyle5,{color: colors.textcolor}]}>{item.plantskind} : {item.diseasesname} </Text>
                     <Text style={[styles.textStyle6,{color: colors.textcolor}]}>{fullDate}</Text>
                   </View>
                     <Ionicons name={item.icon} size={26} color={colors.buttoncolor} />
                 </View>
-              </View>
+              </TouchableOpacity>
+              </Swipeable>
             </View>
           </View>
         )}
@@ -226,12 +357,26 @@ useEffect(() => {
 
           <View style={{top:-20,height:280,gap:12}}>
             <Text style={[styles.textStyle2,{color: colors.textcolor, fontSize: spacing.llll}]}>Activity</Text>
+            
+            {activitynull ? (
+            <View style={{justifyContent:'center', alignItems:'center'}}>
+               <Text style={{color: colors.textcolor, fontSize: spacing.ll}}>Activity Not Found</Text>
+             </View>
+            ) : (
             <FlatList
-                data={reversedData}
-                renderItem={({ item, index }) => renderItem({ item, index, data: reversedData })}
-                keyExtractor={(item) => item.id}
-                showsVerticalScrollIndicator={false}
-              />
+                  data={dataWithKeys}
+                  renderItem={({ item, index }) => renderItem({ item, index, data: dataWithKeys })}
+                  keyExtractor={(item) => item.key} 
+                  showsVerticalScrollIndicator={false}
+                  onEndReached={handleEndReached}
+                  onEndReachedThreshold={0.1}
+                  refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+                  }
+                />
+              )
+            }
+            
           </View>
 
           <View style={{gap:12}}>
